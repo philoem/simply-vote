@@ -1,24 +1,26 @@
-import './index.css'
+import Button from '../Button'
 
 const Header = ({
 	addressWallet,
 	isConnected
 }: { addressWallet: string; isConnected: boolean }) => {
 	return (
-		<>
+		<div className='container mx-auto'>
 			{isConnected && (
-				<header className='header'>
-					<div className='content-header'>
-						<h1 className='title-header'>Simply Vote</h1>
-						<div className='address-header'>
-							{`${addressWallet?.substring(0, 8)}...${addressWallet?.substring(
-								addressWallet.length - 3
-							)}, vous êtes connecté`}
-						</div>
-					</div>
-				</header>
+				<nav className='h-[80px] flex justify-between items-center border border-gray-400 px-3 rounded-full fixed top-2 w-11/12'>
+					<h1 className='font-sans text-3xl text-center font-bold pl-2'>
+						Simply Vote
+					</h1>
+					<Button
+						disabled
+						text={`${addressWallet?.substring(0, 7)}...${addressWallet?.substring(
+							addressWallet.length - 3
+						)}, vous êtes connecté`}
+						className='w-2/12 px-3 rounded-full text-sm bg-[#1B5CFE]'
+					/>
+				</nav>
 			)}
-		</>
+		</div>
 	)
 }
 

@@ -83,12 +83,13 @@ function App() {
 	}
 
 	return (
-		<>
-			<Header addressWallet={voter} isConnected={isConnected} />
+		<div className='w-screen'>
 			{!isConnected && (
-				<div className='md:container md:mx-auto'>
+				<div className='md:container md:mx-auto prose'>
 					<h1 className='font-sans text-5xl font-bold mb-4'>Simply Vote</h1>
-					<p className='font-sans text-lg'>Système de vote électronique connecté à la blockchain Ethereum.</p>
+					<p className='font-sans text-lg'>
+						Système de vote électronique connecté à la blockchain Ethereum.
+					</p>
 					<p className='font-sans text-lg'>Personnalisable, sécurisé et transparent.</p>
 					<p className='font-sans text-lg mb-4'>A vous de jouer!</p>
 					<Button
@@ -98,13 +99,14 @@ function App() {
 						className='btn btn-primary'
 					/>
 				</div>
-			)}
+			)}			
 			<Toast />
 			{isConnected && (
 				<>
 					{/* <p className='read-the-docs'>Which do you prefer between :</p>
 					<Button text='Star Wars' onClick={() => hasVoted('choiceOne')} disabled={isVoted} />
 					<Button text='Star Trek' onClick={() => hasVoted('choiceTwo')} disabled={isVoted} /> */}
+					<Header addressWallet={voter} isConnected={isConnected} />
 					{isVoted && (
 						<>
 							<p>Thank you for voting !</p>
@@ -134,7 +136,7 @@ function App() {
 					)}
 				</>
 			)}
-		</>
+		</div>
 	)
 }
 

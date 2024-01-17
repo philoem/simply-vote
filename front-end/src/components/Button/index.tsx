@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 type ButtonProps = {
 	text: string
-	onClick: () => void
+	onClick?: () => void
 	className?: string
 	disabled?: boolean
 }
