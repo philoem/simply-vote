@@ -86,15 +86,16 @@ function App() {
 		<>
 			<Header addressWallet={voter} isConnected={isConnected} />
 			{!isConnected && (
-				<div className='container-intro'>
-					<h1>Simply Vote</h1>
-					<p className='description-title'>Système de vote électronique connecté à la blockchain Ethereum. Personnalisable, sécurisé et transparent.</p>
-					<p className='description-title'>A vous de jouer!</p>
+				<div className='md:container md:mx-auto'>
+					<h1 className='font-sans text-5xl font-bold mb-4'>Simply Vote</h1>
+					<p className='font-sans text-lg'>Système de vote électronique connecté à la blockchain Ethereum.</p>
+					<p className='font-sans text-lg'>Personnalisable, sécurisé et transparent.</p>
+					<p className='font-sans text-lg mb-4'>A vous de jouer!</p>
 					<Button
 						text='Connect your wallet'
 						onClick={() => connectingWallet()}
 						disabled={isVoted}
-						className='button-intro'
+						className='btn btn-primary'
 					/>
 				</div>
 			)}

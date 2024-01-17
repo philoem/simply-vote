@@ -8,6 +8,10 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      'sans': ['Helvetica', 'Arial', 'sans-serif'],
+      'serif': ['ui-serif', 'Georgia'],
+    },
   },
   plugins: [require("@tailwindcss/typography"),require("daisyui")],
 }
