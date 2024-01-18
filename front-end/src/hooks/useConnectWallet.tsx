@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 declare global {
@@ -19,24 +19,27 @@ export default function useConnectWallet() {
 	const [isConnected, setIsConnected] = useState(false)
 	const { ethereum } = window
 
-	useEffect(() => {
-		if (window.ethereum) {
-			if (window.ethereum.selectedAddress) {
-				setVoter(window.ethereum.selectedAddress)
+	const changeAccount = useCallback(() => {
+		if (ethereum) {
+			if (ethereum.selectedAddress) {
+				setVoter(ethereum.selectedAddress)
 				setIsConnected(true)
 			}
-
-			window.ethereum.on('accountsChanged', (accounts: string[]) => {
+			ethereum.on('accountsChanged', (accounts: string[]) => {
 				setVoter(accounts[0])
 				setIsConnected(true)
 			})
 		}
-	}, [])
+	}, [ethereum])
+
+	useEffect(() => {
+		changeAccount()
+	}, [changeAccount])
 
 	const connectingWallet = async () => {
 		try {
 			if (!ethereum) {
-				toast.error('Get MetaMask!')
+				toast.error('Veuillez installer Metamask')
 				return
 			}
 			const accounts = await ethereum.request({
@@ -44,7 +47,7 @@ export default function useConnectWallet() {
 			})
 			setVoter(accounts[0])
 			setIsConnected(true)
-			toast.success('Connected!')
+			toast.success('Connecté!')
 		} catch (error) {
 			console.log(error)
 		}
