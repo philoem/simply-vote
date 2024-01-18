@@ -1,4 +1,4 @@
-import { useEffect, useState, useId } from 'react'
+import { useState, useId } from 'react'
 import './App.css'
 import useConnectWallet from './hooks/useConnectWallet'
 import useCutStringAfterSecondSpace from './hooks/useCutStringAfterSecondSpace'
@@ -20,13 +20,6 @@ function App() {
 	const [isVoted, setIsVoted] = useState(false)
 	const [nbrOfStarWArs, setNbrOfStarWArs] = useState(0)
 	const [nbrStarTrek, setNbrStarTrek] = useState(0)
-
-	useEffect(() => {
-		isConnected === false
-			? console.log('Votant non connecté à son wallet')
-			: console.log('Votant connecté à son wallet')
-		isVoted === true ? console.log('voter is already voted') : console.log('voter is not yet voted')
-	}, [isConnected, isVoted])
 
 	/**
 	 * Checks if a user has voted based on the given choice.
@@ -86,7 +79,7 @@ function App() {
 		<div className='w-screen'>
 			<div className='w-full h-screen bg-cover bg-[url("./assets/election.jpeg")]'>
 				<div className='backdrop-blur-sm bg-white/30'>
-					{!isConnected && (
+					{!isConnected && !voter	 && (
 						<div className='flex justify-center items-center h-screen'>
 							<div className='md:container md:mx-auto prose'>
 								<h1 className='font-sans text-6xl font-bold mb-4 text-gray-900'>Simply Vote</h1>
@@ -112,7 +105,7 @@ function App() {
 							{/* <p className='read-the-docs'>Which do you prefer between :</p>
 							<Button text='Star Wars' onClick={() => hasVoted('choiceOne')} disabled={isVoted} />
 							<Button text='Star Trek' onClick={() => hasVoted('choiceTwo')} disabled={isVoted} /> */}
-							<Header addressWallet={voter} isConnected={isConnected} />
+							<Header addressWallet={voter} />
 							{isVoted && (
 								<>
 									<p>Thank you for voting !</p>

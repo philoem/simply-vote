@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 declare global {
@@ -18,6 +18,20 @@ export default function useConnectWallet() {
 	const [voter, setVoter] = useState('')
 	const [isConnected, setIsConnected] = useState(false)
 	const { ethereum } = window
+
+	useEffect(() => {
+		if (window.ethereum) {
+			if (window.ethereum.selectedAddress) {
+				setVoter(window.ethereum.selectedAddress)
+				setIsConnected(true)
+			}
+
+			window.ethereum.on('accountsChanged', (accounts: string[]) => {
+				setVoter(accounts[0])
+				setIsConnected(true)
+			})
+		}
+	}, [])
 
 	const connectingWallet = async () => {
 		try {
