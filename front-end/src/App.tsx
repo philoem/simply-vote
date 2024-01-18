@@ -84,58 +84,70 @@ function App() {
 
 	return (
 		<div className='w-screen'>
-			{!isConnected && (
-				<div className='md:container md:mx-auto prose'>
-					<h1 className='font-sans text-5xl font-bold mb-4'>Simply Vote</h1>
-					<p className='font-sans text-lg'>
-						Système de vote électronique connecté à la blockchain Ethereum.
-					</p>
-					<p className='font-sans text-lg'>Personnalisable, sécurisé et transparent.</p>
-					<p className='font-sans text-lg mb-4'>A vous de jouer!</p>
-					<Button
-						text='Connect your wallet'
-						onClick={() => connectingWallet()}
-						disabled={isVoted}
-						className='btn btn-primary'
-					/>
-				</div>
-			)}			
-			<Toast />
-			{isConnected && (
-				<>
-					{/* <p className='read-the-docs'>Which do you prefer between :</p>
-					<Button text='Star Wars' onClick={() => hasVoted('choiceOne')} disabled={isVoted} />
-					<Button text='Star Trek' onClick={() => hasVoted('choiceTwo')} disabled={isVoted} /> */}
-					<Header addressWallet={voter} isConnected={isConnected} />
-					{isVoted && (
+			<div className='w-full h-screen bg-cover bg-[url("./assets/election.jpeg")]'>
+				<div className='backdrop-blur-sm bg-white/30'>
+					{!isConnected && (
+						<div className='flex justify-center items-center h-screen'>
+							<div className='md:container md:mx-auto prose'>
+								<h1 className='font-sans text-6xl font-bold mb-4 text-gray-900'>Simply Vote</h1>
+								<p className='font-sans text-lg text-gray-800'>
+									Système de vote électronique connecté à la blockchain Ethereum.
+								</p>
+								<p className='font-sans text-lg text-gray-800'>
+									Personnalisable, sécurisé et transparent.
+								</p>
+								<p className='font-sans text-lg mb-4 text-gray-800'>A vous de jouer!</p>
+								<Button
+									text='Connect your wallet'
+									onClick={() => connectingWallet()}
+									disabled={isVoted}
+									className='btn btn-primary text-white bg-[#1B5CFE]'
+								/>
+							</div>
+						</div>
+					)}
+					<Toast />
+					{isConnected && (
 						<>
-							<p>Thank you for voting !</p>
-							{count !== 0 && (
+							{/* <p className='read-the-docs'>Which do you prefer between :</p>
+							<Button text='Star Wars' onClick={() => hasVoted('choiceOne')} disabled={isVoted} />
+							<Button text='Star Trek' onClick={() => hasVoted('choiceTwo')} disabled={isVoted} /> */}
+							<Header addressWallet={voter} isConnected={isConnected} />
+							{isVoted && (
 								<>
-									<p>The result of the vote is coming soon</p>
-									<div className='card-countdown'>
-										<div className='dot-elastic'></div>
-									</div>
-								</>
-							)}
-							{count === 0 && (
-								<>
-									<Button text='Go to new vote' className='reload' onClick={() => reloadPage()} />
-									<h2
-										className={`${
-											nbrOfStarWArs > nbrStarTrek
-												? 'font-winner-star-wars'
-												: 'font-winner-star-trek'
-										}`}
-									>
-										{theWinnerIs}
-									</h2>
+									<p>Thank you for voting !</p>
+									{count !== 0 && (
+										<>
+											<p>The result of the vote is coming soon</p>
+											<div className='card-countdown'>
+												<div className='dot-elastic'></div>
+											</div>
+										</>
+									)}
+									{count === 0 && (
+										<>
+											<Button
+												text='Go to new vote'
+												className='reload'
+												onClick={() => reloadPage()}
+											/>
+											<h2
+												className={`${
+													nbrOfStarWArs > nbrStarTrek
+														? 'font-winner-star-wars'
+														: 'font-winner-star-trek'
+												}`}
+											>
+												{theWinnerIs}
+											</h2>
+										</>
+									)}
 								</>
 							)}
 						</>
 					)}
-				</>
-			)}
+				</div>
+			</div>
 		</div>
 	)
 }

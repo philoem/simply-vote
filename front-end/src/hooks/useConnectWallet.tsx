@@ -2,22 +2,22 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ethereum: any
-  }
+	interface Window {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		ethereum: any
+	}
 }
 
 /**
  * Hook for connecting a wallet.
-*
-* @return {Object} An object containing the isConnected flag, the ethereum object,
-*                  and the connectingWallet function.
-*/
+ *
+ * @return {Object} An object containing the isConnected flag, the ethereum object,
+ *                  and the connectingWallet function.
+ */
 export default function useConnectWallet() {
-  const [voter, setVoter] = useState('')
+	const [voter, setVoter] = useState('')
 	const [isConnected, setIsConnected] = useState(false)
-  const { ethereum } = window
+	const { ethereum } = window
 
 	const connectingWallet = async () => {
 		try {
