@@ -6,7 +6,7 @@ const Header = ({addressWallet}: { addressWallet: string }) => {
 	
 	return (
 		<div className='container mx-auto'>
-			<nav className='h-[80px] flex justify-between items-center border border-gray-400 px-3 rounded-full fixed top-2 w-11/12'>
+			<nav className='h-[80px] flex justify-between items-center border border-gray-400 px-3 rounded-full fixed top-2 w-5/6'>
 				<h1 className='font-sans text-4xl text-center font-bold pl-2 text-gray-900'>
 					Simply Vote
 				</h1>
