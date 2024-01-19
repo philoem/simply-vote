@@ -9,6 +9,11 @@ const Toast = (): JSX.Element => {
 	return (
 		<Toaster
 			toastOptions={{
+				loading: {
+					style: {
+						background: 'gray'
+					}
+				},
 				success: {
 					style: {
 						background: 'green'
