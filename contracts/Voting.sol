@@ -5,6 +5,7 @@ import './Ownable.sol';
 import './MerkleTreeProof.sol';
 import { Hashing } from './Library/HashingLibrary.sol';
 
+
 contract Voting is Ownable {
 
   struct Voter {
@@ -13,6 +14,18 @@ contract Voting is Ownable {
     bool committed;
     bytes32 encryptedVote;
   }
+
+  struct VoteStruct {
+    uint256 id;
+    string title;
+    string description;
+    string startsAt;
+    string endsAt;
+    string link1;
+    string link2;
+  }
+  mapping(uint256 => VoteStruct) public voteStructs;
+  mapping(uint256 => bool) voteExist;
 
   mapping(address => Voter) public voters;
   mapping(uint256 => uint256) public voteCount;
@@ -29,6 +42,39 @@ contract Voting is Ownable {
     if(!merkleTreeProofInstance.verify(_proof, _leaf)) {
       revert("You're not on the list, you can't vote");
     }
+  }
+
+  function createVote(
+    string memory title,
+    string memory description,
+    string memory startsAt,
+    string memory endsAt,
+    string memory link1,
+    string memory link2
+  ) public {
+    require(bytes(title).length > 0, "Title cannot be empty");
+    require(bytes(description).length > 0, "Description cannot be empty");
+    require(bytes(startsAt).length > 0, "StartsAt cannot be empty");
+    require(bytes(endsAt).length > 0, "EndsAt cannot be empty");
+    require(bytes(link1).length > 0, "Link cannot be empty");
+    require(bytes(link2).length > 0, "Link cannot be empty");
+    require(bytes(startsAt).length <= bytes(endsAt).length, "StartsAt date must be before EndsAt date");
+
+    VoteStruct memory _voteStructs;
+    _voteStructs.title = title;  
+    _voteStructs.description = description;
+    _voteStructs.startsAt = startsAt;
+    _voteStructs.endsAt = endsAt;
+    _voteStructs.link1 = link1;
+    _voteStructs.link2 = link2;
+
+    voteStructs[_voteStructs.id] = _voteStructs;
+    voteExist[_voteStructs.id] = true;
+  }
+
+  function getVote(uint256 _id) public view returns (VoteStruct memory) {
+    require(voteExist[_id], "Vote does not exist");
+    return voteStructs[_id];
   }
 
   function commitVote(address voterAuthorized, string calldata _candidate) internal onlyvoterAuthorized returns (bytes32) {
