@@ -4,15 +4,15 @@ import useConnectWallet from './hooks/useConnectWallet'
 import useCutStringAfterSecondSpace from './hooks/useCutStringAfterSecondSpace'
 import useCountDownSimulated from './hooks/useCountDownSimulated'
 import Contract from '../../artifacts/contracts/Voting.sol/Voting.json'
-import Toast from './components/Toast/index'
 import Button from './components/Button/index'
 import Header from './components/Header/index'
 import { ethers } from 'ethers'
 import ModalWithActionButton from './components/ModalWithActionButton'
+import Homepage from './components/Homepage'
 
 function App() {
 	const id = useId()
-	const { isConnected, ethereum, voter, connectingWallet } = useConnectWallet()
+	const { isConnected, ethereum, voter } = useConnectWallet()
 	const [responseVoter, setResponseVoter] = useState('')
 	const cutStringAfterSecondSpace = useCutStringAfterSecondSpace(responseVoter)
 	const { count, theWinnerIs, setIsCountdownActive } =
@@ -80,33 +80,11 @@ function App() {
 		<div className='w-screen'>
 			<div className='w-full h-screen bg-cover bg-[url("./assets/election.jpeg")]'>
 				<div className='backdrop-blur-sm bg-white/30'>
-					{!isConnected && !voter && (
-						<div className='flex justify-center items-center h-screen'>
-							<div className='md:container md:mx-auto prose'>
-								<h1 className='font-sans text-6xl font-bold mb-4 text-gray-900'>Simply Vote</h1>
-								<p className='font-sans text-lg text-gray-800'>
-									Système de vote électronique connecté à la blockchain Ethereum.
-								</p>
-								<p className='font-sans text-lg text-gray-800'>
-									Personnalisable, sécurisé et transparent.
-								</p>
-								<p className='font-sans text-lg mb-4 text-gray-800'>A vous de jouer!</p>
-								<Button
-									text='Connect your wallet'
-									onClick={() => connectingWallet()}
-									disabled={isVoted}
-									className='text-base btn btn-primary text-white bg-[#1B5CFE]'
-								/>
-							</div>
-						</div>
-					)}
-					<Toast />
+					<Homepage />
 					{isConnected && (
 						<>
 							<Header addressWallet={voter} />
-							<div className='flex justify-center items-center h-screen'>
-								<ModalWithActionButton />
-							</div>
+							<ModalWithActionButton />
 							{isVoted && (
 								<>
 									<p>Thank you for voting !</p>
