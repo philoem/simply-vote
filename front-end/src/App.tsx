@@ -95,7 +95,7 @@ function App() {
 									text='Connect your wallet'
 									onClick={() => connectingWallet()}
 									disabled={isVoted}
-									className='btn btn-primary text-white bg-[#1B5CFE]'
+									className='text-base btn btn-primary text-white bg-[#1B5CFE]'
 								/>
 							</div>
 						</div>
