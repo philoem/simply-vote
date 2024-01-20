@@ -7,7 +7,7 @@ const ModalWithActionButton = () => {
 	const { handleChange, handleSubmit, modalParams } = useHandleModalForm(myDialog)
 
 	return (
-		<>
+		<div className='flex justify-center items-center h-screen'>
 			<Button
 				text='Créer un nouveau vote'
 				className='rounded-full text-base px-3 btn btn-outline btn-primary'
@@ -80,25 +80,29 @@ const ModalWithActionButton = () => {
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
 						/>
-						{modalParams?.link1 &&
+						{modalParams?.link1 && (
 							<img
 								src={modalParams?.link1}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
-						}
-						{modalParams?.link2 &&
+						)}
+						{modalParams?.link2 && (
 							<img
 								src={modalParams?.link2}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
-						}
+						)}
 					</form>
-					<Button text='Créer le vote' className='btn btn-primary w-full' onClick={(e: FormEvent<Element>) => handleSubmit(e)} />
+					<Button
+						text='Créer le vote'
+						className='btn btn-primary w-full'
+						onClick={(e: FormEvent<Element>) => handleSubmit(e)}
+					/>
 				</div>
 			</dialog>
-		</>
+		</div>
 	)
 }
 
