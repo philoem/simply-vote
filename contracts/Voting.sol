@@ -19,8 +19,9 @@ contract Voting is Ownable {
     uint256 id;
     string title;
     string description;
-    string startsAt;
-    string endsAt;
+    uint256 startsAt;
+    uint256 endsAt;
+    uint256 timestamp;
     string link1;
     string link2;
   }
@@ -47,29 +48,39 @@ contract Voting is Ownable {
   function createVote(
     string memory title,
     string memory description,
-    string memory startsAt,
-    string memory endsAt,
+    uint256 startsAt,
+    uint256 endsAt,
     string memory link1,
     string memory link2
   ) public {
     require(bytes(title).length > 0, "Title cannot be empty");
     require(bytes(description).length > 0, "Description cannot be empty");
-    require(bytes(startsAt).length > 0, "StartsAt cannot be empty");
-    require(bytes(endsAt).length > 0, "EndsAt cannot be empty");
+    require(startsAt < endsAt, "StartsAt must be before EndsAt");
     require(bytes(link1).length > 0, "Link cannot be empty");
     require(bytes(link2).length > 0, "Link cannot be empty");
-    require(bytes(startsAt).length <= bytes(endsAt).length, "StartsAt date must be before EndsAt date");
 
     VoteStruct memory _voteStructs;
     _voteStructs.title = title;  
     _voteStructs.description = description;
     _voteStructs.startsAt = startsAt;
     _voteStructs.endsAt = endsAt;
+    _voteStructs.timestamp = (block.timestamp * 1000) + 1000;
     _voteStructs.link1 = link1;
     _voteStructs.link2 = link2;
 
     voteStructs[_voteStructs.id] = _voteStructs;
     voteExist[_voteStructs.id] = true;
+  }
+
+  function getVotes() public view returns (VoteStruct[] memory _voteStructs) {
+    uint256 _count = 0;
+    for(uint256 i = 0; i < _voteStructs.length; i++) {
+      if(voteExist[i]) {
+        _voteStructs[_count] = voteStructs[i];
+        _count++;
+      }
+    }
+    return _voteStructs;
   }
 
   function getVote(uint256 _id) public view returns (VoteStruct memory) {
