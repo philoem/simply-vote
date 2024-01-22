@@ -10,7 +10,7 @@ const DisplayVote = ({ votes }: { votes: VoteStruct[] }) => {
 			<h1 className='font-sans text-3xl font-bold mb-4 text-gray-900'>Display Vote</h1>
 
 			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
-				{votes?.map((vote, index) => (
+				{votes && votes?.map((vote, index) => (
 					<div className='card card-side bg-base-100 shadow-xl' key={index}>
 						<figure>
 							<div className='flex flex-col'>
