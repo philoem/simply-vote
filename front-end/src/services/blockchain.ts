@@ -56,17 +56,18 @@ const getDetailsVote = async (id: number): Promise<VoteStruct> => {
 }
 
 const structVotes = (votes: VoteStruct[]) => {
-	const struct = votes.map((vote) => ({
-		id: Number(vote.id),
-		title: vote.title,
-		description: vote.description,
-		startsAt: Number(vote.startsAt),
-		endsAt: Number(vote.endsAt),
-		timestamp: Number(vote.timestamp),
-		link1: vote.link1,
-		link2: vote.link2
-	}))
-	.sort((a,b) => b.timestamp - a.timestamp)
+	const struct = votes
+		.map((vote) => ({
+			id: Number(vote.id),
+			title: vote.title,
+			description: vote.description,
+			startsAt: Number(vote.startsAt),
+			endsAt: Number(vote.endsAt),
+			timestamp: Number(vote.timestamp),
+			link1: vote.link1,
+			link2: vote.link2
+		}))
+		.sort((a, b) => b.timestamp - a.timestamp)
 	return struct
 }
 
@@ -75,8 +76,8 @@ const formatDate = (timestamp: number) => {
 	const day = date.getDate()
 	const month = date.getMonth() + 1
 	const year = date.getFullYear()
-	const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+	const hours = String(date.getHours()).padStart(2, '0')
+	const minutes = String(date.getMinutes()).padStart(2, '0')
 	return `${day}/${month}/${year} à ${hours}:${minutes}`
 }
 

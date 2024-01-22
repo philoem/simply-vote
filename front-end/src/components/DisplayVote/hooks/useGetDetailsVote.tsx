@@ -1,12 +1,11 @@
-import toast from "react-hot-toast"
+import toast from 'react-hot-toast'
 import { getDetailsVote } from '../../../services/blockchain'
 
 const useGetDetailsVote = () => {
+	const getDetails = async (id: number) => {
+		console.log('id :>> ', id)
 
-  const getDetails = async (id: number) => {
-    console.log('id :>> ', id)
-
-    await toast.promise(
+		await toast.promise(
 			new Promise((resolve, reject) => {
 				getDetailsVote(id)
 					.then((tx) => {
@@ -24,11 +23,11 @@ const useGetDetailsVote = () => {
 				error: `Erreur`
 			}
 		)
-  }
+	}
 
-  return {
-    getDetails
-  }
+	return {
+		getDetails
+	}
 }
 
 export default useGetDetailsVote
