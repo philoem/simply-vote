@@ -1,7 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+require('dotenv').config()
 
-const { SEPOLIA_API_KEY, INFURA_API_KEY, ETHERSCAN_API_KEY, COINMARKETCAP_API_KEY } = process.env;
+const { PRIVATE_KEY, INFURA_API_KEY, ETHERSCAN_API_KEY, COINMARKETCAP_API_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -22,11 +23,11 @@ const config: HardhatUserConfig = {
       }
     ]
   },  
-  defaultNetwork: "hardhat",
+  defaultNetwork: "sepolia",
   networks: {
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: SEPOLIA_API_KEY ? [SEPOLIA_API_KEY] : [],
+      accounts: [`0x${PRIVATE_KEY}`],
     },
   },
   etherscan: {
