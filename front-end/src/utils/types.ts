@@ -1,4 +1,5 @@
 export interface ModalParams {
+	id: number | string
 	title: string
 	description: string
 	startsAt: number | string

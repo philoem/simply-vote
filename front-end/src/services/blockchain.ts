@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract(signer.address, abi, signer)
+		const contract = new ethers.Contract('0x4eA9477F846D25728Ff2Ca5372aCf6294F26926d', abi, signer)
 		return contract
 	}
 }
@@ -32,9 +32,9 @@ const getContractEthereum = async () => {
  */
 const createVote = async (data: ModalParams) => {
 	try {
-		const { title, description, startsAt, endsAt, link1, link2 } = data
 		const contract = await getContractEthereum()
-		const tx = await contract?.createVote(title, description, startsAt, endsAt, link1, link2)
+		const { id, title, description, startsAt, endsAt, link1, link2 } = data
+		const tx = await contract?.createVote(id, title, description, startsAt, endsAt, link1, link2)
 		await tx.wait()
 		return Promise.resolve(tx)
 	} catch (error) {
@@ -43,22 +43,25 @@ const createVote = async (data: ModalParams) => {
 	}
 }
 
-const getVotes = async (): Promise<VoteStruct> => {
+const getVotes = async () => {
 	const contract = await getContractEthereum()
-	const votes = await contract?.getVotes()
-	return structVotes(votes)
+	const votesPromise = contract?.getVotes()
+  const votes = await votesPromise || []
+  return structVotes(votes)
 }
 
 const getDetailsVote = async (id: number): Promise<VoteStruct> => {
 	const contract = await getContractEthereum()
-	const vote = await contract?.getVote(id)
-	return structVotes([vote])[0]
+	const votePromise = contract?.getVote(id)
+  const vote = await votePromise || {}
+  return structVotes([vote])[0]
 }
 
-const structVotes = (votes: VoteStruct[]) => {
-	const struct = votes
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const structVotes = (votes: any[]): VoteStruct[] => {
+	return votes
 		.map((vote) => ({
-			id: Number(vote.id),
+			id: vote.id,
 			title: vote.title,
 			description: vote.description,
 			startsAt: Number(vote.startsAt),
@@ -68,7 +71,6 @@ const structVotes = (votes: VoteStruct[]) => {
 			link2: vote.link2
 		}))
 		.sort((a, b) => b.timestamp - a.timestamp)
-	return struct
 }
 
 const formatDate = (timestamp: number) => {
