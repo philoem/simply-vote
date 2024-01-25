@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x4eA9477F846D25728Ff2Ca5372aCf6294F26926d', abi, signer)
+		const contract = new ethers.Contract('0xb9382F8ee00Af42b225586c32104758601498498', abi, signer)
 		return contract
 	}
 }
@@ -43,6 +43,12 @@ const createVote = async (data: ModalParams) => {
 	}
 }
 
+/**
+ * Asynchronously retrieves votes from the Ethereum contract and returns a structured
+ * version of the votes.
+ *
+ * @return {Array} structured votes
+ */
 const getVotes = async () => {
 	const contract = await getContractEthereum()
 	const votesPromise = contract?.getVotes()
@@ -50,11 +56,17 @@ const getVotes = async () => {
   return structVotes(votes)
 }
 
+/**
+ * Retrieves details of a vote by its ID.
+ *
+ * @param {number} id - The ID of the vote
+ * @return {Promise<VoteStruct>} The details of the vote
+ */
 const getDetailsVote = async (id: number): Promise<VoteStruct> => {
+	console.log('getDetailsVote id :>> ', id);
 	const contract = await getContractEthereum()
-	const votePromise = contract?.getVote(id)
-  const vote = await votePromise || {}
-  return structVotes([vote])[0]
+	const vote = contract?.getDetailsVote(id)
+	return structVotes([vote])[0]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,14 +85,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-const formatDate = (timestamp: number) => {
-	const date = new Date(timestamp * 1000)
-	const day = date.getDate()
-	const month = date.getMonth() + 1
-	const year = date.getFullYear()
-	const hours = String(date.getHours()).padStart(2, '0')
-	const minutes = String(date.getMinutes()).padStart(2, '0')
-	return `${day}/${month}/${year} à ${hours}:${minutes}`
-}
-
-export { createVote, getDetailsVote, getVotes, formatDate }
+export { createVote, getDetailsVote, getVotes }
