@@ -4,7 +4,7 @@ import { ModalParams } from "../utils/types";
 export const formState = atom<ModalParams>({
   key: 'formState',
   default: {
-		id: 1 || '',
+		id: '',
     title: '',
 		description: '',
 		startsAt: '',
@@ -12,4 +12,17 @@ export const formState = atom<ModalParams>({
 		link1: '',
 		link2: ''
   },
+})
+
+export const formStateArray = atom<ModalParams[]>({
+  key: 'formStateArray',
+  default: [{
+		id: '',
+    title: '',
+		description: '',
+		startsAt: '',
+		endsAt: '',
+		link1: '',
+		link2: ''
+  }],
 })

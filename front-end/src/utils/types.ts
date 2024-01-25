@@ -9,7 +9,7 @@ export interface ModalParams {
 }
 
 export interface VoteStruct {
-	id: number
+	id: number | string
 	title: string
 	description: string
 	startsAt: number | string
