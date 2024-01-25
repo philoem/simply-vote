@@ -15,8 +15,12 @@ contract Voting {
   }
   mapping(uint256 => VoteStruct) public voteStructs;
   mapping(uint256 => bool) voteExist;
-  VoteStruct[] public voteStructsArray;
   uint256 votesCount;
+  VoteStruct[] public voteStructsArray;
+
+  error TitleEmptyError(string message);
+  error DescriptionEmptyError(string message);
+  error InvalidStartEndTimesError(string message);
 
   event VoteCreated(
     uint256 id,
@@ -37,9 +41,13 @@ contract Voting {
     string memory link1,
     string memory link2
   ) public {
-    require(bytes(title).length > 0, "Title cannot be empty");
-    require(bytes(description).length > 0, "Description cannot be empty");
-    require(startsAt < endsAt, "StartsAt must be before EndsAt");
+    if (bytes(title).length == 0) {
+      revert TitleEmptyError("Title cannot be empty");
+    } else if (bytes(description).length == 0) {
+      revert DescriptionEmptyError("Description cannot be empty");
+    } else if (startsAt >= endsAt) {
+      revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
+    }
 
     VoteStruct memory _voteStructs;
     _voteStructs.id = id;
@@ -59,6 +67,10 @@ contract Voting {
 
   function getVotes() public view returns (VoteStruct[] memory) {
     return voteStructsArray;
+  }
+
+  function getDetailsVote(uint256 _id) public view returns (VoteStruct memory) {
+    return voteStructs[_id];
   }
 
 }
