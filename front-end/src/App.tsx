@@ -4,7 +4,6 @@ import Header from './components/Header/index'
 import ModalWithActionButton from './components/ModalWithActionButton'
 import Homepage from './components/Homepage'
 import DisplayVote from './components/DisplayVote'
-import arrayVotesMock from './mocks/votes'
 
 function App() {
 	const { isConnected, voter } = useConnectWallet()
@@ -19,7 +18,7 @@ function App() {
 							<Header addressWallet={voter} />
 							<div className='flex flex-col justify-center items-center h-screen'>
 								<ModalWithActionButton />
-								<DisplayVote votes={arrayVotesMock} />
+								<DisplayVote />
 							</div>
 						</>
 					)}
