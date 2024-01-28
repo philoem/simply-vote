@@ -2,6 +2,7 @@
 pragma solidity ^0.8.23;
 
 contract Voting {
+  uint256 private _idVoteCounter=1;
 
   struct VoteStruct {
     uint256 id;
@@ -33,7 +34,6 @@ contract Voting {
   );
 
   function createVote(
-    uint256 id,
     string memory title,
     string memory description,
     uint256 startsAt,
@@ -49,8 +49,10 @@ contract Voting {
       revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
     }
 
+    uint256 voteId = _idVoteCounter;
+
     VoteStruct memory _voteStructs;
-    _voteStructs.id = id;
+    _voteStructs.id = voteId;
     _voteStructs.title = title;  
     _voteStructs.description = description;
     _voteStructs.startsAt = startsAt;
@@ -60,6 +62,7 @@ contract Voting {
     _voteStructs.link2 = link2;
 
     voteStructsArray.push(_voteStructs);
+    _idVoteCounter += 1;
     votesCount++;
 
     emit VoteCreated(_voteStructs.id, _voteStructs.title, _voteStructs.description, _voteStructs.startsAt, _voteStructs.endsAt, _voteStructs.link1, _voteStructs.link2);

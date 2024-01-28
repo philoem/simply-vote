@@ -1,15 +1,14 @@
-import { ChangeEvent, FormEvent, RefObject, useState } from 'react'
-import { createVote, getVotes } from '../../../services/blockchain'
-import toast from 'react-hot-toast'
+import { ChangeEvent, FormEvent, RefObject } from 'react'
+import { createVote } from '../../../services/blockchain'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { formState } from '../../../store/form'
+import toast from 'react-hot-toast'
+import useDisplayAllVotes from '../../DisplayVote/hooks/useDisplayAllVotes'
 
 const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 	const [, setText] = useRecoilState(formState)
-	const [fetchVotes, setFetchVotes] = useRecoilState(formState)
 	const valuesForm = useRecoilValue(formState)
-	const [incrementId, setIncrementId] = useState(1)
-	console.log('fetchVotes :>> ', fetchVotes);
+	const { allVotes } = useDisplayAllVotes()
 	
 	/**
 	 * Handles the form submission event.
@@ -34,10 +33,7 @@ const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 		const timestampEndsAt = Date.parse(endsAt)
 		const bigIntValueEndsAt = BigInt(timestampEndsAt)
 
-		setIncrementId(prevId => prevId + 1)
-
 		const values = {
-			id: incrementId,
 			title: valuesForm.title,
 			description: valuesForm.description,
 			startsAt: Number(bigIntValueStartsAt),
@@ -45,7 +41,6 @@ const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 			link1: valuesForm.link1,
 			link2: valuesForm.link2
 		}
-		console.log('values :>> ', values);
 
 		myDialog.current?.close()
 		await toast.promise(
@@ -54,6 +49,7 @@ const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 					.then((tx) => {
 						console.log('tx :>> ', tx)
 						resolve(tx)
+						return allVotes()
 					})
 					.catch((error) => {
 						reject(error)
@@ -76,46 +72,7 @@ const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 		}))
 	}
 
-	const allVotes = async () => {
-		await toast.promise(
-			(async () => {
-				try {
-					const tx = await getVotes()
-					setFetchVotes(tx)
-					console.log('tx :>> ', tx)
-					return tx
-				} catch (error) {
-					console.log('error :>> ', error)
-					throw error
-				}
-			})(),
-			{
-				loading: 'En cours...',
-				success: 'Votes récupérés!',
-				error: `Erreur de récupération des votes`
-			}
-		)
-		// await toast.promise(
-		// 	new Promise((resolve, reject) => {
-		// 		return getVotes()
-		// 			.then((tx) => {
-		// 				console.log('tx :>> ', tx)
-		// 				resolve(tx)
-		// 			})
-		// 			.catch((error) => {
-		// 				reject(error)
-		// 				console.log('error :>> ', error)
-		// 			})
-		// 	}),
-		// 	{
-		// 		loading: 'En cours...',
-		// 		success: 'Nouveau vote crée!',
-		// 		error: `Erreur`
-		// 	}
-		// )
-	}
-
-	return { handleSubmit, handleChange, valuesForm, allVotes }
+	return { handleSubmit, handleChange, valuesForm }
 }
 
 export default useHandleModalForm

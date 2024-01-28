@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0xb9382F8ee00Af42b225586c32104758601498498', abi, signer)
+		const contract = new ethers.Contract('0x492fb3AEaB049D4b3d762B08e0F1C4DD85Eb7b44', abi, signer)
 		return contract
 	}
 }
@@ -33,8 +33,8 @@ const getContractEthereum = async () => {
 const createVote = async (data: ModalParams) => {
 	try {
 		const contract = await getContractEthereum()
-		const { id, title, description, startsAt, endsAt, link1, link2 } = data
-		const tx = await contract?.createVote(id, title, description, startsAt, endsAt, link1, link2)
+		const { title, description, startsAt, endsAt, link1, link2 } = data
+		const tx = await contract?.createVote(title, description, startsAt, endsAt, link1, link2)
 		await tx.wait()
 		return Promise.resolve(tx)
 	} catch (error) {
@@ -63,7 +63,6 @@ const getVotes = async () => {
  * @return {Promise<VoteStruct>} The details of the vote
  */
 const getDetailsVote = async (id: number): Promise<VoteStruct> => {
-	console.log('getDetailsVote id :>> ', id);
 	const contract = await getContractEthereum()
 	const vote = contract?.getDetailsVote(id)
 	return structVotes([vote])[0]

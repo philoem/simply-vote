@@ -1,5 +1,5 @@
 export interface ModalParams {
-	id: number | string
+	id?: number | string
 	title: string
 	description: string
 	startsAt: number | string
@@ -9,7 +9,7 @@ export interface ModalParams {
 }
 
 export interface VoteStruct {
-	id: number | string
+	id?: number | string
 	title: string
 	description: string
 	startsAt: number | string
