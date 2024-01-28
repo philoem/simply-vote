@@ -3,16 +3,17 @@ import { formatDate } from '../../utils/formatDate'
 import { formStateArray } from '../../store/form'
 import ImageFiller from 'react-image-filler'
 import useGetDetailsVote from './hooks/useGetDetailsVote'
+import useDisplayAllVotes from './hooks/useDisplayAllVotes'
 
 const DisplayVote = () => {
 	const { getDetails } = useGetDetailsVote()
 	const fetchAllVotes = useRecoilValue(formStateArray)
+	useDisplayAllVotes()
 
 	return (
 		<div className='container mx-auto h-[370px] fixed bottom-3'>
 			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
 				{fetchAllVotes?.map(({id, title, description, startsAt, endsAt, link1, link2 }, index) => {
-					console.log('id vote typeof :>> ', typeof id);
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={index}>
 							<figure>
