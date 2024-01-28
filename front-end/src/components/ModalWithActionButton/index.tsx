@@ -4,7 +4,7 @@ import useHandleModalForm from './hooks/useHandleModalForm'
 
 const ModalWithActionButton = () => {
 	const myDialog = useRef<HTMLDialogElement>(null)
-	const { handleChange, handleSubmit, valuesForm, allVotes } = useHandleModalForm(myDialog)
+	const { handleChange, handleSubmit, valuesForm } = useHandleModalForm(myDialog)
 
 	return (
 		<>
@@ -13,9 +13,6 @@ const ModalWithActionButton = () => {
 				className='rounded-full text-base px-3 btn btn-outline btn-primary'
 				onClick={() => myDialog.current?.showModal()}
 			/>
-			<button onClick={() => allVotes()} className='btn btn-primary mt-2'>
-				fetch all
-			</button>
 			<dialog
 				ref={myDialog}
 				id='my_modal_5'
@@ -31,7 +28,7 @@ const ModalWithActionButton = () => {
 						<input
 							type='text'
 							name='title'
-							value={valuesForm?.title}
+							value={valuesForm?.title ?? ''}
 							placeholder='Titre'
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -40,7 +37,7 @@ const ModalWithActionButton = () => {
 						<textarea
 							placeholder='Description'
 							name='description'
-							value={valuesForm?.description}
+							value={valuesForm?.description ?? ''}
 							onChange={handleChange}
 							className='textarea textarea-bordered textarea-sm w-full max-w-lg rounded-lg mb-3'
 							required
@@ -49,7 +46,7 @@ const ModalWithActionButton = () => {
 							<input
 								type='datetime-local'
 								name='startsAt'
-								value={valuesForm?.startsAt}
+								value={valuesForm?.startsAt ?? ''}
 								placeholder='Début'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3 mr-2'
@@ -58,7 +55,7 @@ const ModalWithActionButton = () => {
 							<input
 								type='datetime-local'
 								name='endsAt'
-								value={valuesForm?.endsAt}
+								value={valuesForm?.endsAt ?? ''}
 								placeholder='Fin'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -68,7 +65,7 @@ const ModalWithActionButton = () => {
 						<input
 							type='url'
 							name='link1'
-							value={valuesForm?.link1}
+							value={valuesForm?.link1 ?? ''}
 							accept='image/*'
 							placeholder="Url de l'image 1"
 							onChange={handleChange}
@@ -77,7 +74,7 @@ const ModalWithActionButton = () => {
 						<input
 							type='url'
 							name='link2'
-							value={valuesForm?.link2}
+							value={valuesForm?.link2 ?? ''}
 							accept='image/*'
 							placeholder="Url de l'image 2"
 							onChange={handleChange}
@@ -85,14 +82,14 @@ const ModalWithActionButton = () => {
 						/>
 						{valuesForm?.link1 && (
 							<img
-								src={valuesForm?.link1}
+								src={valuesForm?.link1 ?? ''}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
 						)}
 						{valuesForm?.link2 && (
 							<img
-								src={valuesForm?.link2}
+								src={valuesForm?.link2 ?? ''}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
