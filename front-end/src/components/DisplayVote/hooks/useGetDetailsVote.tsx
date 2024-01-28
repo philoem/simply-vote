@@ -3,8 +3,6 @@ import { getDetailsVote } from '../../../services/blockchain'
 
 const useGetDetailsVote = () => {
 	const getDetails = async (id: number) => {
-		console.log('id :>> ', id)
-
 		await toast.promise(
 			new Promise((resolve, reject) => {
 				getDetailsVote(id)
@@ -19,8 +17,8 @@ const useGetDetailsVote = () => {
 			}),
 			{
 				loading: 'En cours...',
-				success: 'Nouveau vote crée!',
-				error: `Erreur`
+				success: `Réupération du vote N°${id} reussie!`,
+				error: `Erreur pour afficher le vote N°${id}`
 			}
 		)
 	}
