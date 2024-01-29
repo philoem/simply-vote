@@ -1,11 +1,9 @@
 import { Ref, forwardRef } from "react"
 import Button from "../Button"
+import useHandleButton from "./hooks/useHandleButton"
 
 const ButtonCreateVote = forwardRef((props, ref: Ref<HTMLButtonElement>) => {
-
-  const openModal = () => {
-    if(ref && ref.current) ref?.current?.showModal()
-  }
+  const { openModal } = useHandleButton(ref)
 
   return (
     <Button
