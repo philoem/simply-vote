@@ -26,3 +26,8 @@ export const formStateArray = atom<ModalParams[]>({
 		link2: ''
   }],
 })
+
+export const editingForm = atom<boolean>({
+  key: 'editingForm',
+  default: false,
+})
