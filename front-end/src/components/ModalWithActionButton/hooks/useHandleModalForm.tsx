@@ -5,7 +5,7 @@ import { formState } from '../../../store/form'
 import toast from 'react-hot-toast'
 import useDisplayAllVotes from '../../DisplayVote/hooks/useDisplayAllVotes'
 
-const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
+const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 	const [, setText] = useRecoilState(formState)
 	const valuesForm = useRecoilValue(formState)
 	const { allVotes } = useDisplayAllVotes()
@@ -42,7 +42,7 @@ const useHandleModalForm = (myDialog: RefObject<HTMLDialogElement>) => {
 			link2: valuesForm.link2
 		}
 
-		myDialog.current?.close()
+		ref.current?.close()
 		await toast.promise(
 			new Promise((resolve, reject) => {
 				createVote(values)

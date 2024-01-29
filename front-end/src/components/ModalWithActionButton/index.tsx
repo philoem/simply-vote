@@ -1,20 +1,14 @@
-import { FormEvent, useRef } from 'react'
+import { FormEvent, forwardRef } from 'react'
 import Button from '../Button'
 import useHandleModalForm from './hooks/useHandleModalForm'
 
-const ModalWithActionButton = () => {
-	const myDialog = useRef<HTMLDialogElement>(null)
-	const { handleChange, handleSubmit, valuesForm } = useHandleModalForm(myDialog)
-
+const ModalWithActionButton = forwardRef((props, ref) => {
+	const { handleChange, handleSubmit, valuesForm } = useHandleModalForm(ref)
+	
 	return (
 		<>
-			<Button
-				text='Créer un nouveau vote'
-				className='rounded-full text-base px-3 btn btn-outline btn-primary'
-				onClick={() => myDialog.current?.showModal()}
-			/>
 			<dialog
-				ref={myDialog}
+				ref={ref}
 				id='my_modal_5'
 				className='modal modal-bottom sm:modal-middle z-50 w-full h-full'
 			>
@@ -104,6 +98,6 @@ const ModalWithActionButton = () => {
 			</dialog>
 		</>
 	)
-}
+})
 
 export default ModalWithActionButton

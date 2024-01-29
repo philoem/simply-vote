@@ -4,9 +4,12 @@ import Header from './components/Header/index'
 import ModalWithActionButton from './components/ModalWithActionButton'
 import Homepage from './components/Homepage'
 import DisplayVote from './components/DisplayVote'
+import ButtonCreateVote from './components/ButtonCreateVote'
+import { useRef } from 'react'
 
 function App() {
 	const { isConnected, voter } = useConnectWallet()
+	const myDialog = useRef<HTMLDialogElement>(null)
 
 	return (
 		<div className='w-screen'>
@@ -17,7 +20,8 @@ function App() {
 						<>
 							<Header addressWallet={voter} />
 							<div className='flex flex-col justify-center items-center h-screen'>
-								<ModalWithActionButton />
+								<ButtonCreateVote ref={myDialog}/>
+								<ModalWithActionButton ref={myDialog}/>
 								<DisplayVote />
 							</div>
 						</>
