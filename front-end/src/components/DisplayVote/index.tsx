@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { formatDate } from '../../utils/formatDate'
 import { formStateArray } from '../../store/form'
@@ -5,8 +6,8 @@ import ImageFiller from 'react-image-filler'
 import useGetDetailsVote from './hooks/useGetDetailsVote'
 import useDisplayAllVotes from './hooks/useDisplayAllVotes'
 
-const DisplayVote = () => {
-	const { getDetails } = useGetDetailsVote()
+const DisplayVote = forwardRef((props, ref) => {
+	const { openDetails } = useGetDetailsVote(ref)
 	const fetchAllVotes = useRecoilValue(formStateArray)
 	useDisplayAllVotes()
 
@@ -60,7 +61,7 @@ const DisplayVote = () => {
 								<p className='text-base text-left'>Début le: {formatDate(Number(startsAt))}</p>
 								<p className='text-base text-left'>Fin le: {formatDate(Number(endsAt))}</p>
 								<div className='card-actions justify-end'>
-									<button onClick={() => getDetails(Number(id))} className='btn btn-primary'>
+									<button onClick={() => openDetails(Number(id))} className='btn btn-primary'>
 										Voir les détails
 									</button>
 								</div>
@@ -71,6 +72,6 @@ const DisplayVote = () => {
 			</div>
 		</div>
 	)
-}
+})
 
 export default DisplayVote

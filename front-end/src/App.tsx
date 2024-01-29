@@ -22,7 +22,7 @@ function App() {
 							<div className='flex flex-col justify-center items-center h-screen'>
 								<ButtonCreateVote ref={myDialog}/>
 								<ModalWithActionButton ref={myDialog}/>
-								<DisplayVote />
+								<DisplayVote ref={myDialog}/>
 							</div>
 						</>
 					)}
