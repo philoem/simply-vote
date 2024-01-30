@@ -33,3 +33,18 @@ export const editingForm = atom<boolean>({
   key: 'editingForm',
   default: false,
 })
+
+export const checkIfAdmin = atom<boolean>({
+  key: 'checkIfAdmin',
+  default: false,
+})
+
+export const adminAddress = atom({
+  key: 'adminAddress',
+  default: '',
+})
+
+export const adminAddressCurrent = atom({
+  key: 'adminAddressCurrent',
+  default: '',
+})

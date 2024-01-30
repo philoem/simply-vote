@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, RefObject } from 'react'
 import { createVote } from '../../../services/blockchain'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { editingForm, formState } from '../../../store/form'
+import { adminAddressCurrent, editingForm, formState } from '../../../store/form'
 import toast from 'react-hot-toast'
 import useDisplayAllVotes from '../../DisplayVote/hooks/useDisplayAllVotes'
 
@@ -10,6 +10,7 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 	const valuesForm = useRecoilValue(formState)
 	const fetchVoteId = useRecoilValue(formState)
 	const editedForm = useRecoilValue(editingForm)
+	const checkAdminCurrent = useRecoilValue(adminAddressCurrent)
 	const { allVotes } = useDisplayAllVotes()
 	
 	/**
@@ -74,7 +75,7 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 		}))
 	}
 
-	return { handleSubmit, handleChange, valuesForm, fetchVoteId, editedForm }
+	return { handleSubmit, handleChange, valuesForm, fetchVoteId, editedForm, checkAdminCurrent }
 }
 
 export default useHandleModalForm

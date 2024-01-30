@@ -5,20 +5,20 @@ import { formStateArray } from "../../../store/form"
 import toast from "react-hot-toast"
 
 const useDisplayAllVotes = () => {
-  const [, setFetchVotes] = useRecoilState(formStateArray)
+  const [fetchVotes, setFetchVotes] = useRecoilState(formStateArray)
 
   const allVotes = useCallback(async () => {
-			(async () => {
-				try {
-					const tx = await getVotes()
-					setFetchVotes(tx)
-					return tx
-				} catch (error) {
-          toast.error('Erreur de récupération des votes')
-					console.log('error :>> ', error)
-					throw error
-				}
-			})()
+		(async () => {
+			try {
+				const tx = await getVotes()
+				setFetchVotes(tx)
+				return tx
+			} catch (error) {
+				toast.error('Erreur de récupération des votes')
+				console.log('error :>> ', error)
+				throw error
+			}
+		})()
 	}, [setFetchVotes])
 
   useEffect(() => {
@@ -26,7 +26,8 @@ const useDisplayAllVotes = () => {
   }, [allVotes])  
 
   return {
-    allVotes
+    allVotes,
+		fetchVotes,
   }
   
 }

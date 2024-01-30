@@ -1,6 +1,6 @@
 export interface ModalParams {
 	id?: number | string
-	admin: string
+	admin?: string
 	title: string
 	description: string
 	startsAt: number | string
@@ -11,7 +11,7 @@ export interface ModalParams {
 
 export interface VoteStruct {
 	id?: number | string
-	admin: string
+	admin?: string
 	title: string
 	description: string
 	startsAt: number | string

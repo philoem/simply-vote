@@ -25,6 +25,19 @@ const getContractEthereum = async () => {
 }
 
 /**
+ * Asynchronous function to retrieve the address using the ethereum object.
+ *
+ * @return {Promise<string>} The address retrieved from the ethereum object.
+ */
+const getAddressCurrent = async () => {
+	if (ethereum) {
+		const provider = new ethers.BrowserProvider(ethereum)
+		const signer = await provider.getSigner()
+		return signer.address
+	}
+}
+
+/**
  * Creates a vote using the provided data.
  *
  * @param {ModalParams} data - The data needed to create the vote.
@@ -65,8 +78,7 @@ const getVotes = async () => {
 const getDetailsVote = async (id: number): Promise<VoteStruct> => {
 	const contract = await getContractEthereum()
 	const vote = contract?.getDetailsVote(id)
-	console.log('structVotes([vote])[0] :>> ', structVotes([vote])[0]);
-	return structVotes([vote])[0]
+	return vote
 }
 
 /**
@@ -106,4 +118,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes, updateVote }
+export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent }

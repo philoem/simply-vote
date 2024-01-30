@@ -1,12 +1,14 @@
-import toast from 'react-hot-toast'
+import { RefObject } from 'react'
 import { getDetailsVote } from '../../../services/blockchain'
 import { useRecoilState } from 'recoil'
 import { editingForm, formState } from '../../../store/form'
-import { RefObject } from 'react'
+import toast from 'react-hot-toast'
+import useCheckAdminWithAddress from '../../../hooks/useCheckAdminWithAddress'
 
 const useGetDetailsVote = (ref: RefObject<HTMLDialogElement>) => {
+	const { setCheckedAdmin, checkedAdminCurrent } = useCheckAdminWithAddress()
 	const [, setFetchVoteId] = useRecoilState(formState)
-	const [, setEditForm] = useRecoilState(editingForm)
+	const [, setEditForm] = useRecoilState(editingForm)	
 
 	const openDetails = (id: number) => {
 		getDetails(id)
@@ -18,9 +20,9 @@ const useGetDetailsVote = (ref: RefObject<HTMLDialogElement>) => {
 			new Promise((resolve, reject) => {
 				getDetailsVote(id)
 					.then((tx) => {
-						console.log('tx :>> ', tx)
 						setFetchVoteId(tx)
 						setEditForm(true)
+						setCheckedAdmin(tx?.admin ?? '')
 						resolve(tx)
 					})
 					.catch((error) => {
@@ -37,7 +39,8 @@ const useGetDetailsVote = (ref: RefObject<HTMLDialogElement>) => {
 	}
 
 	return {
-		openDetails
+		openDetails,
+		checkedAdminCurrent,
 	}
 }
 
