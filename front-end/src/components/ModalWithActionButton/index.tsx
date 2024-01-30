@@ -4,7 +4,6 @@ import useHandleModalForm from './hooks/useHandleModalForm'
 
 const ModalWithActionButton = forwardRef((props, ref) => {
 	const { handleChange, handleSubmit, valuesForm, fetchVoteId, editedForm } = useHandleModalForm(ref)
-	console.log('fetchVoteId :>> ', fetchVoteId);
 	
 	return (
 		<>
@@ -14,7 +13,9 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 				className='modal modal-bottom sm:modal-middle z-50 w-full h-full'
 			>
 				<div className='modal-box'>
-					<h3 className='font-bold text-lg text-left mb-7'>{editedForm ? 'Modification d\'un vote' : 'Création d\'un nouveau vote'}</h3>
+					<h3 className='font-bold text-lg text-left mb-7'>
+						{editedForm ? `Modification du vote n°${fetchVoteId.id}` : 'Création d\'un nouveau vote'}
+					</h3>
 					<form
 						method='dialog'
 						className='flex flex-col justify-center items-start rounded-xl mt-5 mb-5'
@@ -23,7 +24,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='text'
 							name='title'
-							value={!editedForm ? valuesForm.title : fetchVoteId.title}
+							value={!editedForm ? valuesForm.title : fetchVoteId.title ?? ''}
 							placeholder='Titre'
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -32,7 +33,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<textarea
 							placeholder='Description'
 							name='description'
-							value={!editedForm ? valuesForm.description : fetchVoteId.description}
+							value={!editedForm ? valuesForm.description : fetchVoteId.description ?? ''}
 							onChange={handleChange}
 							className='textarea textarea-bordered textarea-sm w-full max-w-lg rounded-lg mb-3'
 							required
@@ -41,7 +42,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='startsAt'
-								value={!editedForm ? valuesForm.startsAt : fetchVoteId.startsAt.toString()}
+								value={!editedForm ? valuesForm.startsAt : fetchVoteId.startsAt.toString() ?? ''}
 								placeholder='Début'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3 mr-2'
@@ -50,7 +51,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='endsAt'
-								value={!editedForm ? valuesForm.endsAt : fetchVoteId.endsAt.toString()}
+								value={!editedForm ? valuesForm.endsAt : fetchVoteId.endsAt.toString() ?? ''}
 								placeholder='Fin'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -60,7 +61,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='url'
 							name='link1'
-							value={!editedForm ? valuesForm.link1 : fetchVoteId.link1}
+							value={!editedForm ? valuesForm.link1 : fetchVoteId.link1 ?? ''}
 							accept='image/*'
 							placeholder="Url de l'image 1"
 							onChange={handleChange}
@@ -69,7 +70,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='url'
 							name='link2'
-							value={!editedForm ? valuesForm.link2 : fetchVoteId.link2}
+							value={!editedForm ? valuesForm.link2 : fetchVoteId.link2 ?? ''}
 							accept='image/*'
 							placeholder="Url de l'image 2"
 							onChange={handleChange}
@@ -77,21 +78,21 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						/>
 						{valuesForm.link1 || fetchVoteId.link1 && (
 							<img
-								src={!editedForm ? valuesForm.link1 : fetchVoteId.link1}
+								src={!editedForm ? valuesForm.link1 : fetchVoteId.link1 ?? ''}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
 						)}
 						{valuesForm.link2 || fetchVoteId.link2 && (
 							<img
-								src={!editedForm ? valuesForm.link2 : fetchVoteId.link2}
+								src={!editedForm ? valuesForm.link2 : fetchVoteId.link2 ?? ''}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
 						)}
 					</form>
 					<Button
-						text='Créer le vote'
+						text={!editedForm ? 'Créer le vote' : 'Modifier le vote'}
 						className='btn btn-primary w-full'
 						onClick={(e: FormEvent<Element>) => handleSubmit(e)}
 					/>

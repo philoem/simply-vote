@@ -37,7 +37,6 @@ const useGetDetailsVote = (ref: RefObject<HTMLDialogElement>) => {
 	}
 
 	return {
-		getDetails,
 		openDetails
 	}
 }
