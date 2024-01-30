@@ -32,9 +32,38 @@ export default function useConnectWallet() {
 		}
 	}, [ethereum])
 
+	const checkIfGoodNetwork = useCallback(async () => {
+		if (ethereum) {
+			try {
+				const chainId = await ethereum.request({ method: 'eth_chainId' })
+				const sepoliaTestChainId = '0xaa36a7'
+				if (chainId === sepoliaTestChainId) {
+					console.log("Bravo!, you are on the correct network")
+				} else {
+					console.log("oulalal, switch to the correct network")
+					await ethereum.request({
+						method: "wallet_switchEthereumChain",
+						params: [
+							{
+								chainId: "0xaa36a7" // Sepolia testnet chainId
+							}
+						]
+					})
+					location.reload()
+				}
+			} catch (error) {
+				console.log(error)				
+			}
+		}
+	}, [ethereum])
+
 	useEffect(() => {
 		changeAccount()
 	}, [changeAccount])
+
+	useEffect(() => {
+		checkIfGoodNetwork()
+	}, [checkIfGoodNetwork])
 
 	const connectingWallet = async () => {
 		try {
