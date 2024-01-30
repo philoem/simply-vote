@@ -108,7 +108,7 @@ contract Voting is Ownable {
       revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
     } else if (voteExist[_id] == true) {
       revert VoteAlreadyVotedError("Vote already voted");
-    } else if (msg.sender != voteStructs[_id].admin) {
+    } else if (msg.sender != voteStructs[_id - 1].admin) {
       revert OnlyAdminCanUpdateError("Only admin can update");
     }
 
