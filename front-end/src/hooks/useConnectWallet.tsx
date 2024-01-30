@@ -82,5 +82,22 @@ export default function useConnectWallet() {
 		}
 	}
 
-	return { isConnected, ethereum, voter, connectingWallet }
+	const deconnectWallet = async () => {
+		try {
+			if (!ethereum) {
+				toast.error('Veuillez installer Metamask')
+				return
+			}
+			await ethereum.request({
+				method: 'wallet_revokePermissions',
+				params: [{ eth_accounts: {} }]
+			})
+			setIsConnected(false)
+			toast.success('Déconnecté!')
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	return { isConnected, ethereum, voter, connectingWallet, deconnectWallet }
 }
