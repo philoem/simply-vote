@@ -1,9 +1,10 @@
 import { FormEvent, forwardRef } from 'react'
 import Button from '../Button'
 import useHandleModalForm from './hooks/useHandleModalForm'
+import { formattedDate } from '../../utils/formatDate'
 
 const ModalWithActionButton = forwardRef((props, ref) => {
-	const { handleChange, handleSubmit, valuesForm, fetchVoteId, editedForm } = useHandleModalForm(ref)
+	const { handleChange, handleSubmit, valuesForm, fetchVoteId, editedForm, checkAdminCurrent } = useHandleModalForm(ref)
 	
 	return (
 		<>
@@ -42,7 +43,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='startsAt'
-								value={!editedForm ? valuesForm.startsAt : fetchVoteId.startsAt.toString() ?? ''}
+								value={!editedForm ? valuesForm.startsAt : formattedDate(Number(fetchVoteId.startsAt)) ?? ''}
 								placeholder='Début'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3 mr-2'
@@ -51,7 +52,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='endsAt'
-								value={!editedForm ? valuesForm.endsAt : fetchVoteId.endsAt.toString() ?? ''}
+								value={!editedForm ? valuesForm.endsAt : formattedDate(Number(fetchVoteId.endsAt)) ?? ''}
 								placeholder='Fin'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -91,11 +92,27 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							/>
 						)}
 					</form>
-					<Button
-						text={!editedForm ? 'Créer le vote' : 'Modifier le vote'}
-						className='btn btn-primary w-full'
-						onClick={(e: FormEvent<Element>) => handleSubmit(e)}
-					/>
+					{fetchVoteId.admin === checkAdminCurrent ? (
+						<Button
+							text='Modifier le vote'
+							className='btn btn-primary w-full'
+							onClick={(e: FormEvent<Element>) => handleSubmit(e)}
+						/>
+					) : (
+						<>
+							<Button
+								text='Votez!'
+								className='btn btn-primary w-auto mr-2'
+								onClick={(e: FormEvent<Element>) => handleSubmit(e)}
+							/>
+							<Button
+								text='Votez!'
+								className='btn btn-primary w-auto mr-2'
+								onClick={(e: FormEvent<Element>) => handleSubmit(e)}
+							/>
+						</>
+					)}
+					
 				</div>
 			</dialog>
 		</>

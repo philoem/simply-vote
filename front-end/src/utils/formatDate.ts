@@ -23,3 +23,19 @@ export const formatDate = (timestamp: number): string => {
   const minutes = formatWithLeadingZero(date.getMinutes());
 	return `${day}/${month}/${year} à ${hours}:${minutes}`
 }
+
+/**
+ * Formats a timestamp into a string representing a date and time in ISO 8601 format.
+ *
+ * @param {number} timestamp - The timestamp to be formatted.
+ * @return {string} The formatted date and time string.
+ */
+export const formattedDate = (timestamp: number): string => {
+	const date = new Date(timestamp)
+	const day = formatWithLeadingZero(date.getDate())
+	const month = formatWithLeadingZero(date.getMonth() + 1)
+	const year = date.getFullYear()
+	const hours = formatWithLeadingZero(date.getHours());
+  const minutes = formatWithLeadingZero(date.getMinutes());
+	return `${year}-${month}-${day}T${hours}:${minutes}`
+}
