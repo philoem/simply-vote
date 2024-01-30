@@ -5,6 +5,7 @@ export const formState = atom<ModalParams>({
   key: 'formState',
   default: {
 		id: '',
+		admin: '',
     title: '',
 		description: '',
 		startsAt: '',
@@ -18,6 +19,7 @@ export const formStateArray = atom<ModalParams[]>({
   key: 'formStateArray',
   default: [{
 		id: '',
+		admin: '',
     title: '',
 		description: '',
 		startsAt: '',

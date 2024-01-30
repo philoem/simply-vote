@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x492fb3AEaB049D4b3d762B08e0F1C4DD85Eb7b44', abi, signer)
+		const contract = new ethers.Contract('0xe29fe5f4c784BE4538416F78a71B390266435CA1', abi, signer)
 		return contract
 	}
 }
@@ -65,7 +65,28 @@ const getVotes = async () => {
 const getDetailsVote = async (id: number): Promise<VoteStruct> => {
 	const contract = await getContractEthereum()
 	const vote = contract?.getDetailsVote(id)
+	console.log('structVotes([vote])[0] :>> ', structVotes([vote])[0]);
 	return structVotes([vote])[0]
+}
+
+/**
+ * Update a vote with the provided data.
+ *
+ * @param {number} id - The ID of the vote to update
+ * @param {ModalParams} data - The data to update the vote with
+ * @return {Promise<VoteStruct>} A promise that resolves to the updated vote
+ */
+const updateVote = async (id: number, data: ModalParams): Promise<VoteStruct> => {
+	try {
+		const contract = await getContractEthereum()
+		const { title, description, startsAt, endsAt, link1, link2 } = data
+		const tx = await contract?.updateVote(id, title, description, startsAt, endsAt, link1, link2)
+		await tx.wait()		
+		return Promise.resolve(tx)
+	} catch (error) {
+		console.log(error)
+		return Promise.reject(error)
+	}
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,6 +94,7 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 	return votes
 		.map((vote) => ({
 			id: vote.id,
+			admin: vote.admin,
 			title: vote.title,
 			description: vote.description,
 			startsAt: Number(vote.startsAt),
@@ -84,4 +106,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes }
+export { createVote, getDetailsVote, getVotes, updateVote }

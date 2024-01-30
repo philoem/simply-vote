@@ -1,16 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-contract Voting {
+import './Ownable.sol';
+
+contract Voting is Ownable {
   uint256 private _idVoteCounter=1;
 
   struct VoteStruct {
     uint256 id;
-    string title;
-    string description;
+    address admin;
     uint256 startsAt;
     uint256 endsAt;
     uint256 timestamp;
+    string title;
+    string description;
     string link1;
     string link2;
   }
@@ -22,9 +25,12 @@ contract Voting {
   error TitleEmptyError(string message);
   error DescriptionEmptyError(string message);
   error InvalidStartEndTimesError(string message);
+  error VoteAlreadyVotedError(string message);
+  error OnlyAdminCanUpdateError(string message);
 
   event VoteCreated(
     uint256 id,
+    address admin,
     string title,
     string description,
     uint256 startsAt,
@@ -53,6 +59,7 @@ contract Voting {
 
     VoteStruct memory _voteStructs;
     _voteStructs.id = voteId;
+    _voteStructs.admin = msg.sender;
     _voteStructs.title = title;  
     _voteStructs.description = description;
     _voteStructs.startsAt = startsAt;
@@ -65,7 +72,15 @@ contract Voting {
     _idVoteCounter += 1;
     votesCount++;
 
-    emit VoteCreated(_voteStructs.id, _voteStructs.title, _voteStructs.description, _voteStructs.startsAt, _voteStructs.endsAt, _voteStructs.link1, _voteStructs.link2);
+    emit VoteCreated(
+    _voteStructs.id,
+    _voteStructs.admin,
+    _voteStructs.title,
+    _voteStructs.description,
+    _voteStructs.startsAt,
+    _voteStructs.endsAt,
+    _voteStructs.link1,
+    _voteStructs.link2);
   }
 
   function getVotes() public view returns (VoteStruct[] memory) {
@@ -73,7 +88,36 @@ contract Voting {
   }
 
   function getDetailsVote(uint256 _id) public view returns (VoteStruct memory) {
-    return voteStructs[_id];
+    return voteStructsArray[_id - 1];
+  }
+
+  function updateVote(
+    uint256 _id,
+    string memory _title,
+    string memory _description,
+    uint256 _startsAt,
+    uint256 _endsAt,
+    string memory _link1,
+    string memory _link2
+  ) onlyowner public {
+    if (bytes(_title).length == 0) {
+      revert TitleEmptyError("Title cannot be empty");
+    } else if (bytes(_description).length == 0) {
+      revert DescriptionEmptyError("Description cannot be empty");
+    } else if (_startsAt >= _endsAt) {
+      revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
+    } else if (voteExist[_id] == true) {
+      revert VoteAlreadyVotedError("Vote already voted");
+    } else if (msg.sender != voteStructs[_id].admin) {
+      revert OnlyAdminCanUpdateError("Only admin can update");
+    }
+
+    voteStructsArray[_id - 1].title = _title;
+    voteStructsArray[_id - 1].description = _description;
+    voteStructsArray[_id - 1].startsAt = _startsAt;
+    voteStructsArray[_id - 1].endsAt = _endsAt;
+    voteStructsArray[_id - 1].link1 = _link1;
+    voteStructsArray[_id - 1].link2 = _link2;
   }
 
 }
