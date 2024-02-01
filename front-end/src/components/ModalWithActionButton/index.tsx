@@ -92,27 +92,11 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							/>
 						)}
 					</form>
-					{fetchVoteId.admin === checkAdminCurrent ? (
-						<Button
-							text='Modifier le vote'
-							className='btn btn-primary w-full'
-							onClick={(e: FormEvent<Element>) => handleSubmit(e)}
-						/>
-					) : (
-						<>
-							<Button
-								text='Votez!'
-								className='btn btn-primary w-auto mr-2'
-								onClick={(e: FormEvent<Element>) => handleSubmit(e)}
-							/>
-							<Button
-								text='Votez!'
-								className='btn btn-primary w-auto mr-2'
-								onClick={(e: FormEvent<Element>) => handleSubmit(e)}
-							/>
-						</>
-					)}
-					
+					<Button
+						text={fetchVoteId.admin === checkAdminCurrent && editedForm ?'Modifier le vote' : 'Créer le vote'}
+						className='btn btn-primary w-full'
+						onClick={(e: FormEvent<Element>) => handleSubmit(e) }
+					/>	
 				</div>
 			</dialog>
 		</>
