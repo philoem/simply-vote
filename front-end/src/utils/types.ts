@@ -5,8 +5,8 @@ export interface ModalParams {
 	description: string
 	startsAt: number | string
 	endsAt: number | string
-	link1: string
-	link2: string
+	link1?: string
+	link2?: string
 }
 
 export interface VoteStruct {
