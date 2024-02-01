@@ -1,17 +1,50 @@
-import { ChangeEvent, FormEvent, RefObject } from 'react'
+import { ChangeEvent, FormEvent, RefObject, useEffect, useState } from 'react'
 import { createVote, updateVote } from '../../../services/blockchain'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { adminAddressCurrent, editingForm, formState } from '../../../store/form'
-import toast from 'react-hot-toast'
+import { ModalParams } from '../../../utils/types'
 import useDisplayAllVotes from '../../DisplayVote/hooks/useDisplayAllVotes'
+import toast from 'react-hot-toast'
 
 const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
-	const [, setText] = useRecoilState(formState)
 	const valuesForm = useRecoilValue(formState)
 	const fetchVoteId = useRecoilValue(formState)
 	const editedForm = useRecoilValue(editingForm)
 	const checkAdminCurrent = useRecoilValue(adminAddressCurrent)
 	const { allVotes } = useDisplayAllVotes()
+	const [voteData, setVoteData] = useState<ModalParams>({
+		id: '',
+		title: '',
+		description: '',
+		startsAt: '',
+		endsAt: '',
+		link1: '',
+		link2: ''
+	})
+
+	useEffect(() => {
+		if(editedForm) {
+			setVoteData({
+				id: fetchVoteId.id ?? '',
+				title: fetchVoteId.title ?? '',
+				description: fetchVoteId.description ?? '',
+				startsAt: fetchVoteId.startsAt ?? '',
+				endsAt: fetchVoteId.endsAt ?? '',
+				link1: fetchVoteId.link1 ?? '',
+				link2: fetchVoteId.link2 ?? ''
+			})
+		} else {
+			setVoteData({
+				id: '',
+				title: '',
+				description: '',
+				startsAt: '',
+				endsAt: '',
+				link1: '',
+				link2: ''
+			})
+		}
+	}, [editedForm, fetchVoteId])
 	
 		/**
 	 * Handle the form submission and perform various operations based on the form values.
@@ -48,31 +81,31 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 		}
 
 		if(!editedForm) {	
-			const startsAt = String(valuesForm.startsAt)
+			const startsAt = String(voteData.startsAt)
 			const timestampStartsAt = Date.parse(startsAt)
 			const bigIntValueStartsAt = BigInt(timestampStartsAt)
-			const endsAt = String(valuesForm.endsAt)
+			const endsAt = String(voteData.endsAt)
 			const timestampEndsAt = Date.parse(endsAt)
 			const bigIntValueEndsAt = BigInt(timestampEndsAt)
 
 			values = {
-				title: valuesForm.title,
-				description: valuesForm.description,
+				title: voteData.title,
+				description: voteData.description,
 				startsAt: Number(bigIntValueStartsAt),
 				endsAt: Number(bigIntValueEndsAt),
-				link1: valuesForm.link1,
-				link2: valuesForm.link2
+				link1: voteData.link1,
+				link2: voteData.link2
 			}
 		} else {
 			valuesUpdated = {
-				id: Number(valuesForm.id),
-				title: valuesForm.title,
-				description: valuesForm.description,
-				startsAt: Number(valuesForm.startsAt),
-				endsAt: Number(valuesForm.endsAt),
-				link1: valuesForm.link1,
-				link2: valuesForm.link2
-			}		
+				id: Number(voteData.id),
+				title: voteData.title,
+				description: voteData.description,
+				startsAt: Number(voteData.startsAt),
+				endsAt: Number(voteData.endsAt),
+				link1: voteData.link1,
+				link2: voteData.link2
+			}	
 		}
 
 		ref.current?.close()
@@ -110,13 +143,13 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
 		const { name, value } = e.target
-		setText((prevText) => ({
+		setVoteData((prevText) => ({
 			...prevText,
 			[name]: value
 		}))
 	}
 
-	return { handleSubmit, handleChange, valuesForm, fetchVoteId, editedForm, checkAdminCurrent }
+	return { handleSubmit, handleChange, fetchVoteId, editedForm, checkAdminCurrent, voteData }
 }
 
 export default useHandleModalForm

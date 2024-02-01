@@ -4,7 +4,7 @@ import useHandleModalForm from './hooks/useHandleModalForm'
 import { formattedDate } from '../../utils/formatDate'
 
 const ModalWithActionButton = forwardRef((props, ref) => {
-	const { handleChange, handleSubmit, valuesForm, fetchVoteId, editedForm, checkAdminCurrent } = useHandleModalForm(ref)
+	const { handleChange, handleSubmit, fetchVoteId, editedForm, checkAdminCurrent, voteData } = useHandleModalForm(ref)
 	
 	return (
 		<>
@@ -15,7 +15,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 			>
 				<div className='modal-box'>
 					<h3 className='font-bold text-lg text-left mb-7'>
-						{editedForm ? `Modification du vote n°${fetchVoteId.id}` : 'Création d\'un nouveau vote'}
+						{editedForm ? `Modification du vote n°${voteData.id}` : 'Création d\'un nouveau vote'}
 					</h3>
 					<form
 						method='dialog'
@@ -25,7 +25,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='text'
 							name='title'
-							value={!editedForm ? valuesForm.title : fetchVoteId.title ?? ''}
+							value={voteData.title}
 							placeholder='Titre'
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -34,7 +34,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<textarea
 							placeholder='Description'
 							name='description'
-							value={!editedForm ? valuesForm.description : fetchVoteId.description ?? ''}
+							value={voteData.description}
 							onChange={handleChange}
 							className='textarea textarea-bordered textarea-sm w-full max-w-lg rounded-lg mb-3'
 							required
@@ -43,7 +43,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='startsAt'
-								value={!editedForm ? valuesForm.startsAt : formattedDate(Number(fetchVoteId.startsAt)) ?? ''}
+								value={!editedForm ? voteData.startsAt : formattedDate(Number(voteData.startsAt)) ?? ''}
 								placeholder='Début'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3 mr-2'
@@ -52,7 +52,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='endsAt'
-								value={!editedForm ? valuesForm.endsAt : formattedDate(Number(fetchVoteId.endsAt)) ?? ''}
+								value={!editedForm ? voteData.endsAt : formattedDate(Number(voteData.endsAt)) ?? ''}
 								placeholder='Fin'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
@@ -62,7 +62,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='url'
 							name='link1'
-							value={!editedForm ? valuesForm.link1 : fetchVoteId.link1 ?? ''}
+							value={voteData.link1}
 							accept='image/*'
 							placeholder="Url de l'image 1"
 							onChange={handleChange}
@@ -71,22 +71,22 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 						<input
 							type='url'
 							name='link2'
-							value={!editedForm ? valuesForm.link2 : fetchVoteId.link2 ?? ''}
+							value={voteData.link2}
 							accept='image/*'
 							placeholder="Url de l'image 2"
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
 						/>
-						{valuesForm.link1 || fetchVoteId.link1 && (
+						{voteData.link1 && (
 							<img
-								src={!editedForm ? valuesForm.link1 : fetchVoteId.link1 ?? ''}
+								src={voteData.link1}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
 						)}
-						{valuesForm.link2 || fetchVoteId.link2 && (
+						{voteData.link2 && (
 							<img
-								src={!editedForm ? valuesForm.link2 : fetchVoteId.link2 ?? ''}
+								src={voteData.link2}
 								alt='image'
 								className='w-[160px] md:w-full h-[135px] rounded-lg mb-3 object-cover'
 							/>
