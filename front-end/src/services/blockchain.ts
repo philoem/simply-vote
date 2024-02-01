@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0xe29fe5f4c784BE4538416F78a71B390266435CA1', abi, signer)
+		const contract = new ethers.Contract('0x831cf6A1c31256929B3DD2d79a56663Be30C0Cd5', abi, signer)
 		return contract
 	}
 }
@@ -82,16 +82,15 @@ const getDetailsVote = async (id: number): Promise<VoteStruct> => {
 }
 
 /**
- * Update a vote with the provided data.
+ * Asynchronously updates the vote using the provided data.
  *
- * @param {number} id - The ID of the vote to update
- * @param {ModalParams} data - The data to update the vote with
- * @return {Promise<VoteStruct>} A promise that resolves to the updated vote
+ * @param {ModalParams} data - the parameters for updating the vote
+ * @return {Promise<VoteStruct>} a promise that resolves to the updated vote transaction
  */
-const updateVote = async (id: number, data: ModalParams): Promise<VoteStruct> => {
+const updateVote = async (data: ModalParams): Promise<VoteStruct> => {
 	try {
 		const contract = await getContractEthereum()
-		const { title, description, startsAt, endsAt, link1, link2 } = data
+		const { id, title, description, startsAt, endsAt, link1, link2 } = data
 		const tx = await contract?.updateVote(id, title, description, startsAt, endsAt, link1, link2)
 		await tx.wait()		
 		return Promise.resolve(tx)
