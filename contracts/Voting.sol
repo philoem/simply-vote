@@ -25,7 +25,6 @@ contract Voting is Ownable {
   error TitleEmptyError(string message);
   error DescriptionEmptyError(string message);
   error InvalidStartEndTimesError(string message);
-  error VoteAlreadyVotedError(string message);
   error OnlyAdminCanUpdateError(string message);
 
   event VoteCreated(
@@ -71,6 +70,7 @@ contract Voting is Ownable {
     voteStructsArray.push(_voteStructs);
     _idVoteCounter += 1;
     votesCount++;
+    voteExist[_voteStructs.id] = true;
 
     emit VoteCreated(
     _voteStructs.id,
@@ -106,9 +106,7 @@ contract Voting is Ownable {
       revert DescriptionEmptyError("Description cannot be empty");
     } else if (_startsAt >= _endsAt) {
       revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
-    } else if (voteExist[_id] == true) {
-      revert VoteAlreadyVotedError("Vote already voted");
-    } else if (msg.sender != voteStructs[_id - 1].admin) {
+    } else if (msg.sender != voteStructsArray[_id - 1].admin) {
       revert OnlyAdminCanUpdateError("Only admin can update");
     }
 

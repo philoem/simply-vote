@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-contract Ownable {
+abstract contract Ownable {
   address public owner;
 
-  function ownable() public {
+  constructor() {
     owner = msg.sender;
+  }
+
+  function ownerable() public view virtual returns (address) {
+    return owner;
   }
 
   modifier onlyowner() {
