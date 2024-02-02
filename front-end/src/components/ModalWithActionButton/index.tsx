@@ -43,7 +43,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='startsAt'
-								value={!editedForm ? voteData.startsAt : formattedDate(Number(voteData.startsAt)) ?? ''}
+								value={!editedForm ? voteData.startsAt : formattedDate(Date.parse(String(voteData.startsAt)))}
 								placeholder='Début'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3 mr-2'
@@ -52,7 +52,7 @@ const ModalWithActionButton = forwardRef((props, ref) => {
 							<input
 								type='datetime-local'
 								name='endsAt'
-								value={!editedForm ? voteData.endsAt : formattedDate(Number(voteData.endsAt)) ?? ''}
+								value={!editedForm ? voteData.endsAt : formattedDate(Date.parse(String(voteData.endsAt)))}
 								placeholder='Fin'
 								onChange={handleChange}
 								className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'

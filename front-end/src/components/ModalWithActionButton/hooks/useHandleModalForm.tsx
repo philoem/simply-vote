@@ -1,13 +1,13 @@
-import { ChangeEvent, FormEvent, RefObject, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, RefObject, useLayoutEffect, useState } from 'react'
 import { createVote, updateVote } from '../../../services/blockchain'
 import { useRecoilValue } from 'recoil'
 import { adminAddressCurrent, editingForm, formState } from '../../../store/form'
 import { ModalParams } from '../../../utils/types'
+import { formattedDate } from '../../../utils/formatDate'
 import useDisplayAllVotes from '../../DisplayVote/hooks/useDisplayAllVotes'
 import toast from 'react-hot-toast'
 
 const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
-	const valuesForm = useRecoilValue(formState)
 	const fetchVoteId = useRecoilValue(formState)
 	const editedForm = useRecoilValue(editingForm)
 	const checkAdminCurrent = useRecoilValue(adminAddressCurrent)
@@ -22,16 +22,16 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 		link2: ''
 	})
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if(editedForm) {
 			setVoteData({
-				id: fetchVoteId.id ?? '',
-				title: fetchVoteId.title ?? '',
-				description: fetchVoteId.description ?? '',
-				startsAt: fetchVoteId.startsAt ?? '',
-				endsAt: fetchVoteId.endsAt ?? '',
-				link1: fetchVoteId.link1 ?? '',
-				link2: fetchVoteId.link2 ?? ''
+				id: fetchVoteId.id,
+				title: fetchVoteId.title,
+				description: fetchVoteId.description,
+				startsAt: formattedDate(Number(fetchVoteId.startsAt)),
+				endsAt: formattedDate(Number(fetchVoteId.endsAt)),
+				link1: fetchVoteId.link1,
+				link2: fetchVoteId.link2
 			})
 		} else {
 			setVoteData({
@@ -55,10 +55,10 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 	const handleSubmit = async (e: FormEvent): Promise<void> => {
 		e.preventDefault()
 		if (
-			!valuesForm.title ||
-			!valuesForm.description ||
-			!valuesForm.startsAt ||
-			!valuesForm.endsAt
+			!voteData.title ||
+			!voteData.description ||
+			!voteData.startsAt ||
+			!voteData.endsAt
 		)
 			return
 			
@@ -79,15 +79,14 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 			link1?: string | undefined
 			link2?: string | undefined
 		}
+		const startsAt = String(voteData.startsAt)
+		const timestampStartsAt = Date.parse(startsAt)
+		const bigIntValueStartsAt = BigInt(timestampStartsAt)
+		const endsAt = String(voteData.endsAt)
+		const timestampEndsAt = Date.parse(endsAt)
+		const bigIntValueEndsAt = BigInt(timestampEndsAt)
 
 		if(!editedForm) {	
-			const startsAt = String(voteData.startsAt)
-			const timestampStartsAt = Date.parse(startsAt)
-			const bigIntValueStartsAt = BigInt(timestampStartsAt)
-			const endsAt = String(voteData.endsAt)
-			const timestampEndsAt = Date.parse(endsAt)
-			const bigIntValueEndsAt = BigInt(timestampEndsAt)
-
 			values = {
 				title: voteData.title,
 				description: voteData.description,
@@ -101,8 +100,8 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 				id: Number(voteData.id),
 				title: voteData.title,
 				description: voteData.description,
-				startsAt: Number(voteData.startsAt),
-				endsAt: Number(voteData.endsAt),
+				startsAt: Number(bigIntValueStartsAt),
+				endsAt: Number(bigIntValueEndsAt),
 				link1: voteData.link1,
 				link2: voteData.link2
 			}	
