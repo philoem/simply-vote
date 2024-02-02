@@ -21,10 +21,10 @@ const DisplayVote = forwardRef((props, ref) => {
 									<img
 										src={link1}
 										alt='image vote one'
-										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-[10px] pl-[10px]'
+										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
 									/>
 								) : (
-									<div className='w-[160px] h-[135px] rounded-[22px] mb-3 bg-white'>
+									<div className='w-[160px] h-[135px] rounded-[22px] mb-3'>
 										<ImageFiller 
 											width={160} 
 											height={135}
@@ -38,10 +38,10 @@ const DisplayVote = forwardRef((props, ref) => {
 									<img
 										src={link2}
 										alt='image vote two'
-										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-[10px] pl-[10px]'
+										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
 									/>
 								) : (
-									<div className='w-[160px] h-[135px] rounded-[22px] mt-2 bg-white'>
+									<div className='w-[160px] h-[135px] rounded-[22px] mt-3'>
 										<ImageFiller 
 											width={160} 
 											height={135}
