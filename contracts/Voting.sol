@@ -4,7 +4,7 @@ pragma solidity ^0.8.23;
 import './Ownable.sol';
 
 contract Voting is Ownable {
-  uint256 private _idVoteCounter=1;
+  uint256 private _idVoteCounter=0;
 
   struct VoteStruct {
     uint256 id;
@@ -22,10 +22,10 @@ contract Voting is Ownable {
   uint256 votesCount;
   VoteStruct[] public voteStructsArray;
 
-  error TitleEmptyError(string message);
-  error DescriptionEmptyError(string message);
-  error InvalidStartEndTimesError(string message);
-  error OnlyAdminCanUpdateError(string message);
+  error TitleEmptyError();
+  error DescriptionEmptyError();
+  error InvalidStartEndTimesError();
+  error OnlyAdminCanUpdateError();
 
   event VoteCreated(
     uint256 id,
@@ -47,17 +47,15 @@ contract Voting is Ownable {
     string memory link2
   ) public {
     if (bytes(title).length == 0) {
-      revert TitleEmptyError("Title cannot be empty");
+      revert TitleEmptyError();
     } else if (bytes(description).length == 0) {
-      revert DescriptionEmptyError("Description cannot be empty");
+      revert DescriptionEmptyError();
     } else if (startsAt >= endsAt) {
-      revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
+      revert InvalidStartEndTimesError();
     }
 
-    uint256 voteId = _idVoteCounter;
-
     VoteStruct memory _voteStructs;
-    _voteStructs.id = voteId;
+    _voteStructs.id = _idVoteCounter += 1;
     _voteStructs.admin = msg.sender;
     _voteStructs.title = title;  
     _voteStructs.description = description;
@@ -68,7 +66,6 @@ contract Voting is Ownable {
     _voteStructs.link2 = link2;
 
     voteStructsArray.push(_voteStructs);
-    _idVoteCounter += 1;
     votesCount++;
     voteExist[_voteStructs.id] = true;
 
@@ -101,13 +98,13 @@ contract Voting is Ownable {
     string memory _link2
   ) onlyowner public {
     if (bytes(_title).length == 0) {
-      revert TitleEmptyError("Title cannot be empty");
+      revert TitleEmptyError();
     } else if (bytes(_description).length == 0) {
-      revert DescriptionEmptyError("Description cannot be empty");
+      revert DescriptionEmptyError();
     } else if (_startsAt >= _endsAt) {
-      revert InvalidStartEndTimesError("StartsAt must be before EndsAt");
+      revert InvalidStartEndTimesError();
     } else if (msg.sender != voteStructsArray[_id - 1].admin) {
-      revert OnlyAdminCanUpdateError("Only admin can update");
+      revert OnlyAdminCanUpdateError();
     }
 
     voteStructsArray[_id - 1].title = _title;
