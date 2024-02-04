@@ -65,11 +65,11 @@ const DisplayVote = forwardRef((props, ref) => {
 									</button>
 								) : (
 									<>
-										<button onClick={() => voting(Number(id))} className='btn btn-primary'>
-											Votez pour {id}
+										<button onClick={() => voting(1)} className='btn btn-primary'>
+											Votez pour 1
 										</button>
-										<button onClick={() => voting(Number(id))} className='btn btn-primary'>
-											Votez pour {id}
+										<button onClick={() => voting(2)} className='btn btn-primary'>
+											Votez pour 2
 										</button>
 									</>
 								)}

@@ -17,26 +17,29 @@ contract Voting is Ownable {
     string link1;
     string link2;
   }
+  struct Proposal {
+    uint256 voteId;
+    uint256 choiceOne;
+    uint256 choiceTwo;
+  }
+
   mapping(uint256 => VoteStruct) public voteStructs;
   mapping(uint256 => bool) voteExist;
-  uint256 votesCount;
+  mapping(uint256 => mapping(address => bool)) voted;
+
+  Proposal[] public proposals;
   VoteStruct[] public voteStructsArray;
 
   error TitleEmptyError();
   error DescriptionEmptyError();
   error InvalidStartEndTimesError();
   error OnlyAdminCanUpdateError();
+  error VoteNotExistError(uint256 id);
+  error TimeOverError(uint256 endsAt);
+  error AlreadyVotedError();
+  error TimeOfVoteNotEndedError();
 
-  event VoteCreated(
-    uint256 id,
-    address admin,
-    string title,
-    string description,
-    uint256 startsAt,
-    uint256 endsAt,
-    string link1,
-    string link2
-  );
+  event WinnerIs(address indexed owner, uint256 id, string title, uint256 winnerId);
 
   function createVote(
     string memory title,
@@ -66,18 +69,8 @@ contract Voting is Ownable {
     _voteStructs.link2 = link2;
 
     voteStructsArray.push(_voteStructs);
-    votesCount++;
+    proposals.push(Proposal({voteId: _voteStructs.id, choiceOne: 0, choiceTwo: 0}));
     voteExist[_voteStructs.id] = true;
-
-    emit VoteCreated(
-    _voteStructs.id,
-    _voteStructs.admin,
-    _voteStructs.title,
-    _voteStructs.description,
-    _voteStructs.startsAt,
-    _voteStructs.endsAt,
-    _voteStructs.link1,
-    _voteStructs.link2);
   }
 
   function getVotes() public view returns (VoteStruct[] memory) {
@@ -113,6 +106,40 @@ contract Voting is Ownable {
     voteStructsArray[_id - 1].endsAt = _endsAt;
     voteStructsArray[_id - 1].link1 = _link1;
     voteStructsArray[_id - 1].link2 = _link2;
+  }
+
+  function vote(uint256 _id) public {
+    if (voteExist[_id] == false) {
+      revert VoteNotExistError(voteStructsArray[_id - 1].id);
+    } else if (block.timestamp * 1000 > voteStructsArray[_id - 1].endsAt) {
+      revert TimeOverError(voteStructsArray[_id - 1].endsAt);
+    } else if (voted[_id][msg.sender] == true) {
+      revert AlreadyVotedError();
+    }
+
+    if (_id == 1) {
+      proposals[_id - 1].choiceTwo = proposals[_id - 1].choiceTwo + 1;
+    } else {
+      proposals[_id -1].choiceOne = proposals[_id - 1].choiceOne + 1;
+    }
+
+    voted[_id][msg.sender] = true;
+  }
+
+  function winnerIs(uint256 _id) public returns (Proposal memory) {
+    if (block.timestamp * 1000 < voteStructsArray[_id - 1].endsAt) {
+      revert TimeOfVoteNotEndedError();
+    } else if (voteExist[_id] == false) {
+      revert VoteNotExistError(voteStructsArray[_id - 1].id);
+    }
+
+    if(proposals[_id].choiceOne > proposals[_id].choiceTwo) {
+      emit WinnerIs(msg.sender, voteStructsArray[_id - 1].id, voteStructsArray[_id - 1].title, proposals[_id].choiceOne);
+    } else {
+      emit WinnerIs(msg.sender, voteStructsArray[_id - 1].id, voteStructsArray[_id - 1].title, proposals[_id].choiceTwo);
+    }
+
+    return proposals[_id];
   }
 
 }

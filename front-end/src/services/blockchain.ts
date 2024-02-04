@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x13e3326972Afbc18c59f5C094451deBC0dF3FaDC', abi, signer)
+		const contract = new ethers.Contract('0x888cAbE3990F3ad9D0D381713951a7E49197d4F2', abi, signer)
 		return contract
 	}
 }
@@ -100,6 +100,24 @@ const updateVote = async (data: ModalParams): Promise<VoteStruct> => {
 	}
 }
 
+/**
+ * Asynchronously submits a vote for the specified ID using an Ethereum contract.
+ *
+ * @param {number} id - The ID of the item to vote for.
+ * @return {Promise<any>} A promise that resolves with the transaction receipt upon successful vote submission, or rejects with an error if the submission fails.
+ */
+const vote = async (id: number) => {
+	try {
+		const contract = await getContractEthereum()
+		const tx = await contract?.vote(id)
+		await tx.wait()
+		return Promise.resolve(tx)
+	} catch (error) {
+		console.log(error)
+		return Promise.reject(error)
+	}
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const structVotes = (votes: any[]): VoteStruct[] => {
 	return votes
@@ -117,4 +135,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent }
+export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote }
