@@ -1,12 +1,13 @@
 import { RefObject } from 'react'
 import { getDetailsVote } from '../../../services/blockchain'
 import { useRecoilState } from 'recoil'
-import { editingForm, formState } from '../../../store/form'
+import { adminAddress, editingForm, formState } from '../../../store/form'
 import toast from 'react-hot-toast'
 import useCheckAdminWithAddress from '../../../hooks/useCheckAdminWithAddress'
 
 const useGetDetailsVote = (ref: RefObject<HTMLDialogElement>) => {
-	const { setCheckedAdmin, checkedAdminCurrent } = useCheckAdminWithAddress()
+	const { checkedAdminCurrent } = useCheckAdminWithAddress()
+	const [,setCheckedAdmin] = useRecoilState(adminAddress)
 	const [, setFetchVoteId] = useRecoilState(formState)
 	const [, setEditForm] = useRecoilState(editingForm)	
 
