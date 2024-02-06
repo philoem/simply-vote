@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import './Ownable.sol';
+// import './Ownable.sol';
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Voting is Ownable {
   uint256 private _idVoteCounter=0;
@@ -40,6 +41,10 @@ contract Voting is Ownable {
   error TimeOfVoteNotEndedError();
 
   event WinnerIs(address indexed owner, uint256 id, string title, uint256 winnerId);
+
+  constructor(address initialOwner) Ownable(initialOwner) {
+    initialOwner = msg.sender;
+  }
   
   function createVote(
     string memory title,
@@ -113,7 +118,7 @@ contract Voting is Ownable {
       revert VoteNotExistError(voteStructsArray[_id - 1].id);
     } else if (block.timestamp * 1000 > voteStructsArray[_id - 1].endsAt) {
       revert TimeOverError(voteStructsArray[_id - 1].endsAt);
-    } else if (voted[_id][msg.sender] == true) {
+    } else if (voted[_id][_voter] == true) {
       revert AlreadyVotedError();
     }
 
