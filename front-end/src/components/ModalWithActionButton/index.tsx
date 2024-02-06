@@ -3,7 +3,7 @@ import Button from '../Button'
 import useHandleModalForm from './hooks/useHandleModalForm'
 import { formattedDate } from '../../utils/formatDate'
 
-const ModalWithActionButton = forwardRef((props, ref) => {
+const ModalWithActionButton = forwardRef((_props, ref) => {
 	const { handleChange, handleSubmit, fetchVoteId, editedForm, checkAdminCurrent, voteData } = useHandleModalForm(ref)
 	
 	return (
