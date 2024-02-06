@@ -7,18 +7,16 @@ import useVoting from './hooks/useVoting'
 import useWinnerIs from './hooks/useWinnerIs'
 
 const DisplayVote = forwardRef((_props, ref) => {
-	const { voting, checkTimeNotEnded, checkVoterHasVoted, voterHasVoted } = useVoting()
+	const { voting, checkTimeNotEnded, voterHasVoted } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
 	// const { getWinnerIs } = useWinnerIs()
 	// console.log('getWinnerIs :>> ', getWinnerIs(3));
-	console.log('voterHasVoted :>> ', voterHasVoted);
 
 	return (
 		<div className='container mx-auto h-[370px] fixed bottom-3'>
 			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
 				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2 }) => {
-					// checkVoterHasVoted(Number(id), checkedAdminCurrent)
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={id}>
 							<figure>

@@ -8,7 +8,6 @@ const useVoting = () => {
 
 	const checkVoterHasVoted = useCallback(async (id: number, address: string) => {
 		const voted = await getVoted(id, address)
-		console.log('voted hook :>> ', voted);
 		setVoterHasVoted(voted)
 		return voted
 	}, [])
@@ -52,7 +51,6 @@ const useVoting = () => {
   return {
     voting,
 		checkTimeNotEnded,
-		checkVoterHasVoted,
 		voterHasVoted
   }
 }
