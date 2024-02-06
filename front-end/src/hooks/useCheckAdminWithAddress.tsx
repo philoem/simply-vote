@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { adminAddress, adminAddressCurrent } from "../store/form"
+import { adminAddressCurrent } from "../store/form"
 import { getAddressCurrent } from "../services/blockchain"
 import toast from "react-hot-toast"
 
 const useCheckAdminWithAddress = () => {
-  const [setCheckedAdmin] = useRecoilState(adminAddress)
 	const [checkedAdminCurrent, setCheckedAdminCurrent] = useRecoilState(adminAddressCurrent)
 
 	const getAddressOfSignerCurrent = useCallback(async () => {
@@ -27,7 +26,6 @@ const useCheckAdminWithAddress = () => {
 	}, [getAddressOfSignerCurrent])
 
   return {
-    setCheckedAdmin,
     checkedAdminCurrent,
   }
   
