@@ -40,7 +40,7 @@ contract Voting is Ownable {
   error TimeOfVoteNotEndedError();
 
   event WinnerIs(address indexed owner, uint256 id, string title, uint256 winnerId);
-
+  
   function createVote(
     string memory title,
     string memory description,
@@ -89,7 +89,7 @@ contract Voting is Ownable {
     uint256 _endsAt,
     string memory _link1,
     string memory _link2
-  ) onlyowner public {
+  ) onlyOwner public {
     if (bytes(_title).length == 0) {
       revert TitleEmptyError();
     } else if (bytes(_description).length == 0) {
@@ -108,7 +108,7 @@ contract Voting is Ownable {
     voteStructsArray[_id - 1].link2 = _link2;
   }
 
-  function vote(uint256 _id) public {
+  function vote(uint256 _id, address _voter) public {
     if (voteExist[_id] == false) {
       revert VoteNotExistError(voteStructsArray[_id - 1].id);
     } else if (block.timestamp * 1000 > voteStructsArray[_id - 1].endsAt) {
@@ -120,10 +120,14 @@ contract Voting is Ownable {
     if (_id == 1) {
       proposals[_id - 1].choiceTwo = proposals[_id - 1].choiceTwo + 1;
     } else {
-      proposals[_id -1].choiceOne = proposals[_id - 1].choiceOne + 1;
+      proposals[_id - 1].choiceOne = proposals[_id - 1].choiceOne + 1;
     }
 
-    voted[_id][msg.sender] = true;
+    voted[_id][_voter] = true;
+  }
+
+  function checkIfVoted(uint256 _id, address _voter) public view returns (bool) {
+    return voted[_id][_voter];
   }
 
   function winnerIs(uint256 _id) public returns (Proposal memory) {

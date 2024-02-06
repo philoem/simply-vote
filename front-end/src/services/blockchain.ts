@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x888cAbE3990F3ad9D0D381713951a7E49197d4F2', abi, signer)
+		const contract = new ethers.Contract('0x01732AC12ed2c3A79d967Eb1e5ca5C323996b9eB', abi, signer)
 		return contract
 	}
 }
@@ -101,21 +101,46 @@ const updateVote = async (data: ModalParams): Promise<VoteStruct> => {
 }
 
 /**
- * Asynchronously submits a vote for the specified ID using an Ethereum contract.
+ * Asynchronously votes on a contract using the provided ID and address.
  *
- * @param {number} id - The ID of the item to vote for.
- * @return {Promise<any>} A promise that resolves with the transaction receipt upon successful vote submission, or rejects with an error if the submission fails.
+ * @param {number} id - the ID of the contract
+ * @param {string} address - the address to vote from
+ * @return {Promise} a promise that resolves with the transaction result
  */
-const vote = async (id: number) => {
+const vote = async (id: number, address: string) => {
 	try {
 		const contract = await getContractEthereum()
-		const tx = await contract?.vote(id)
+		const tx = await contract?.vote(id, address)
 		await tx.wait()
 		return Promise.resolve(tx)
 	} catch (error) {
 		console.log(error)
 		return Promise.reject(error)
 	}
+}
+
+/**
+ * Asynchronously retrieves the winner of a specified ID from the Ethereum contract.
+ *
+ * @param {number} id - The ID of the winner to retrieve
+ * @return {Promise<any>} A promise that resolves with the winner information, or rejects with an error
+ */
+const getWinner = async (id: number) => {
+	try {
+		const contract = await getContractEthereum()
+		const winner = await contract?.winnerIs(id)
+		return winner
+	} catch (error) {
+		console.log(error)
+		return Promise.reject(error)
+	}
+}
+
+const getVoted = async (id: number, address: string) => {
+	const contract = await getContractEthereum()
+	const voted = await contract?.checkIfVoted(id, address)
+	console.log('voted getVoted :>> ', voted);
+	return voted
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,4 +160,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote }
+export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote, getWinner, getVoted }

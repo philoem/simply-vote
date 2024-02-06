@@ -12,7 +12,7 @@ abstract contract Ownable {
     return owner;
   }
 
-  modifier onlyowner() {
+  modifier onlyOwner() {
     require(msg.sender == owner, "Only the owner can modify this vote");
     _;
   }

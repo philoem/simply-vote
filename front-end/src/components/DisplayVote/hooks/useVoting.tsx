@@ -1,12 +1,38 @@
-import { vote } from '../../../services/blockchain'
+import { useCallback, useEffect, useState } from 'react'
+import { getVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
 
 const useVoting = () => {
+	const currentTime = Date.now()
+	const [voterHasVoted, setVoterHasVoted] = useState<boolean>(false)
 
-  const voting = async (id: number) => {
+	const checkVoterHasVoted = useCallback(async (id: number, address: string) => {
+		const voted = await getVoted(id, address)
+		console.log('voted hook :>> ', voted);
+		setVoterHasVoted(voted)
+		return voted
+	}, [])
+
+	const checkTimeNotEnded = useCallback((endsAt: number) => {
+		if(currentTime < endsAt) {
+			return true
+		} else if(currentTime > endsAt) {
+			return false
+		} 
+	}, [currentTime])
+
+	useEffect(() => {
+		checkTimeNotEnded
+	}, [checkTimeNotEnded])
+
+	useEffect(() => {
+		checkVoterHasVoted
+	}, [checkVoterHasVoted])
+
+  const voting = async (id: number, address: string) => {
 		await toast.promise(
 			new Promise((resolve, reject) => {
-				vote(id)
+				vote(id, address)
 					.then((tx) => {
 						resolve(tx)
 					})
@@ -24,7 +50,10 @@ const useVoting = () => {
 	}
 
   return {
-    voting
+    voting,
+		checkTimeNotEnded,
+		checkVoterHasVoted,
+		voterHasVoted
   }
 }
 
