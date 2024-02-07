@@ -1,11 +1,27 @@
 import { useCallback, useEffect } from 'react'
-import { getVoted, vote } from '../../../services/blockchain'
+import { getVoted, getVoterHasAlreadyVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
 import useLocalStorage from '../../../hooks/useLocalStorage'
 
 const useVoting = () => {
 	const currentTime = Date.now()
 	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
+
+	const getVoterHasAlreadyVotedInVote = useCallback(async (id: number) => {
+		const voter = await getVoterHasAlreadyVoted(id)
+		let addressVoter
+		let idVoter
+		for (const key in voter) {
+			addressVoter = voter[key]
+			idVoter = key
+		}
+		setVoterHasVoted([...voterHasVoted, {address: addressVoter, id: idVoter}])
+		return voter
+	}, [setVoterHasVoted, voterHasVoted])
+
+	useEffect(() => {
+		getVoterHasAlreadyVotedInVote
+	}, [getVoterHasAlreadyVotedInVote])
 
 	const checkVoterHasVoted = useCallback(async (id: number, address: string) => {
 		const voted = await getVoted(id, address)
@@ -20,7 +36,7 @@ const useVoting = () => {
 
 	// Array iterate to check if voter has already voted
 	const verifyAddressVoter = useCallback((address: string, id: number) => {
-		const isMatch = voterHasVoted.some((voter: { address: string, id: number }) => voter.address === address && voter.id === id)
+		const isMatch = voterHasVoted.some((voter: { address: string, id: number }) => voter.address === address && Number(voter.id) === id)
 		return isMatch
 	}, [voterHasVoted])
 
@@ -72,7 +88,8 @@ const useVoting = () => {
   return {
     voting,
 		checkTimeNotEnded,
-		verifyAddressVoter
+		verifyAddressVoter,
+		getVoterHasAlreadyVotedInVote
   }
 }
 

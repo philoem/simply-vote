@@ -20,3 +20,9 @@ export interface VoteStruct {
 	link1: string
 	link2: string
 }
+
+export interface ProposalStruct {
+	id: number
+	choiceOne: number
+	choiceTwo: number
+}

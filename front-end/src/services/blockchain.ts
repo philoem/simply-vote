@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { ModalParams, VoteStruct } from '../utils/types'
+import { ModalParams, ProposalStruct, VoteStruct } from '../utils/types'
 import Contract from '../../../artifacts/contracts/Voting.sol/Voting.json'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x01732AC12ed2c3A79d967Eb1e5ca5C323996b9eB', abi, signer)
+		const contract = new ethers.Contract('0xdcC9d10B271339fc9D348e39abcA5566493212E4', abi, signer)
 		return contract
 	}
 }
@@ -119,16 +119,28 @@ const vote = async (id: number, address: string) => {
 	}
 }
 
+const getVoterHasAlreadyVoted = async (id: number) => {
+	try {
+		const contract = await getContractEthereum()
+		const voterHasAlreadyVoted = await contract?.getVoterHasVoted(id)
+		console.log('voterHasAlreadyVoted :>> ', voterHasAlreadyVoted);
+		return voterHasAlreadyVoted
+	} catch (error) {
+		console.log(error)
+		return Promise.reject(error)
+	}
+}
+
 /**
  * Asynchronously retrieves the winner of a specified ID from the Ethereum contract.
  *
  * @param {number} id - The ID of the winner to retrieve
  * @return {Promise<any>} A promise that resolves with the winner information, or rejects with an error
  */
-const getWinner = async (id: number) => {
+const logWinner = async (id: number) => {
 	try {
 		const contract = await getContractEthereum()
-		const winner = await contract?.winnerIs(id)
+		const winner = await contract?.logWinnerIs(id)
 		return winner
 	} catch (error) {
 		console.log(error)
@@ -136,12 +148,35 @@ const getWinner = async (id: number) => {
 	}
 }
 
+/**
+ * Retrieves whether the given address has voted for the specified ID.
+ *
+ * @param {number} id - The ID for which to check if the address has voted.
+ * @param {string} address - The address to check for voting status.
+ * @return {boolean} The boolean value indicating whether the address has voted for the specified ID.
+ */
 const getVoted = async (id: number, address: string) => {
 	const contract = await getContractEthereum()
 	const voted = await contract?.checkIfVoted(id, address)
-	console.log('voted getVoted :>> ', voted);
 	return voted
 }
+
+const getWinnerIs = async (id: number): Promise<ProposalStruct> => {
+	const contract = await getContractEthereum()
+	const winner = contract?.getWinner(id)
+	console.log('winner :>> ', winner);
+	return winner
+}
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// const proposalStruct = (proposal: any): ProposalStruct => {
+// 	return {
+// 		id: proposal.id,
+// 		choiceOne: proposal.choiceOne,
+// 		choiceTwo: proposal.choiceTwo
+// 	}
+// }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const structVotes = (votes: any[]): VoteStruct[] => {
@@ -160,4 +195,4 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote, getWinner, getVoted }
+export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote, logWinner, getVoted, getWinnerIs, getVoterHasAlreadyVoted }
