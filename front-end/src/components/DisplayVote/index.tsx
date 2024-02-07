@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { formatDate } from '../../utils/formatDate'
 import ImageFiller from 'react-image-filler'
 import useGetDetailsVote from './hooks/useGetDetailsVote'
@@ -10,14 +10,14 @@ const DisplayVote = forwardRef((_props, ref) => {
 	const { voting, checkTimeNotEnded, verifyAddressVoter } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	// const { logingWinner, getWinner, winnerIs } = useWinnerIs()
+	const { logingWinner, getWinner, winnerIs } = useWinnerIs()
 	// console.log('winnerIs :>> ', winnerIs);
 
-
-	return (
-		<div className='container mx-auto h-[370px] fixed bottom-3'>
-			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
+	const renderVotes = useMemo(() => {
+		return (
+			<>
 				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2 }) => {
+					// logingWinner(Number(id), title)
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={id}>
 							<figure>
@@ -107,6 +107,15 @@ const DisplayVote = forwardRef((_props, ref) => {
 						</div>
 					)
 				})}
+			</>
+		)
+	}, [fetchVotes, logingWinner, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoter, openDetails, voting])
+
+
+	return (
+		<div className='container mx-auto h-[370px] fixed bottom-3'>
+			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
+				{renderVotes}
 			</div>
 		</div>
 	)
