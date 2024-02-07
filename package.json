@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "network-sepolia": "npx hardhat run scripts/deploy.ts --network sepolia",
-    "make-doc": "npx hardhat dodoc"
+    "make-doc": "npx hardhat dodoc",
+    "check-variables-packing": "npx hardhat check"
   },
   "keywords": [],
   "author": "",
