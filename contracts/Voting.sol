@@ -51,6 +51,15 @@ contract Voting is Ownable {
     initialOwner = msg.sender;
   }
   
+  /**
+ * @dev Creates a new voting proposal with the specified details.
+ * @param title The title of the voting proposal.
+ * @param description The description of the voting proposal.
+ * @param startsAt The start time of the voting period.
+ * @param endsAt The end time of the voting period.
+ * @param link1 The first link related to the voting proposal.
+ * @param link2 The second link related to the voting proposal.
+ */
   function createVote(
     string memory title,
     string memory description,
@@ -118,6 +127,11 @@ contract Voting is Ownable {
     voteStructsArray[_id - 1].link2 = _link2;
   }
 
+  /**
+ * @dev Allows a voter to cast their vote for a specific proposal.
+ * @param _id The unique identifier of the proposal to vote for.
+ * @param _voter The address of the voter casting the vote.
+ */
   function vote(uint256 _id, address _voter) public {
     if (voteExist[_id] == false) {
       revert VoteNotExistError(voteStructsArray[_id - 1].id);
@@ -139,15 +153,22 @@ contract Voting is Ownable {
 
   }
 
+  /**
+ * @dev Retrieves the voting status of a specific voter for a given proposal.
+ * @param _id The unique identifier of the proposal.
+ * @return The HasVoted struct containing the voter's status for the proposal.
+ */
   function getVoterHasVoted(uint256 _id) public view returns (HasVoted memory) {
     return hasVoted[_id];
   }
 
+  /**
+ * @dev Checks if a specific voter has cast a vote for a given proposal.
+ * @param _id The unique identifier of the proposal.
+ * @param _voter The address of the voter to check.
+ * @return True if the voter has cast a vote, otherwise false.
+ */
   function checkIfVoted(uint256 _id, address _voter) public view returns (bool) {
-    // return voted[_id][_voter];
-    // HasVoted memory _hasVoted;
-    // _hasVoted.id = _id;
-    // _hasVoted.voter = _voter;
     bool voterHasVoted = hasVotedBool[_id][_voter];
     bool voterVoted = voted[_id][_voter];
 

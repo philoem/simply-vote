@@ -1,4 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
+import '@primitivefi/hardhat-dodoc';
 import "@nomicfoundation/hardhat-toolbox";
 require('dotenv').config()
 
@@ -35,6 +36,12 @@ const config: HardhatUserConfig = {
     noColors: true,
     currency: "EUR",
     coinmarketcap: COINMARKETCAP_API_KEY,
+  },
+  dodoc: {
+    runOnCompile: true,
+    debugMode: true,
+    include: [],
+    // More options...
   },
   mocha: {
     timeout: 500000,

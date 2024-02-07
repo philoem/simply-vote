@@ -16,6 +16,9 @@ devDependencies:
   '@openzeppelin/contracts':
     specifier: ^5.0.1
     version: 5.0.1
+  '@primitivefi/hardhat-dodoc':
+    specifier: ^0.2.3
+    version: 0.2.3(hardhat@2.19.4)(squirrelly@8.0.8)
   '@typechain/ethers-v6':
     specifier: ^0.5.0
     version: 0.5.1(ethers@6.10.0)(typechain@8.3.2)(typescript@5.3.3)
@@ -882,6 +885,16 @@ packages:
 
   /@openzeppelin/contracts@5.0.1:
     resolution: {integrity: sha512-yQJaT5HDp9hYOOp4jTYxMsR02gdFZFXhewX5HW9Jo4fsqSVqqyIO/xTHdWDaKX5a3pv1txmf076Lziz+sO7L1w==}
+    dev: true
+
+  /@primitivefi/hardhat-dodoc@0.2.3(hardhat@2.19.4)(squirrelly@8.0.8):
+    resolution: {integrity: sha512-ver9uHa79LTDTeebOKZ/eOVRL/FP1k0s0x/5Bo/8ZaDdLWFVClKqZyZYVjjW4CJqTPCt8uU9b9p71P2vzH4O9A==}
+    peerDependencies:
+      hardhat: ^2.6.4
+      squirrelly: ^8.0.8
+    dependencies:
+      hardhat: 2.19.4(ts-node@10.9.2)(typescript@5.3.3)
+      squirrelly: 8.0.8
     dev: true
 
   /@scure/base@1.1.5:
@@ -3564,6 +3577,11 @@ packages:
 
   /sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
+    dev: true
+
+  /squirrelly@8.0.8:
+    resolution: {integrity: sha512-7dyZJ9Gw86MmH0dYLiESsjGOTj6KG8IWToTaqBuB6LwPI+hyNb6mbQaZwrfnAQ4cMDnSWMUvX/zAYDLTSWLk/w==}
+    engines: {node: '>=6.0.0'}
     dev: true
 
   /stacktrace-parser@0.1.10:

@@ -1,0 +1,410 @@
+{
+    "methods": {
+        "checkIfVoted(uint256,address)": {
+            "stateMutability": "view",
+            "code": "function checkIfVoted(uint256 _id, address _voter) external view returns (bool)",
+            "inputs": {
+                "_id": {
+                    "type": "uint256",
+                    "description": "The unique identifier of the proposal."
+                },
+                "_voter": {
+                    "type": "address",
+                    "description": "The address of the voter to check."
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "bool",
+                    "description": "True if the voter has cast a vote, otherwise false."
+                }
+            },
+            "details": "Checks if a specific voter has cast a vote for a given proposal."
+        },
+        "createVote(string,string,uint256,uint256,string,string)": {
+            "stateMutability": "nonpayable",
+            "code": "function createVote(string title, string description, uint256 startsAt, uint256 endsAt, string link1, string link2) external nonpayable",
+            "inputs": {
+                "title": {
+                    "type": "string",
+                    "description": "The title of the voting proposal."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the voting proposal."
+                },
+                "startsAt": {
+                    "type": "uint256",
+                    "description": "The start time of the voting period."
+                },
+                "endsAt": {
+                    "type": "uint256",
+                    "description": "The end time of the voting period."
+                },
+                "link1": {
+                    "type": "string",
+                    "description": "The first link related to the voting proposal."
+                },
+                "link2": {
+                    "type": "string",
+                    "description": "The second link related to the voting proposal."
+                }
+            },
+            "outputs": {},
+            "details": "Creates a new voting proposal with the specified details."
+        },
+        "getDetailsVote(uint256)": {
+            "stateMutability": "view",
+            "code": "function getDetailsVote(uint256 _id) external view returns (struct Voting.VoteStruct)",
+            "inputs": {
+                "_id": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "Voting.VoteStruct"
+                }
+            }
+        },
+        "getVoterHasVoted(uint256)": {
+            "stateMutability": "view",
+            "code": "function getVoterHasVoted(uint256 _id) external view returns (struct Voting.HasVoted)",
+            "inputs": {
+                "_id": {
+                    "type": "uint256",
+                    "description": "The unique identifier of the proposal."
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "Voting.HasVoted",
+                    "description": "The HasVoted struct containing the voter's status for the proposal."
+                }
+            },
+            "details": "Retrieves the voting status of a specific voter for a given proposal."
+        },
+        "getVotes()": {
+            "stateMutability": "view",
+            "code": "function getVotes() external view returns (struct Voting.VoteStruct[])",
+            "inputs": {},
+            "outputs": {
+                "_0": {
+                    "type": "Voting.VoteStruct[]"
+                }
+            }
+        },
+        "getWinner(uint256)": {
+            "stateMutability": "view",
+            "code": "function getWinner(uint256 _id) external view returns (struct Voting.Proposal)",
+            "inputs": {
+                "_id": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "Voting.Proposal"
+                }
+            }
+        },
+        "hasVoted(uint256)": {
+            "stateMutability": "view",
+            "code": "function hasVoted(uint256) external view returns (uint256 id, address voter)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "id": {
+                    "type": "uint256"
+                },
+                "voter": {
+                    "type": "address"
+                }
+            }
+        },
+        "logWinnerIs(uint256)": {
+            "stateMutability": "nonpayable",
+            "code": "function logWinnerIs(uint256 _id) external nonpayable",
+            "inputs": {
+                "_id": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {}
+        },
+        "owner()": {
+            "stateMutability": "view",
+            "code": "function owner() external view returns (address)",
+            "inputs": {},
+            "outputs": {
+                "_0": {
+                    "type": "address"
+                }
+            },
+            "details": "Returns the address of the current owner."
+        },
+        "proposals(uint256)": {
+            "stateMutability": "view",
+            "code": "function proposals(uint256) external view returns (uint256 voteId, uint256 choiceOne, uint256 choiceTwo)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "voteId": {
+                    "type": "uint256"
+                },
+                "choiceOne": {
+                    "type": "uint256"
+                },
+                "choiceTwo": {
+                    "type": "uint256"
+                }
+            }
+        },
+        "renounceOwnership()": {
+            "stateMutability": "nonpayable",
+            "code": "function renounceOwnership() external nonpayable",
+            "inputs": {},
+            "outputs": {},
+            "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+        },
+        "transferOwnership(address)": {
+            "stateMutability": "nonpayable",
+            "code": "function transferOwnership(address newOwner) external nonpayable",
+            "inputs": {
+                "newOwner": {
+                    "type": "address"
+                }
+            },
+            "outputs": {},
+            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        },
+        "updateVote(uint256,string,string,uint256,uint256,string,string)": {
+            "stateMutability": "nonpayable",
+            "code": "function updateVote(uint256 _id, string _title, string _description, uint256 _startsAt, uint256 _endsAt, string _link1, string _link2) external nonpayable",
+            "inputs": {
+                "_id": {
+                    "type": "uint256"
+                },
+                "_title": {
+                    "type": "string"
+                },
+                "_description": {
+                    "type": "string"
+                },
+                "_startsAt": {
+                    "type": "uint256"
+                },
+                "_endsAt": {
+                    "type": "uint256"
+                },
+                "_link1": {
+                    "type": "string"
+                },
+                "_link2": {
+                    "type": "string"
+                }
+            },
+            "outputs": {}
+        },
+        "vote(uint256,address)": {
+            "stateMutability": "nonpayable",
+            "code": "function vote(uint256 _id, address _voter) external nonpayable",
+            "inputs": {
+                "_id": {
+                    "type": "uint256",
+                    "description": "The unique identifier of the proposal to vote for."
+                },
+                "_voter": {
+                    "type": "address",
+                    "description": "The address of the voter casting the vote."
+                }
+            },
+            "outputs": {},
+            "details": "Allows a voter to cast their vote for a specific proposal."
+        },
+        "voteStructs(uint256)": {
+            "stateMutability": "view",
+            "code": "function voteStructs(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "id": {
+                    "type": "uint256"
+                },
+                "admin": {
+                    "type": "address"
+                },
+                "startsAt": {
+                    "type": "uint256"
+                },
+                "endsAt": {
+                    "type": "uint256"
+                },
+                "timestamp": {
+                    "type": "uint256"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "link1": {
+                    "type": "string"
+                },
+                "link2": {
+                    "type": "string"
+                }
+            }
+        },
+        "voteStructsArray(uint256)": {
+            "stateMutability": "view",
+            "code": "function voteStructsArray(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "id": {
+                    "type": "uint256"
+                },
+                "admin": {
+                    "type": "address"
+                },
+                "startsAt": {
+                    "type": "uint256"
+                },
+                "endsAt": {
+                    "type": "uint256"
+                },
+                "timestamp": {
+                    "type": "uint256"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "link1": {
+                    "type": "string"
+                },
+                "link2": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "events": {
+        "OwnershipTransferred": {
+            "code": "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+            "inputs": {
+                "previousOwner": {
+                    "type": "address",
+                    "indexed": true
+                },
+                "newOwner": {
+                    "type": "address",
+                    "indexed": true
+                }
+            }
+        },
+        "WinnerIs": {
+            "code": "event WinnerIs(address indexed owner, uint256 id, string title, uint256 choice1, uint256 choice2)",
+            "inputs": {
+                "owner": {
+                    "type": "address",
+                    "indexed": true
+                },
+                "id": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "title": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "choice1": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "choice2": {
+                    "type": "uint256",
+                    "indexed": false
+                }
+            }
+        }
+    },
+    "errors": {
+        "AlreadyVotedError": {
+            "code": "error AlreadyVotedError()",
+            "inputs": {}
+        },
+        "DescriptionEmptyError": {
+            "code": "error DescriptionEmptyError()",
+            "inputs": {}
+        },
+        "InvalidStartEndTimesError": {
+            "code": "error InvalidStartEndTimesError()",
+            "inputs": {}
+        },
+        "OnlyAdminCanUpdateError": {
+            "code": "error OnlyAdminCanUpdateError()",
+            "inputs": {}
+        },
+        "OwnableInvalidOwner": {
+            "code": "error OwnableInvalidOwner(address owner)",
+            "inputs": {
+                "owner": {
+                    "type": "address"
+                }
+            },
+            "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+        },
+        "OwnableUnauthorizedAccount": {
+            "code": "error OwnableUnauthorizedAccount(address account)",
+            "inputs": {
+                "account": {
+                    "type": "address"
+                }
+            },
+            "details": "The caller account is not authorized to perform an operation."
+        },
+        "TimeOfVoteNotEndedError": {
+            "code": "error TimeOfVoteNotEndedError()",
+            "inputs": {}
+        },
+        "TimeOverError": {
+            "code": "error TimeOverError(uint256 endsAt)",
+            "inputs": {
+                "endsAt": {
+                    "type": "uint256"
+                }
+            }
+        },
+        "TitleEmptyError": {
+            "code": "error TitleEmptyError()",
+            "inputs": {}
+        },
+        "VoteNotExistError": {
+            "code": "error VoteNotExistError(uint256 id)",
+            "inputs": {
+                "id": {
+                    "type": "uint256"
+                }
+            }
+        }
+    },
+    "path": "",
+    "name": "Voting"
+}
