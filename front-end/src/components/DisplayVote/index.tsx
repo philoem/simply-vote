@@ -7,11 +7,12 @@ import useVoting from './hooks/useVoting'
 import useWinnerIs from './hooks/useWinnerIs'
 
 const DisplayVote = forwardRef((_props, ref) => {
-	const { voting, checkTimeNotEnded, voterHasVoted } = useVoting()
+	const { voting, checkTimeNotEnded, verifyAddressVoter } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	// const { getWinnerIs } = useWinnerIs()
-	// console.log('getWinnerIs :>> ', getWinnerIs(3));
+	// const { logingWinner, getWinner, winnerIs } = useWinnerIs()
+	// console.log('winnerIs :>> ', winnerIs);
+
 
 	return (
 		<div className='container mx-auto h-[370px] fixed bottom-3'>
@@ -66,7 +67,11 @@ const DisplayVote = forwardRef((_props, ref) => {
 									{admin === checkedAdminCurrent ? (
 										<>
 											{checkTimeNotEnded(Number(endsAt)) ? (
-												<button onClick={() => openDetails(Number(id))} className='btn btn-primary' disabled={false}>
+												<button
+													onClick={() => openDetails(Number(id))}
+													className='btn btn-primary'
+													disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
+												>
 													Modifier le vote
 												</button>
 											) : (
@@ -78,16 +83,16 @@ const DisplayVote = forwardRef((_props, ref) => {
 											{checkTimeNotEnded(Number(endsAt)) ? (
 												<>
 													<button
-														onClick={() => voting(1, checkedAdminCurrent)}
+														onClick={() => voting(1, checkedAdminCurrent, Number(id))}
 														className='btn btn-primary'
-														disabled={voterHasVoted}
+														disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
 													>
 														Votez pour 1
 													</button>
 													<button 
-														onClick={() => voting(2, checkedAdminCurrent)}
+														onClick={() => voting(2, checkedAdminCurrent, Number(id))}
 														className='btn btn-primary'
-														disabled={voterHasVoted}
+														disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
 													>
 														Votez pour 2
 													</button>

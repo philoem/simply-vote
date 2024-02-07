@@ -1,16 +1,32 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { getVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
+import useLocalStorage from '../../../hooks/useLocalStorage'
 
 const useVoting = () => {
 	const currentTime = Date.now()
-	const [voterHasVoted, setVoterHasVoted] = useState<boolean>(false)
+	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
 
 	const checkVoterHasVoted = useCallback(async (id: number, address: string) => {
 		const voted = await getVoted(id, address)
-		setVoterHasVoted(voted)
+		setVoterHasVoted([...voterHasVoted, {address: address, id: id}])
 		return voted
-	}, [])
+	}, [setVoterHasVoted, voterHasVoted])
+
+	// Allow to check and fetch if voter has already voter when the page is refresh. Avoid duplicate vote
+	useEffect(() => {
+		checkVoterHasVoted
+	}, [checkVoterHasVoted])
+
+	// Array iterate to check if voter has already voted
+	const verifyAddressVoter = useCallback((address: string, id: number) => {
+		const isMatch = voterHasVoted.some((voter: { address: string, id: number }) => voter.address === address && voter.id === id)
+		return isMatch
+	}, [voterHasVoted])
+
+	useEffect(() => {
+		verifyAddressVoter
+	}, [verifyAddressVoter])
 
 	const checkTimeNotEnded = useCallback((endsAt: number) => {
 		if(currentTime < endsAt) {
@@ -22,22 +38,27 @@ const useVoting = () => {
 
 	useEffect(() => {
 		checkTimeNotEnded
-	}, [checkTimeNotEnded])
+	}, [checkTimeNotEnded])	
 
-	useEffect(() => {
-		checkVoterHasVoted
-	}, [checkVoterHasVoted])
-
-  const voting = async (id: number, address: string) => {
+    /**
+   * A function for conducting a voting process asynchronously.
+   *
+   * @param {number} id - the ID of the voting process
+   * @param {string} address - the address of the voter
+   * @param {number} idVote - the ID of the vote
+   * @return {Promise<any>} a Promise that resolves to the voting transaction
+   */
+	const voting = async (id: number, address: string, idVote: number) => {
 		await toast.promise(
 			new Promise((resolve, reject) => {
 				vote(id, address)
 					.then((tx) => {
 						resolve(tx)
+						checkVoterHasVoted(idVote, address)
 					})
 					.catch((error) => {
 						reject(error)
-						console.log('error :>> ', error)
+						console.log('error voting :>> ', error)
 					})
 			}),
 			{
@@ -51,7 +72,7 @@ const useVoting = () => {
   return {
     voting,
 		checkTimeNotEnded,
-		voterHasVoted
+		verifyAddressVoter
   }
 }
 
