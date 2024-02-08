@@ -1,8 +1,10 @@
-import { HardhatUserConfig } from "hardhat/config";
-import '@primitivefi/hardhat-dodoc';
-import "@nomicfoundation/hardhat-toolbox";
-import "hardhat-gas-reporter";
-require('hardhat-storage-layout');
+import { HardhatUserConfig } from "hardhat/config"
+import "@nomicfoundation/hardhat-ethers"
+import '@primitivefi/hardhat-dodoc'
+import "@nomicfoundation/hardhat-toolbox"
+import "hardhat-gas-reporter"
+require("@nomicfoundation/hardhat-chai-matchers")
+require('hardhat-storage-layout')
 require('dotenv').config()
 
 const { INFURA_API_KEY, ETHERSCAN_API_KEY, COINMARKETCAP_API_KEY } = process.env;
@@ -27,7 +29,7 @@ const config: HardhatUserConfig = {
       }
     ]
   },  
-  defaultNetwork: "sepolia",
+  defaultNetwork: "hardhat",
   networks: {
     sepolia: {
       url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
