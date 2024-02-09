@@ -58,7 +58,7 @@ export default function useConnectWallet() {
 	}, [ethereum])
 
 	useEffect(() => {
-		changeAccount()
+		changeAccount()	
 	}, [changeAccount])
 
 	useEffect(() => {
@@ -77,6 +77,7 @@ export default function useConnectWallet() {
 			setVoter(accounts[0])
 			setIsConnected(true)
 			toast.success('Connecté!')
+			location.reload()
 		} catch (error) {
 			console.log(error)
 		}
@@ -98,6 +99,17 @@ export default function useConnectWallet() {
 			console.log(error)
 		}
 	}
+
+	useEffect(() => {
+		if(ethereum) {
+			ethereum.on('chainChanged', () => {
+				location.reload()
+			})
+			ethereum.on('accountsChanged', () => {
+				location.reload()
+			})
+		}
+	}, [ethereum])
 
 	return { isConnected, ethereum, voter, connectingWallet, deconnectWallet }
 }
