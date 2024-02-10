@@ -23,7 +23,8 @@ const ModalWithActionButton = forwardRef((_props, ref) => {
 					>
 						<button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>✕</button>
 						<input
-							type='text'
+							type='text 64 caractères max'
+							maxLength={64}
 							name='title'
 							value={voteData.title}
 							placeholder='Titre'
@@ -32,7 +33,8 @@ const ModalWithActionButton = forwardRef((_props, ref) => {
 							required
 						/>
 						<textarea
-							placeholder='Description'
+							placeholder='Description limitée à 350 caractères'
+							maxLength={350}
 							name='description'
 							value={voteData.description}
 							onChange={handleChange}
