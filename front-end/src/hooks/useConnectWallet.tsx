@@ -95,6 +95,7 @@ export default function useConnectWallet() {
 			})
 			setIsConnected(false)
 			toast.success('Déconnecté!')
+			location.reload()
 		} catch (error) {
 			console.log(error)
 		}
