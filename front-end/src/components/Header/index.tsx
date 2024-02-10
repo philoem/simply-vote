@@ -19,7 +19,7 @@ const Header = ({ addressWallet }: { addressWallet: string }) => {
 						text={`${addressWallet?.substring(0, 7)}...${addressWallet?.substring(
 							addressWallet.length - 3
 						)}, connecté`}
-						className='w-auto px-1 rounded-full text-sm lg:text-base bg-[#1B5CFE] h-[50px] tracking-wide pl-[10px] pr-[10px]'
+						className='w-auto px-1 rounded-full text-sm lg:text-base bg-white h-[50px] border hover:border-white text-[#1B5CFE] tracking-wide pl-[10px] pr-[10px]'
 					/>
 				</>
 			) : (
