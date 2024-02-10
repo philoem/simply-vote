@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract Voting is Ownable {
+contract Voting {
   uint256 private _idVoteCounter=0;
 
   struct VoteStruct {
@@ -23,6 +23,7 @@ contract Voting is Ownable {
     uint256 choiceTwo;
   }
   struct HasVoted {
+    uint256 idVote;
     uint256 id;
     address voter;
   }
@@ -30,8 +31,10 @@ contract Voting is Ownable {
   mapping(uint256 => VoteStruct) public voteStructs;
   mapping(uint256 => bool) voteExist;
   mapping(uint256 => mapping(address => bool)) voted;
-  mapping(uint256 => HasVoted) public hasVoted;
-  mapping(uint256 => mapping(address => bool)) hasVotedBool;
+  mapping(uint256 => mapping(uint256 => mapping(address => HasVoted))) hasVoted;
+  // to test 
+  mapping(uint256 => mapping(uint256 => mapping(address => bool))) hasVotedBool;
+
 
   Proposal[] public proposals;
   VoteStruct[] public voteStructsArray;
@@ -40,16 +43,16 @@ contract Voting is Ownable {
   error DescriptionEmptyError();
   error InvalidStartEndTimesError();
   error OnlyAdminCanUpdateError();
-  error VoteNotExistError(uint256 id);
-  error TimeOverError(uint256 endsAt);
+  error VoteNotExistError();
+  error TimeOverError();
   error AlreadyVotedError();
   error TimeOfVoteNotEndedError();
 
-  event WinnerIs(address indexed owner, uint256 id, string title, uint256 choice1, uint256 choice2);
+  event VoteCreated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2);
+  event VoteUpdated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2);
+  event VoterHasVoted(uint256 idVote, address voter, uint256 choice);
 
-  constructor(address initialOwner) Ownable(initialOwner) {
-    initialOwner = msg.sender;
-  }
+  event WinnerIs(address indexed owner, uint256 id, string title, uint256 choice1, uint256 choice2);
   
   /**
  * @dev Creates a new voting proposal with the specified details.
@@ -90,6 +93,8 @@ contract Voting is Ownable {
     voteStructsArray.push(_voteStructs);
     proposals.push(Proposal({voteId: _voteStructs.id, choiceOne: 0, choiceTwo: 0}));
     voteExist[_voteStructs.id] = true;
+
+    emit VoteCreated(_voteStructs.id, msg.sender, _voteStructs.startsAt, _voteStructs.endsAt, _voteStructs.title, _voteStructs.description, _voteStructs.link1, _voteStructs.link2);
   }
 
   function getVotes() public view returns (VoteStruct[] memory) {
@@ -108,7 +113,7 @@ contract Voting is Ownable {
     uint256 _endsAt,
     string memory _link1,
     string memory _link2
-  ) onlyOwner public {
+  ) public {
     if (bytes(_title).length == 0) {
       revert TitleEmptyError();
     } else if (bytes(_description).length == 0) {
@@ -125,73 +130,66 @@ contract Voting is Ownable {
     voteStructsArray[_id - 1].endsAt = _endsAt;
     voteStructsArray[_id - 1].link1 = _link1;
     voteStructsArray[_id - 1].link2 = _link2;
+
+    emit VoteUpdated(_id, msg.sender, _startsAt, _endsAt, _title, _description, _link1, _link2);
   }
 
-  /**
- * @dev Allows a voter to cast their vote for a specific proposal.
- * @param _id The unique identifier of the proposal to vote for.
- * @param _voter The address of the voter casting the vote.
- */
-  function vote(uint256 _id, address _voter) public {
-    if (voteExist[_id] == false) {
-      revert VoteNotExistError(voteStructsArray[_id - 1].id);
+  function vote(uint256 _idVote, uint256 _id, address _voter) public {
+    if (voteExist[_idVote] == false) {
+      revert VoteNotExistError();
     } else if (block.timestamp * 1000 > voteStructsArray[_id - 1].endsAt) {
-      revert TimeOverError(voteStructsArray[_id - 1].endsAt);
-    } else if (hasVotedBool[_id][_voter] == true) {
+      revert TimeOverError();
+    } else if (voted[_idVote][_voter] == true) {
       revert AlreadyVotedError();
     }
 
     if (_id == 1) {
-      proposals[_id - 1].choiceTwo = proposals[_id - 1].choiceTwo + 1;
-    } else {
-      proposals[_id - 1].choiceOne = proposals[_id - 1].choiceOne + 1;
-    }
-
-    hasVoted[_id].id = _id;
-    hasVoted[_id].voter = _voter;
-    hasVotedBool[_id][_voter] = true;
-
-  }
-
-  /**
- * @dev Retrieves the voting status of a specific voter for a given proposal.
- * @param _id The unique identifier of the proposal.
- * @return The HasVoted struct containing the voter's status for the proposal.
- */
-  function getVoterHasVoted(uint256 _id) public view returns (HasVoted memory) {
-    return hasVoted[_id];
-  }
-
-  /**
- * @dev Checks if a specific voter has cast a vote for a given proposal.
- * @param _id The unique identifier of the proposal.
- * @param _voter The address of the voter to check.
- * @return True if the voter has cast a vote, otherwise false.
- */
-  function checkIfVoted(uint256 _id, address _voter) public view returns (bool) {
-    bool voterHasVoted = hasVotedBool[_id][_voter];
-    bool voterVoted = voted[_id][_voter];
-
-    if (voterHasVoted == voterVoted) {
-      return true;
-    }
-    return false;
-  }
-
-  function logWinnerIs(uint256 _id) public {
-    if (block.timestamp * 1000 < voteStructsArray[_id - 1].endsAt) {
-      revert TimeOfVoteNotEndedError();
-    } else if (voteExist[_id] == false) {
-      revert VoteNotExistError(voteStructsArray[_id - 1].id);
+      proposals[_id - 1].choiceOne++;
+    } else if (_id == 2) { 
+      proposals[_id - 1].choiceTwo++;
     }
     
-    if (block.timestamp * 1000 >= voteStructsArray[_id - 1].endsAt) { 
-      emit WinnerIs(msg.sender, voteStructsArray[_id - 1].id, voteStructsArray[_id - 1].title, proposals[_id].choiceOne, proposals[_id].choiceTwo);
-    }
+    hasVoted[_idVote][_id][_voter] = HasVoted({
+      idVote: _idVote,
+      id: _id,
+      voter: _voter
+    });
+    voted[_idVote][_voter] = true;
+
+    emit VoterHasVoted(_idVote, _voter, _id == 1 ? 1 : 2);
   }
 
-  function getWinner(uint256 _id) public view returns (Proposal memory) {
-    return proposals[_id];
+  function getVoterHasVoted(uint256 _idVote, uint256 _id, address _voter) public view returns (HasVoted memory) {
+    return hasVoted[_idVote][_id][_voter];
+  }
+
+  function checkIfVoted(uint256 _idVote, address _voter) public view returns (bool) {
+    return voted[_idVote][_voter]; 
+  }
+
+  // function logWinnerIs(uint256 _id) public {
+  //   if (block.timestamp * 1000 < voteStructsArray[_id - 1].endsAt) {
+  //     revert TimeOfVoteNotEndedError();
+  //   } else if (voteExist[_id] == false) {
+  //     revert VoteNotExistError(voteStructsArray[_id - 1].id);
+  //   }
+    
+  //   if (block.timestamp * 1000 >= voteStructsArray[_id - 1].endsAt) { 
+  //     emit WinnerIs(msg.sender, voteStructsArray[_id - 1].id, voteStructsArray[_id - 1].title, proposals[_id].choiceOne, proposals[_id].choiceTwo);
+  //   }
+  // }
+
+  function winningProposal(uint256 _id) public view returns (uint256) {
+    // if (voteExist[_id] == false) {
+    //   revert VoteNotExistError();
+    // } 
+
+    // uint256 result;
+    // if (block.timestamp * 1000 >= voteStructsArray[_id - 1].endsAt) {
+    //   return result = Math.max(proposals[_id - 1].choiceOne, proposals[_id - 1].choiceTwo);
+    // }
+    // return result;
+    return Math.max(proposals[_id - 1].choiceOne, proposals[_id - 1].choiceTwo);
   }
 
 }

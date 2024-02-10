@@ -7,38 +7,47 @@ const useVoting = () => {
 	const currentTime = Date.now()
 	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
 
-	const getVoterHasAlreadyVotedInVote = useCallback(async (id: number) => {
-		const voter = await getVoterHasAlreadyVoted(id)
-		let addressVoter
-		let idVoter
-		for (const key in voter) {
-			addressVoter = voter[key]
-			idVoter = key
-		}
-		setVoterHasVoted([...voterHasVoted, {address: addressVoter, id: idVoter}])
+	const getVoterHasAlreadyVotedInVote = useCallback(async (idVote: number, id: number, address: string) => {
+		const voter = await getVoterHasAlreadyVoted(idVote, id, address)	
+		console.log('voter :>> ', voter);	
+		// setVoterHasVoted([...voterHasVoted, {idVote: idVote, id: id, address: address}])
 		return voter
-	}, [setVoterHasVoted, voterHasVoted])
+	}, [])
 
 	useEffect(() => {
 		getVoterHasAlreadyVotedInVote
 	}, [getVoterHasAlreadyVotedInVote])
 
-	const checkVoterHasVoted = useCallback(async (id: number, address: string) => {
-		const voted = await getVoted(id, address)
-		setVoterHasVoted([...voterHasVoted, {address: address, id: id}])
+
+	const checkVoterHasVoted = useCallback(async (idVote: number, address: string) => {
+		const voted = await getVoted(idVote, address)
+		setVoterHasVoted([...voterHasVoted, {idVote: idVote, address: address}])
 		return voted
 	}, [setVoterHasVoted, voterHasVoted])
 
-	// Allow to check and fetch if voter has already voter when the page is refresh. Avoid duplicate vote
 	useEffect(() => {
 		checkVoterHasVoted
-	}, [checkVoterHasVoted])
+	}, [checkVoterHasVoted])	
 
 	// Array iterate to check if voter has already voted
-	const verifyAddressVoter = useCallback((address: string, id: number) => {
-		const isMatch = voterHasVoted.some((voter: { address: string, id: number }) => voter.address === address && Number(voter.id) === id)
+	const verifyAddressVoter = useCallback((idVote: number, address: string ) => {
+		const isMatch = voterHasVoted.some((voter: { idVote: number, address: string }) => 
+			Number(voter.idVote) === idVote && voter.address === address
+		)
 		return isMatch
 	}, [voterHasVoted])
+
+	// Array iterate to check if voter has already voted for owner
+	const verifyAddressVoterForOwner = useCallback((idVote: number) => {
+		const isMatch = voterHasVoted.some((voter: { idVote: number}) => 
+			Number(voter.idVote) === idVote
+		)
+		return isMatch
+	}, [voterHasVoted])
+
+	useEffect(() => {
+		verifyAddressVoterForOwner
+	}, [verifyAddressVoterForOwner])
 
 	useEffect(() => {
 		verifyAddressVoter
@@ -64,10 +73,10 @@ const useVoting = () => {
    * @param {number} idVote - the ID of the vote
    * @return {Promise<any>} a Promise that resolves to the voting transaction
    */
-	const voting = async (id: number, address: string, idVote: number) => {
+	const voting = async (idVote: number, id: number, address: string) => {
 		await toast.promise(
 			new Promise((resolve, reject) => {
-				vote(id, address)
+				vote(idVote, id, address)
 					.then((tx) => {
 						resolve(tx)
 						checkVoterHasVoted(idVote, address)
@@ -88,8 +97,11 @@ const useVoting = () => {
   return {
     voting,
 		checkTimeNotEnded,
+		checkVoterHasVoted,
+		voterHasVoted,
+		getVoterHasAlreadyVotedInVote,
 		verifyAddressVoter,
-		getVoterHasAlreadyVotedInVote
+		verifyAddressVoterForOwner
   }
 }
 

@@ -7,17 +7,19 @@ import useVoting from './hooks/useVoting'
 import useWinnerIs from './hooks/useWinnerIs'
 
 const DisplayVote = forwardRef((_props, ref) => {
-	const { voting, checkTimeNotEnded, verifyAddressVoter } = useVoting()
+	const { voting, checkTimeNotEnded, voterHasVoted, checkVoterHasVoted, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	const { logingWinner, getWinner, winnerIs } = useWinnerIs()
-	// console.log('winnerIs :>> ', winnerIs);
+	const { renderingWinner, winner } = useWinnerIs()
+	
 
 	const renderVotes = useMemo(() => {
 		return (
 			<>
 				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2 }) => {
-					// logingWinner(Number(id), title)
+					console.log('startsAt :>> ', startsAt);
+					console.log('endsAt :>> ', endsAt);
+					renderingWinner(Number(id))
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={id}>
 							<figure>
@@ -70,12 +72,14 @@ const DisplayVote = forwardRef((_props, ref) => {
 												<button
 													onClick={() => openDetails(Number(id))}
 													className='btn btn-primary'
-													disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
+													disabled={verifyAddressVoterForOwner(Number(id))}
 												>
-													Modifier le vote
-												</button>
+													{verifyAddressVoterForOwner(Number(id)) ? 'Vote en cours' : 'Modifier le vote'}
+												</button> 
 											) : (
-												<h3 className='font-bold text-red-500 text-lg text-right'>Le vote est terminé</h3>
+												<h4 className='font-bold text-red-500 text-lg text-right'>
+													{winner}
+												</h4>
 											)}
 										</>
 									) : (
@@ -83,22 +87,24 @@ const DisplayVote = forwardRef((_props, ref) => {
 											{checkTimeNotEnded(Number(endsAt)) ? (
 												<>
 													<button
-														onClick={() => voting(1, checkedAdminCurrent, Number(id))}
+														onClick={() => voting(Number(id), 1, checkedAdminCurrent)}
 														className='btn btn-primary'
-														disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
+														disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
 													>
 														Votez pour 1
 													</button>
 													<button 
-														onClick={() => voting(2, checkedAdminCurrent, Number(id))}
+														onClick={() => voting(Number(id), 2, checkedAdminCurrent)}
 														className='btn btn-primary'
-														disabled={verifyAddressVoter(checkedAdminCurrent, Number(id))}
+														disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
 													>
 														Votez pour 2
 													</button>
 												</>
 											) : (
-												<h3 className='font-bold text-red-500 text-lg text-right'>Le vote est terminé</h3>
+												<h4 className='font-bold text-red-500 text-lg text-left'>
+													{`Résultat du vote : ${winner}`}
+												</h4>
 											)}
 										</>
 									)}
@@ -109,7 +115,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 				})}
 			</>
 		)
-	}, [fetchVotes, logingWinner, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoter, openDetails, voting])
+	}, [fetchVotes, renderingWinner, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, winner, verifyAddressVoter, openDetails, voting])
 
 
 	return (

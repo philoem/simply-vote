@@ -1,36 +1,34 @@
-import { useCallback, useEffect } from "react";
-import { getWinnerIs, logWinner } from "../../../services/blockchain"
-import useLocalStorage from "../../../hooks/useLocalStorage";
+import { useCallback, useEffect, useState } from "react";
+import { renderWinner } from "../../../services/blockchain"
 
 const useWinnerIs = () => {
-  const [winnerIs, setWinnerIs] = useLocalStorage('WinnerIs', [])
+  const [winner, setWinner] = useState('')
 
-  const logingWinner = useCallback(async (id: number, title: string) => {
-    const winner = await logWinner(id)
+  const renderingWinner = useCallback(async (id: number) => {
+    const winner = await renderWinner(id)
     console.log('winner :>> ', winner);
-    setWinnerIs([...winnerIs, {id: id, title: title}])
-    return winner
-  }, [setWinnerIs, winnerIs])
-  console.log('winnerIs :>> ', winnerIs);
 
-  const getWinner = useCallback(async (id: number, title: string) => {
-    const winner = await getWinnerIs(id)
-    setWinnerIs([...winnerIs, {id: id, title: title}])
-    return winner
-  }, [setWinnerIs, winnerIs])
+    setWinner(() => {
+      switch(Number(winner)){
+        case 0:
+          return 'Egalité entre les 2 votes'
+        case 1:
+          return 'Vote 1 gagnant' 
+        case 2:
+          return 'Vote 2 gagnant'
+        default:
+          return ''
+      }
+    })
+  }, [setWinner])  
 
   useEffect(() => {
-    getWinner
-  }, [getWinner])
-
-  useEffect(() => {
-    logingWinner
-  }, [logingWinner])
+    renderingWinner
+  }, [renderingWinner])
 
   return {
-    logingWinner,
-    getWinner,
-    winnerIs
+    renderingWinner,
+    winner
   }
 }
 
