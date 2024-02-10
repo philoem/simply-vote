@@ -119,7 +119,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 
 
 	return (
-		<div className='container mx-auto h-[370px] fixed bottom-3'>
+		<div className='container mx-auto h-[370px] mt-8'>
 			<div className='grid grid-cols-1 xl:grid-cols-2 pb-7 gap-[62px] sm:w-2/3 xl:w-5/6 mx-auto'>
 				{renderVotes}
 			</div>

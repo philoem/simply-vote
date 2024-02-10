@@ -12,22 +12,18 @@ function App() {
 	const myDialog = useRef<HTMLDialogElement>(null)
 
 	return (
-		<div className='w-screen'>
-			<div className='w-full h-screen bg-cover bg-[url("./assets/election.jpeg")]'>
-				<div className='backdrop-blur-sm bg-white/30'>
-					<Homepage />
-					{isConnected && (
-						<>
-							<Header addressWallet={voter} />
-							<div className='flex flex-col justify-center items-center h-screen'>
-								<ButtonCreateVote ref={myDialog}/>
-								<ModalWithActionButton ref={myDialog}/>
-								<DisplayVote ref={myDialog}/>
-							</div>
-						</>
-					)}
-				</div>
-			</div>
+		<div className='backdrop-blur-sm'>
+			<Homepage />
+			{isConnected && (
+				<>
+					<Header addressWallet={voter} />
+					<div className='flex flex-col justify-center items-center h-screen'>
+						<ButtonCreateVote ref={myDialog}/>
+						<ModalWithActionButton ref={myDialog}/>
+						<DisplayVote ref={myDialog}/>
+					</div>
+				</>
+			)}
 		</div>
 	)
 }
