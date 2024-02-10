@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 const hre = require("hardhat");
 
 async function main() {
-  const voting = await ethers.deployContract("Voting", ['0xC1AEe6f2Af1974BA4cfC02c1306a5855427C4478']);
+  const voting = await ethers.deployContract("Voting");
   await voting.waitForDeployment();
 
   console.log(`Voting's smart contract deployed to : ${voting.target}`);
