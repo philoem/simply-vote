@@ -23,11 +23,11 @@ const ModalWithActionButton = forwardRef((_props, ref) => {
 					>
 						<button className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'>✕</button>
 						<input
-							type='text 64 caractères max'
+							type='text'
 							maxLength={64}
 							name='title'
 							value={voteData.title}
-							placeholder='Titre'
+							placeholder='Titre limité à 64 caractères'
 							onChange={handleChange}
 							className='input input-bordered input-sm w-full max-w-lg rounded-lg mb-3'
 							required
