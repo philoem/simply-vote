@@ -1,23 +1,11 @@
 import { useCallback, useEffect } from 'react'
-import { getVoted, getVoterHasAlreadyVoted, vote } from '../../../services/blockchain'
+import { getVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
 import useLocalStorage from '../../../hooks/useLocalStorage'
 
 const useVoting = () => {
 	const currentTime = Date.now()
 	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
-
-	const getVoterHasAlreadyVotedInVote = useCallback(async (idVote: number, id: number, address: string) => {
-		const voter = await getVoterHasAlreadyVoted(idVote, id, address)	
-		console.log('voter :>> ', voter);	
-		// setVoterHasVoted([...voterHasVoted, {idVote: idVote, id: id, address: address}])
-		return voter
-	}, [])
-
-	useEffect(() => {
-		getVoterHasAlreadyVotedInVote
-	}, [getVoterHasAlreadyVotedInVote])
-
 
 	const checkVoterHasVoted = useCallback(async (idVote: number, address: string) => {
 		const voted = await getVoted(idVote, address)
@@ -97,9 +85,6 @@ const useVoting = () => {
   return {
     voting,
 		checkTimeNotEnded,
-		checkVoterHasVoted,
-		voterHasVoted,
-		getVoterHasAlreadyVotedInVote,
 		verifyAddressVoter,
 		verifyAddressVoterForOwner
   }

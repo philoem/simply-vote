@@ -7,19 +7,16 @@ import useVoting from './hooks/useVoting'
 import useWinnerIs from './hooks/useWinnerIs'
 
 const DisplayVote = forwardRef((_props, ref) => {
-	const { voting, checkTimeNotEnded, voterHasVoted, checkVoterHasVoted, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
+	const { voting, checkTimeNotEnded, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	const { renderingWinner, winner } = useWinnerIs()
+	const { winner } = useWinnerIs()
 	
 
 	const renderVotes = useMemo(() => {
 		return (
 			<>
 				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2 }) => {
-					console.log('startsAt :>> ', startsAt);
-					console.log('endsAt :>> ', endsAt);
-					renderingWinner(Number(id))
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={id}>
 							<figure>
@@ -115,8 +112,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 				})}
 			</>
 		)
-	}, [fetchVotes, renderingWinner, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, winner, verifyAddressVoter, openDetails, voting])
-
+	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, winner, verifyAddressVoter, openDetails, voting])
 
 	return (
 		<div className='container mx-auto h-[370px] mt-8'>

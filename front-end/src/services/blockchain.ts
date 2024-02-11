@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0x37a9006Ef7AE952560126ccE7BEb015FF07E191C', abi, signer)
+		const contract = new ethers.Contract('0xa0aC88B03566064D59F6DefBAdC0268c96C4097C', abi, signer)
 		return contract
 	}
 }
@@ -129,19 +129,7 @@ const vote = async (idVote: number, id: number, address: string) => {
 const getVoted = async (idVote: number, address: string) => {
 	const contract = await getContractEthereum()
 	const voted = await contract?.checkIfVoted(idVote, address)
-	console.log('voted :>> ', voted);
 	return voted
-}
-
-const getVoterHasAlreadyVoted = async (idVote: number, id: number, address: string) => {
-	try {
-		const contract = await getContractEthereum()
-		const voterHasAlreadyVoted = await contract?.getVoterHasVoted(idVote, id, address)
-		return voterHasAlreadyVoted
-	} catch (error) {
-		console.log(error)
-		return Promise.reject(error)
-	}
 }
 
 /**
@@ -173,4 +161,12 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
 
-export { createVote, getDetailsVote, getVotes, updateVote, getAddressCurrent, vote, getVoted, renderWinner, getVoterHasAlreadyVoted }
+export { createVote,
+	getDetailsVote,
+	getVotes,
+	updateVote,
+	getAddressCurrent,
+	vote,
+	getVoted,
+	renderWinner
+}

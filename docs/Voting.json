@@ -2,24 +2,23 @@
     "methods": {
         "checkIfVoted(uint256,address)": {
             "stateMutability": "view",
-            "code": "function checkIfVoted(uint256 _id, address _voter) external view returns (bool)",
+            "code": "function checkIfVoted(uint256 _idVote, address _voter) external view returns (bool)",
             "inputs": {
-                "_id": {
+                "_idVote": {
                     "type": "uint256",
-                    "description": "The unique identifier of the proposal."
+                    "description": "The ID of the proposal to check for the voter's vote"
                 },
                 "_voter": {
                     "type": "address",
-                    "description": "The address of the voter to check."
+                    "description": "The address of the voter"
                 }
             },
             "outputs": {
                 "_0": {
-                    "type": "bool",
-                    "description": "True if the voter has cast a vote, otherwise false."
+                    "type": "bool"
                 }
             },
-            "details": "Checks if a specific voter has cast a vote for a given proposal."
+            "notice": "Checks if the voter has voted on the proposal"
         },
         "createVote(string,string,uint256,uint256,string,string)": {
             "stateMutability": "nonpayable",
@@ -67,23 +66,6 @@
                 }
             }
         },
-        "getVoterHasVoted(uint256)": {
-            "stateMutability": "view",
-            "code": "function getVoterHasVoted(uint256 _id) external view returns (struct Voting.HasVoted)",
-            "inputs": {
-                "_id": {
-                    "type": "uint256",
-                    "description": "The unique identifier of the proposal."
-                }
-            },
-            "outputs": {
-                "_0": {
-                    "type": "Voting.HasVoted",
-                    "description": "The HasVoted struct containing the voter's status for the proposal."
-                }
-            },
-            "details": "Retrieves the voting status of a specific voter for a given proposal."
-        },
         "getVotes()": {
             "stateMutability": "view",
             "code": "function getVotes() external view returns (struct Voting.VoteStruct[])",
@@ -93,58 +75,6 @@
                     "type": "Voting.VoteStruct[]"
                 }
             }
-        },
-        "getWinner(uint256)": {
-            "stateMutability": "view",
-            "code": "function getWinner(uint256 _id) external view returns (struct Voting.Proposal)",
-            "inputs": {
-                "_id": {
-                    "type": "uint256"
-                }
-            },
-            "outputs": {
-                "_0": {
-                    "type": "Voting.Proposal"
-                }
-            }
-        },
-        "hasVoted(uint256)": {
-            "stateMutability": "view",
-            "code": "function hasVoted(uint256) external view returns (uint256 id, address voter)",
-            "inputs": {
-                "_0": {
-                    "type": "uint256"
-                }
-            },
-            "outputs": {
-                "id": {
-                    "type": "uint256"
-                },
-                "voter": {
-                    "type": "address"
-                }
-            }
-        },
-        "logWinnerIs(uint256)": {
-            "stateMutability": "nonpayable",
-            "code": "function logWinnerIs(uint256 _id) external nonpayable",
-            "inputs": {
-                "_id": {
-                    "type": "uint256"
-                }
-            },
-            "outputs": {}
-        },
-        "owner()": {
-            "stateMutability": "view",
-            "code": "function owner() external view returns (address)",
-            "inputs": {},
-            "outputs": {
-                "_0": {
-                    "type": "address"
-                }
-            },
-            "details": "Returns the address of the current owner."
         },
         "proposals(uint256)": {
             "stateMutability": "view",
@@ -165,24 +95,6 @@
                     "type": "uint256"
                 }
             }
-        },
-        "renounceOwnership()": {
-            "stateMutability": "nonpayable",
-            "code": "function renounceOwnership() external nonpayable",
-            "inputs": {},
-            "outputs": {},
-            "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
-        },
-        "transferOwnership(address)": {
-            "stateMutability": "nonpayable",
-            "code": "function transferOwnership(address newOwner) external nonpayable",
-            "inputs": {
-                "newOwner": {
-                    "type": "address"
-                }
-            },
-            "outputs": {},
-            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
         },
         "updateVote(uint256,string,string,uint256,uint256,string,string)": {
             "stateMutability": "nonpayable",
@@ -212,21 +124,21 @@
             },
             "outputs": {}
         },
-        "vote(uint256,address)": {
+        "vote(uint256,uint8,address)": {
             "stateMutability": "nonpayable",
-            "code": "function vote(uint256 _id, address _voter) external nonpayable",
+            "code": "function vote(uint256 _idVote, uint8 _id, address _voter) external nonpayable",
             "inputs": {
+                "_idVote": {
+                    "type": "uint256"
+                },
                 "_id": {
-                    "type": "uint256",
-                    "description": "The unique identifier of the proposal to vote for."
+                    "type": "uint8"
                 },
                 "_voter": {
-                    "type": "address",
-                    "description": "The address of the voter casting the vote."
+                    "type": "address"
                 }
             },
-            "outputs": {},
-            "details": "Allows a voter to cast their vote for a specific proposal."
+            "outputs": {}
         },
         "voteStructs(uint256)": {
             "stateMutability": "view",
@@ -303,19 +215,113 @@
                     "type": "string"
                 }
             }
+        },
+        "winningProposal(uint256)": {
+            "stateMutability": "view",
+            "code": "function winningProposal(uint256 _id) external view returns (struct Voting.Proposal)",
+            "inputs": {
+                "_id": {
+                    "type": "uint256",
+                    "description": "The ID of the proposal"
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "Voting.Proposal"
+                }
+            },
+            "notice": "Returns the winning proposal "
         }
     },
     "events": {
-        "OwnershipTransferred": {
-            "code": "event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
+        "VoteCreated": {
+            "code": "event VoteCreated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2)",
             "inputs": {
-                "previousOwner": {
+                "idVote": {
+                    "type": "uint256",
+                    "indexed": true
+                },
+                "owner": {
                     "type": "address",
                     "indexed": true
                 },
-                "newOwner": {
+                "startsAt": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "endsAt": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "title": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "description": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "link1": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "link2": {
+                    "type": "string",
+                    "indexed": false
+                }
+            }
+        },
+        "VoteUpdated": {
+            "code": "event VoteUpdated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2)",
+            "inputs": {
+                "idVote": {
+                    "type": "uint256",
+                    "indexed": true
+                },
+                "owner": {
                     "type": "address",
                     "indexed": true
+                },
+                "startsAt": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "endsAt": {
+                    "type": "uint256",
+                    "indexed": false
+                },
+                "title": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "description": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "link1": {
+                    "type": "string",
+                    "indexed": false
+                },
+                "link2": {
+                    "type": "string",
+                    "indexed": false
+                }
+            }
+        },
+        "VoterHasVoted": {
+            "code": "event VoterHasVoted(uint256 indexed idVote, address indexed voter, uint256 choice)",
+            "inputs": {
+                "idVote": {
+                    "type": "uint256",
+                    "indexed": true
+                },
+                "voter": {
+                    "type": "address",
+                    "indexed": true
+                },
+                "choice": {
+                    "type": "uint256",
+                    "indexed": false
                 }
             }
         },
@@ -362,47 +368,17 @@
             "code": "error OnlyAdminCanUpdateError()",
             "inputs": {}
         },
-        "OwnableInvalidOwner": {
-            "code": "error OwnableInvalidOwner(address owner)",
-            "inputs": {
-                "owner": {
-                    "type": "address"
-                }
-            },
-            "details": "The owner is not a valid owner account. (eg. `address(0)`)"
-        },
-        "OwnableUnauthorizedAccount": {
-            "code": "error OwnableUnauthorizedAccount(address account)",
-            "inputs": {
-                "account": {
-                    "type": "address"
-                }
-            },
-            "details": "The caller account is not authorized to perform an operation."
-        },
-        "TimeOfVoteNotEndedError": {
-            "code": "error TimeOfVoteNotEndedError()",
-            "inputs": {}
-        },
         "TimeOverError": {
-            "code": "error TimeOverError(uint256 endsAt)",
-            "inputs": {
-                "endsAt": {
-                    "type": "uint256"
-                }
-            }
+            "code": "error TimeOverError()",
+            "inputs": {}
         },
         "TitleEmptyError": {
             "code": "error TitleEmptyError()",
             "inputs": {}
         },
         "VoteNotExistError": {
-            "code": "error VoteNotExistError(uint256 id)",
-            "inputs": {
-                "id": {
-                    "type": "uint256"
-                }
-            }
+            "code": "error VoteNotExistError()",
+            "inputs": {}
         }
     },
     "path": "",

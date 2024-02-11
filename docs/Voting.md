@@ -13,25 +13,25 @@
 ### checkIfVoted
 
 ```solidity
-function checkIfVoted(uint256 _id, address _voter) external view returns (bool)
+function checkIfVoted(uint256 _idVote, address _voter) external view returns (bool)
 ```
 
+Checks if the voter has voted on the proposal
 
 
-*Checks if a specific voter has cast a vote for a given proposal.*
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | The unique identifier of the proposal. |
-| _voter | address | The address of the voter to check. |
+| _idVote | uint256 | The ID of the proposal to check for the voter&#39;s vote |
+| _voter | address | The address of the voter |
 
 #### Returns
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | bool | True if the voter has cast a vote, otherwise false. |
+| _0 | bool | undefined |
 
 ### createVote
 
@@ -76,28 +76,6 @@ function getDetailsVote(uint256 _id) external view returns (struct Voting.VoteSt
 |---|---|---|
 | _0 | Voting.VoteStruct | undefined |
 
-### getVoterHasVoted
-
-```solidity
-function getVoterHasVoted(uint256 _id) external view returns (struct Voting.HasVoted)
-```
-
-
-
-*Retrieves the voting status of a specific voter for a given proposal.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| _id | uint256 | The unique identifier of the proposal. |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | Voting.HasVoted | The HasVoted struct containing the voter&#39;s status for the proposal. |
-
 ### getVotes
 
 ```solidity
@@ -114,84 +92,6 @@ function getVotes() external view returns (struct Voting.VoteStruct[])
 | Name | Type | Description |
 |---|---|---|
 | _0 | Voting.VoteStruct[] | undefined |
-
-### getWinner
-
-```solidity
-function getWinner(uint256 _id) external view returns (struct Voting.Proposal)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| _id | uint256 | undefined |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | Voting.Proposal | undefined |
-
-### hasVoted
-
-```solidity
-function hasVoted(uint256) external view returns (uint256 id, address voter)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | uint256 | undefined |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| id | uint256 | undefined |
-| voter | address | undefined |
-
-### logWinnerIs
-
-```solidity
-function logWinnerIs(uint256 _id) external nonpayable
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| _id | uint256 | undefined |
-
-### owner
-
-```solidity
-function owner() external view returns (address)
-```
-
-
-
-*Returns the address of the current owner.*
-
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | address | undefined |
 
 ### proposals
 
@@ -216,33 +116,6 @@ function proposals(uint256) external view returns (uint256 voteId, uint256 choic
 | voteId | uint256 | undefined |
 | choiceOne | uint256 | undefined |
 | choiceTwo | uint256 | undefined |
-
-### renounceOwnership
-
-```solidity
-function renounceOwnership() external nonpayable
-```
-
-
-
-*Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner.*
-
-
-### transferOwnership
-
-```solidity
-function transferOwnership(address newOwner) external nonpayable
-```
-
-
-
-*Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| newOwner | address | undefined |
 
 ### updateVote
 
@@ -269,19 +142,20 @@ function updateVote(uint256 _id, string _title, string _description, uint256 _st
 ### vote
 
 ```solidity
-function vote(uint256 _id, address _voter) external nonpayable
+function vote(uint256 _idVote, uint8 _id, address _voter) external nonpayable
 ```
 
 
 
-*Allows a voter to cast their vote for a specific proposal.*
+
 
 #### Parameters
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | The unique identifier of the proposal to vote for. |
-| _voter | address | The address of the voter casting the vote. |
+| _idVote | uint256 | undefined |
+| _id | uint8 | undefined |
+| _voter | address | undefined |
 
 ### voteStructs
 
@@ -343,14 +217,36 @@ function voteStructsArray(uint256) external view returns (uint256 id, address ad
 | link1 | string | undefined |
 | link2 | string | undefined |
 
+### winningProposal
+
+```solidity
+function winningProposal(uint256 _id) external view returns (struct Voting.Proposal)
+```
+
+Returns the winning proposal 
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _id | uint256 | The ID of the proposal |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | Voting.Proposal | undefined |
+
 
 
 ## Events
 
-### OwnershipTransferred
+### VoteCreated
 
 ```solidity
-event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+event VoteCreated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2)
 ```
 
 
@@ -361,8 +257,55 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
 
 | Name | Type | Description |
 |---|---|---|
-| previousOwner `indexed` | address | undefined |
-| newOwner `indexed` | address | undefined |
+| idVote `indexed` | uint256 | undefined |
+| owner `indexed` | address | undefined |
+| startsAt  | uint256 | undefined |
+| endsAt  | uint256 | undefined |
+| title  | string | undefined |
+| description  | string | undefined |
+| link1  | string | undefined |
+| link2  | string | undefined |
+
+### VoteUpdated
+
+```solidity
+event VoteUpdated(uint256 indexed idVote, address indexed owner, uint256 startsAt, uint256 endsAt, string title, string description, string link1, string link2)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| idVote `indexed` | uint256 | undefined |
+| owner `indexed` | address | undefined |
+| startsAt  | uint256 | undefined |
+| endsAt  | uint256 | undefined |
+| title  | string | undefined |
+| description  | string | undefined |
+| link1  | string | undefined |
+| link2  | string | undefined |
+
+### VoterHasVoted
+
+```solidity
+event VoterHasVoted(uint256 indexed idVote, address indexed voter, uint256 choice)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| idVote `indexed` | uint256 | undefined |
+| voter `indexed` | address | undefined |
+| choice  | uint256 | undefined |
 
 ### WinnerIs
 
@@ -432,64 +375,16 @@ error OnlyAdminCanUpdateError()
 
 
 
-### OwnableInvalidOwner
-
-```solidity
-error OwnableInvalidOwner(address owner)
-```
-
-
-
-*The owner is not a valid owner account. (eg. `address(0)`)*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| owner | address | undefined |
-
-### OwnableUnauthorizedAccount
-
-```solidity
-error OwnableUnauthorizedAccount(address account)
-```
-
-
-
-*The caller account is not authorized to perform an operation.*
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| account | address | undefined |
-
-### TimeOfVoteNotEndedError
-
-```solidity
-error TimeOfVoteNotEndedError()
-```
-
-
-
-
-
-
 ### TimeOverError
 
 ```solidity
-error TimeOverError(uint256 endsAt)
+error TimeOverError()
 ```
 
 
 
 
 
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| endsAt | uint256 | undefined |
 
 ### TitleEmptyError
 
@@ -505,17 +400,12 @@ error TitleEmptyError()
 ### VoteNotExistError
 
 ```solidity
-error VoteNotExistError(uint256 id)
+error VoteNotExistError()
 ```
 
 
 
 
 
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| id | uint256 | undefined |
 
 
