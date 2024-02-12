@@ -2,9 +2,12 @@ import { useCallback, useEffect } from 'react'
 import { getVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
 import useLocalStorage from '../../../hooks/useLocalStorage'
+import { useRecoilState } from 'recoil'
+import { formStateArray } from '../../../store/form'
 
 const useVoting = () => {
 	const currentTime = Date.now()
+	const [fetchVotes] = useRecoilState(formStateArray)
 	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
 
 	const checkVoterHasVoted = useCallback(async (idVote: number, address: string) => {
@@ -52,6 +55,19 @@ const useVoting = () => {
 	useEffect(() => {
 		checkTimeNotEnded
 	}, [checkTimeNotEnded])	
+
+	const liveRenderWinner = useCallback(async() => {
+		for (const key in fetchVotes) {
+			const { endsAt } = fetchVotes[key]
+			if (currentTime > Number(endsAt)) {
+				checkTimeNotEnded(Number(endsAt))
+			}
+		}
+	}, [checkTimeNotEnded, currentTime, fetchVotes])
+
+	useEffect(() => {
+		liveRenderWinner()
+	}, [liveRenderWinner])		
 
     /**
    * A function for conducting a voting process asynchronously.

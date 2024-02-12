@@ -11,7 +11,9 @@ const useCheckAdminWithAddress = () => {
 		(async () => {
 			try {
 				const tx = await getAddressCurrent()
-				setCheckedAdminCurrent(tx)
+				if (tx) {
+					setCheckedAdminCurrent(tx)
+				}
 				return tx
 			} catch (error) {
 				toast.error('Erreur de récupération de l\'adresse')
