@@ -13,7 +13,7 @@
 ### checkIfVoted
 
 ```solidity
-function checkIfVoted(uint256 _idVote, address _voter) external view returns (bool)
+function checkIfVoted(uint256 _idVote, address _addressVoter) external view returns (bool)
 ```
 
 Checks if the voter has voted on the proposal
@@ -25,7 +25,7 @@ Checks if the voter has voted on the proposal
 | Name | Type | Description |
 |---|---|---|
 | _idVote | uint256 | The ID of the proposal to check for the voter&#39;s vote |
-| _voter | address | The address of the voter |
+| _addressVoter | address | The address of the voter |
 
 #### Returns
 
@@ -142,7 +142,7 @@ function updateVote(uint256 _id, string _title, string _description, uint256 _st
 ### vote
 
 ```solidity
-function vote(uint256 _idVote, uint8 _id, address _voter) external nonpayable
+function vote(uint256 _idVote, uint8 _id, address _addressVoter) external nonpayable
 ```
 
 
@@ -155,7 +155,29 @@ function vote(uint256 _idVote, uint8 _id, address _voter) external nonpayable
 |---|---|---|
 | _idVote | uint256 | undefined |
 | _id | uint8 | undefined |
-| _voter | address | undefined |
+| _addressVoter | address | undefined |
+
+### voteExist
+
+```solidity
+function voteExist(uint256) external view returns (bool)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
 
 ### voteStructs
 
@@ -216,6 +238,29 @@ function voteStructsArray(uint256) external view returns (uint256 id, address ad
 | description | string | undefined |
 | link1 | string | undefined |
 | link2 | string | undefined |
+
+### voted
+
+```solidity
+function voted(uint256, address) external view returns (bool)
+```
+
+
+
+
+
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | uint256 | undefined |
+| _1 | address | undefined |
+
+#### Returns
+
+| Name | Type | Description |
+|---|---|---|
+| _0 | bool | undefined |
 
 ### winningProposal
 

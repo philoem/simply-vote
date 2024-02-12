@@ -2,13 +2,13 @@
     "methods": {
         "checkIfVoted(uint256,address)": {
             "stateMutability": "view",
-            "code": "function checkIfVoted(uint256 _idVote, address _voter) external view returns (bool)",
+            "code": "function checkIfVoted(uint256 _idVote, address _addressVoter) external view returns (bool)",
             "inputs": {
                 "_idVote": {
                     "type": "uint256",
                     "description": "The ID of the proposal to check for the voter's vote"
                 },
-                "_voter": {
+                "_addressVoter": {
                     "type": "address",
                     "description": "The address of the voter"
                 }
@@ -126,7 +126,7 @@
         },
         "vote(uint256,uint8,address)": {
             "stateMutability": "nonpayable",
-            "code": "function vote(uint256 _idVote, uint8 _id, address _voter) external nonpayable",
+            "code": "function vote(uint256 _idVote, uint8 _id, address _addressVoter) external nonpayable",
             "inputs": {
                 "_idVote": {
                     "type": "uint256"
@@ -134,11 +134,25 @@
                 "_id": {
                     "type": "uint8"
                 },
-                "_voter": {
+                "_addressVoter": {
                     "type": "address"
                 }
             },
             "outputs": {}
+        },
+        "voteExist(uint256)": {
+            "stateMutability": "view",
+            "code": "function voteExist(uint256) external view returns (bool)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "bool"
+                }
+            }
         },
         "voteStructs(uint256)": {
             "stateMutability": "view",
@@ -213,6 +227,23 @@
                 },
                 "link2": {
                     "type": "string"
+                }
+            }
+        },
+        "voted(uint256,address)": {
+            "stateMutability": "view",
+            "code": "function voted(uint256, address) external view returns (bool)",
+            "inputs": {
+                "_0": {
+                    "type": "uint256"
+                },
+                "_1": {
+                    "type": "address"
+                }
+            },
+            "outputs": {
+                "_0": {
+                    "type": "bool"
                 }
             }
         },

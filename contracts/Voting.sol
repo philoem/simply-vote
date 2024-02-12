@@ -22,8 +22,8 @@ contract Voting {
   }
 
   mapping(uint256 => VoteStruct) public voteStructs;
-  mapping(uint256 => bool) voteExist;
-  mapping(uint256 => mapping(address => bool)) voted;
+  mapping(uint256 => bool) public voteExist;
+  mapping(uint256 => mapping(address => bool)) public voted;
 
   Proposal[] public proposals;
   VoteStruct[] public voteStructsArray;
@@ -74,7 +74,7 @@ contract Voting {
     _voteStructs.description = description;
     _voteStructs.startsAt = startsAt;
     _voteStructs.endsAt = endsAt;
-    _voteStructs.timestamp = (block.timestamp * 1000) + 1000;
+    _voteStructs.timestamp = block.number;
     _voteStructs.link1 = link1;
     _voteStructs.link2 = link2;
 
@@ -122,12 +122,12 @@ contract Voting {
     emit VoteUpdated(_id, msg.sender, _startsAt, _endsAt, _title, _description, _link1, _link2);
   }
 
-  function vote(uint256 _idVote, uint8 _id, address _voter) public {
+  function vote(uint256 _idVote, uint8 _id, address _addressVoter) public {
     if (voteExist[_idVote] == false) {
       revert VoteNotExistError();
-    } else if (block.timestamp * 1000 >= voteStructsArray[_idVote - 1].endsAt) {
+    } else if (block.number * 1000 >= voteStructsArray[_idVote - 1].endsAt) {
       revert TimeOverError();
-    } else if (voted[_idVote][_voter] == true) {
+    } else if (voted[_idVote][_addressVoter] == true) {
       revert AlreadyVotedError();
     }
 
@@ -137,18 +137,18 @@ contract Voting {
       proposals[_idVote - 1].choiceTwo += 1;
     }
 
-    voted[_idVote][_voter] = true;
+    voted[_idVote][_addressVoter] = true;
 
-    emit VoterHasVoted(_idVote, _voter, _id == 1 ? 1 : 2);
+    emit VoterHasVoted(_idVote, _addressVoter, _id == 1 ? 1 : 2);
   }
 
   /**
   * @notice Checks if the voter has voted on the proposal
   * @param _idVote The ID of the proposal to check for the voter's vote
-  * @param _voter The address of the voter
+  * @param _addressVoter The address of the voter
   */
-  function checkIfVoted(uint256 _idVote, address _voter) public view returns (bool) {
-    return voted[_idVote][_voter]; 
+  function checkIfVoted(uint256 _idVote, address _addressVoter) public view returns (bool) {
+    return voted[_idVote][_addressVoter]; 
   }
 
   /**
