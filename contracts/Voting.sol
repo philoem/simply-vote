@@ -2,7 +2,7 @@
 pragma solidity ^0.8.23;
 
 contract Voting {
-  uint256 private _idVoteCounter=0;
+  uint256 private _idVoteCounter = 0;
 
   struct VoteStruct {
     uint256 id;
@@ -14,9 +14,6 @@ contract Voting {
     string description;
     string link1;
     string link2;
-  }
-  struct Proposal {
-    uint256 voteId;
     uint256 choiceOne;
     uint256 choiceTwo;
   }
@@ -24,8 +21,7 @@ contract Voting {
   mapping(uint256 => VoteStruct) public voteStructs;
   mapping(uint256 => bool) public voteExist;
   mapping(uint256 => mapping(address => bool)) public voted;
-
-  Proposal[] public proposals;
+  
   VoteStruct[] public voteStructsArray;
 
   error TitleEmptyError();
@@ -79,7 +75,6 @@ contract Voting {
     _voteStructs.link2 = link2;
 
     voteStructsArray.push(_voteStructs);
-    proposals.push(Proposal({voteId: _voteStructs.id, choiceOne: 0, choiceTwo: 0}));
     voteExist[_voteStructs.id] = true;
 
     emit VoteCreated(_voteStructs.id, msg.sender, _voteStructs.startsAt, _voteStructs.endsAt, _voteStructs.title, _voteStructs.description, _voteStructs.link1, _voteStructs.link2);
@@ -130,11 +125,11 @@ contract Voting {
     } else if (voted[_idVote][_addressVoter] == true) {
       revert AlreadyVotedError();
     }
-
+    
     if (_id == 1) {
-      proposals[_idVote - 1].choiceOne += 1;
+      voteStructsArray[_idVote - 1].choiceOne += 1;
     } else if (_id == 2) { 
-      proposals[_idVote - 1].choiceTwo += 1;
+      voteStructsArray[_idVote - 1].choiceTwo += 1;
     }
 
     voted[_idVote][_addressVoter] = true;
@@ -155,11 +150,8 @@ contract Voting {
    * @notice Returns the winning proposal 
    * @param _id The ID of the vote
    */
-  function winningProposal(uint256 _id) public view returns (Proposal memory) {
-    if (voteExist[_id] == false) {
-      revert VoteNotExistError(voteStructsArray[_id - 1].id);
-    }
-    return proposals[_id - 1];
+  function winningProposal(uint256 _id) public view returns (VoteStruct memory) {
+    return voteStructsArray[_id - 1];
   }
 
 }

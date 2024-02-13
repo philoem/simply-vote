@@ -76,26 +76,6 @@
                 }
             }
         },
-        "proposals(uint256)": {
-            "stateMutability": "view",
-            "code": "function proposals(uint256) external view returns (uint256 voteId, uint256 choiceOne, uint256 choiceTwo)",
-            "inputs": {
-                "_0": {
-                    "type": "uint256"
-                }
-            },
-            "outputs": {
-                "voteId": {
-                    "type": "uint256"
-                },
-                "choiceOne": {
-                    "type": "uint256"
-                },
-                "choiceTwo": {
-                    "type": "uint256"
-                }
-            }
-        },
         "updateVote(uint256,string,string,uint256,uint256,string,string)": {
             "stateMutability": "nonpayable",
             "code": "function updateVote(uint256 _id, string _title, string _description, uint256 _startsAt, uint256 _endsAt, string _link1, string _link2) external nonpayable",
@@ -156,7 +136,7 @@
         },
         "voteStructs(uint256)": {
             "stateMutability": "view",
-            "code": "function voteStructs(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)",
+            "code": "function voteStructs(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2, uint256 choiceOne, uint256 choiceTwo)",
             "inputs": {
                 "_0": {
                     "type": "uint256"
@@ -189,12 +169,18 @@
                 },
                 "link2": {
                     "type": "string"
+                },
+                "choiceOne": {
+                    "type": "uint256"
+                },
+                "choiceTwo": {
+                    "type": "uint256"
                 }
             }
         },
         "voteStructsArray(uint256)": {
             "stateMutability": "view",
-            "code": "function voteStructsArray(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)",
+            "code": "function voteStructsArray(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2, uint256 choiceOne, uint256 choiceTwo)",
             "inputs": {
                 "_0": {
                     "type": "uint256"
@@ -227,6 +213,12 @@
                 },
                 "link2": {
                     "type": "string"
+                },
+                "choiceOne": {
+                    "type": "uint256"
+                },
+                "choiceTwo": {
+                    "type": "uint256"
                 }
             }
         },
@@ -249,7 +241,7 @@
         },
         "winningProposal(uint256)": {
             "stateMutability": "view",
-            "code": "function winningProposal(uint256 _id) external view returns (struct Voting.Proposal)",
+            "code": "function winningProposal(uint256 _id) external view returns (struct Voting.VoteStruct)",
             "inputs": {
                 "_id": {
                     "type": "uint256",
@@ -258,7 +250,7 @@
             },
             "outputs": {
                 "_0": {
-                    "type": "Voting.Proposal"
+                    "type": "Voting.VoteStruct"
                 }
             },
             "notice": "Returns the winning proposal "

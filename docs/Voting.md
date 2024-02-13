@@ -93,30 +93,6 @@ function getVotes() external view returns (struct Voting.VoteStruct[])
 |---|---|---|
 | _0 | Voting.VoteStruct[] | undefined |
 
-### proposals
-
-```solidity
-function proposals(uint256) external view returns (uint256 voteId, uint256 choiceOne, uint256 choiceTwo)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| _0 | uint256 | undefined |
-
-#### Returns
-
-| Name | Type | Description |
-|---|---|---|
-| voteId | uint256 | undefined |
-| choiceOne | uint256 | undefined |
-| choiceTwo | uint256 | undefined |
-
 ### updateVote
 
 ```solidity
@@ -182,7 +158,7 @@ function voteExist(uint256) external view returns (bool)
 ### voteStructs
 
 ```solidity
-function voteStructs(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)
+function voteStructs(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2, uint256 choiceOne, uint256 choiceTwo)
 ```
 
 
@@ -208,11 +184,13 @@ function voteStructs(uint256) external view returns (uint256 id, address admin, 
 | description | string | undefined |
 | link1 | string | undefined |
 | link2 | string | undefined |
+| choiceOne | uint256 | undefined |
+| choiceTwo | uint256 | undefined |
 
 ### voteStructsArray
 
 ```solidity
-function voteStructsArray(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2)
+function voteStructsArray(uint256) external view returns (uint256 id, address admin, uint256 startsAt, uint256 endsAt, uint256 timestamp, string title, string description, string link1, string link2, uint256 choiceOne, uint256 choiceTwo)
 ```
 
 
@@ -238,6 +216,8 @@ function voteStructsArray(uint256) external view returns (uint256 id, address ad
 | description | string | undefined |
 | link1 | string | undefined |
 | link2 | string | undefined |
+| choiceOne | uint256 | undefined |
+| choiceTwo | uint256 | undefined |
 
 ### voted
 
@@ -265,7 +245,7 @@ function voted(uint256, address) external view returns (bool)
 ### winningProposal
 
 ```solidity
-function winningProposal(uint256 _id) external view returns (struct Voting.Proposal)
+function winningProposal(uint256 _id) external view returns (struct Voting.VoteStruct)
 ```
 
 Returns the winning proposal 
@@ -282,7 +262,7 @@ Returns the winning proposal
 
 | Name | Type | Description |
 |---|---|---|
-| _0 | Voting.Proposal | undefined |
+| _0 | Voting.VoteStruct | undefined |
 
 
 
