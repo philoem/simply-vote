@@ -4,19 +4,17 @@ import ImageFiller from 'react-image-filler'
 import useGetDetailsVote from './hooks/useGetDetailsVote'
 import useDisplayAllVotes from './hooks/useDisplayAllVotes'
 import useVoting from './hooks/useVoting'
-import useWinnerIs from './hooks/useWinnerIs'
 
 const DisplayVote = forwardRef((_props, ref) => {
 	const { voting, checkTimeNotEnded, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	const { winner } = useWinnerIs()
 	
 
 	const renderVotes = useMemo(() => {
 		return (
 			<>
-				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2 }) => {
+				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2, choiceOne, choiceTwo }) => {
 					return (
 						<div className='card card-side bg-base-100 shadow-xl' key={id}>
 							<figure>
@@ -75,7 +73,10 @@ const DisplayVote = forwardRef((_props, ref) => {
 												</button> 
 											) : (
 												<h4 className='font-bold text-red-500 text-lg text-right'>
-													{winner}
+													{
+														choiceOne > choiceTwo ? 'Vote 1 gagnant'
+														: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
+													}
 												</h4>
 											)}
 										</>
@@ -100,7 +101,12 @@ const DisplayVote = forwardRef((_props, ref) => {
 												</>
 											) : (
 												<h4 className='font-bold text-red-500 text-lg text-left'>
-													{`Résultat du vote : ${winner}`}
+													{`Résultat du vote : 
+														${
+															choiceOne > choiceTwo ? 'Vote 1 gagnant'
+															: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
+														}`
+													}
 												</h4>
 											)}
 										</>
@@ -112,7 +118,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 				})}
 			</>
 		)
-	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, winner, verifyAddressVoter, openDetails, voting])
+	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, verifyAddressVoter, openDetails, voting])
 
 	return (
 		<div className='container mx-auto h-[370px] mt-8'>

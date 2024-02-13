@@ -7,6 +7,8 @@ export interface ModalParams {
 	endsAt: number | string
 	link1?: string
 	link2?: string
+	choiceOne?: number
+	choiceTwo?: number
 }
 
 export interface VoteStruct {
@@ -19,4 +21,6 @@ export interface VoteStruct {
 	timestamp?: number
 	link1: string
 	link2: string
+	choiceOne?: number
+	choiceTwo?: number
 }

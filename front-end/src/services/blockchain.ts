@@ -19,7 +19,7 @@ const getContractEthereum = async () => {
 		const provider = new ethers.BrowserProvider(ethereum)
 		const signer = await provider.getSigner()
 		const abi = Contract.abi
-		const contract = new ethers.Contract('0xA48B30966dEda54883E1557Db9E745273a99bf9E', abi, signer)
+		const contract = new ethers.Contract('0xD62923c0CA6F6Ce16a0eeA8821f101722419d99b', abi, signer)
 		return contract
 	}
 }
@@ -156,7 +156,9 @@ const structVotes = (votes: any[]): VoteStruct[] => {
 			endsAt: Number(vote.endsAt),
 			timestamp: Number(vote.timestamp),
 			link1: vote.link1,
-			link2: vote.link2
+			link2: vote.link2,
+			choiceOne: vote.choiceOne,
+			choiceTwo: vote.choiceTwo
 		}))
 		.sort((a, b) => b.timestamp - a.timestamp)
 }
