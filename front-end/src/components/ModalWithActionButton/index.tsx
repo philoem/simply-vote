@@ -4,8 +4,8 @@ import useHandleModalForm from './hooks/useHandleModalForm'
 import { formattedDate } from '../../utils/formatDate'
 
 const ModalWithActionButton = forwardRef((_props, ref) => {
-	const { handleChange, handleSubmit, fetchVoteId, editedForm, checkAdminCurrent, voteData } = useHandleModalForm(ref)
-	
+	const { handleChange, handleSubmit, fetchVoteId, editedForm, checkAdminCurrent, voteData, minDate } = useHandleModalForm(ref)
+
 	return (
 		<>
 			<dialog
@@ -45,6 +45,7 @@ const ModalWithActionButton = forwardRef((_props, ref) => {
 							<input
 								type='datetime-local'
 								name='startsAt'
+								min={minDate}
 								value={!editedForm ? voteData.startsAt : formattedDate(Date.parse(String(voteData.startsAt)))}
 								placeholder='Début'
 								onChange={handleChange}

@@ -21,6 +21,7 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 		link1: '',
 		link2: ''
 	})
+	const minDate = formattedDate(Date.now())
 
 	useLayoutEffect(() => {
 		if(editedForm) {
@@ -54,6 +55,7 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 	 */
 	const handleSubmit = async (e: FormEvent): Promise<void> => {
 		e.preventDefault()
+		
 		if (
 			!voteData.title ||
 			!voteData.description ||
@@ -148,7 +150,7 @@ const useHandleModalForm = (ref: RefObject<HTMLDialogElement>) => {
 		}))
 	}
 
-	return { handleSubmit, handleChange, fetchVoteId, editedForm, checkAdminCurrent, voteData }
+	return { handleSubmit, handleChange, fetchVoteId, editedForm, checkAdminCurrent, voteData, minDate }
 }
 
 export default useHandleModalForm
