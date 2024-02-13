@@ -32,7 +32,7 @@ contract Voting {
   error DescriptionEmptyError();
   error InvalidStartEndTimesError();
   error OnlyAdminCanUpdateError();
-  error VoteNotExistError();
+  error VoteNotExistError(uint256 id);
   error TimeOverError();
   error AlreadyVotedError();
 
@@ -124,7 +124,7 @@ contract Voting {
 
   function vote(uint256 _idVote, uint8 _id, address _addressVoter) public {
     if (voteExist[_idVote] == false) {
-      revert VoteNotExistError();
+      revert VoteNotExistError(voteStructsArray[_idVote - 1].id);
     } else if (block.number * 1000 >= voteStructsArray[_idVote - 1].endsAt) {
       revert TimeOverError();
     } else if (voted[_idVote][_addressVoter] == true) {
@@ -153,9 +153,12 @@ contract Voting {
 
   /**
    * @notice Returns the winning proposal 
-   * @param _id The ID of the proposal
+   * @param _id The ID of the vote
    */
   function winningProposal(uint256 _id) public view returns (Proposal memory) {
+    if (voteExist[_id] == false) {
+      revert VoteNotExistError(voteStructsArray[_id - 1].id);
+    }
     return proposals[_id - 1];
   }
 

@@ -253,7 +253,7 @@
             "inputs": {
                 "_id": {
                     "type": "uint256",
-                    "description": "The ID of the proposal"
+                    "description": "The ID of the vote"
                 }
             },
             "outputs": {
@@ -408,8 +408,12 @@
             "inputs": {}
         },
         "VoteNotExistError": {
-            "code": "error VoteNotExistError()",
-            "inputs": {}
+            "code": "error VoteNotExistError(uint256 id)",
+            "inputs": {
+                "id": {
+                    "type": "uint256"
+                }
+            }
         }
     },
     "path": "",

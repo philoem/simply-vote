@@ -276,7 +276,7 @@ Returns the winning proposal
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | The ID of the proposal |
+| _id | uint256 | The ID of the vote |
 
 #### Returns
 
@@ -445,12 +445,17 @@ error TitleEmptyError()
 ### VoteNotExistError
 
 ```solidity
-error VoteNotExistError()
+error VoteNotExistError(uint256 id)
 ```
 
 
 
 
 
+#### Parameters
+
+| Name | Type | Description |
+|---|---|---|
+| id | uint256 | undefined |
 
 
