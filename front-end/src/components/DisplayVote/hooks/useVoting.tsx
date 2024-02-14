@@ -2,12 +2,12 @@ import { useCallback, useEffect } from 'react'
 import { getVoted, vote } from '../../../services/blockchain'
 import toast from "react-hot-toast"
 import useLocalStorage from '../../../hooks/useLocalStorage'
-import { useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { formStateArray } from '../../../store/form'
 
 const useVoting = () => {
 	const currentTime = Date.now()
-	const [fetchVotes] = useRecoilState(formStateArray)
+	const [fetchVotes] = useRecoilValue(formStateArray)
 	const [voterHasVoted, setVoterHasVoted] = useLocalStorage('voterHasVoted', [])
 
 	const checkVoterHasVoted = useCallback(async (idVote: number, address: string) => {
