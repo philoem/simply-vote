@@ -14,108 +14,106 @@ const DisplayVote = forwardRef((_props, ref) => {
 	const renderVotes = useMemo(() => {
 		return (
 			<>
-				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2, choiceOne, choiceTwo }) => {
-					return (
-						<div className='card card-side bg-base-100 shadow-xl' key={id}>
-							<figure>
-								<div className='flex flex-col'>
-									{link1 ? (
-										<img
-											src={link1}
-											alt='image vote one'
-											className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
+				{fetchVotes?.map(({id, admin, title, description, startsAt, endsAt, link1, link2, choiceOne, choiceTwo }) => (
+					<div className='card card-side bg-base-100 shadow-xl' key={id}>
+						<figure>
+							<div className='flex flex-col'>
+								{link1 ? (
+									<img
+										src={link1}
+										alt='image vote one'
+										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
+									/>
+								) : (
+									<div className='w-[160px] h-[135px] rounded-[22px] mb-3'>
+										<ImageFiller 
+											width={160} 
+											height={135}
+											background="#123456"
+											color="#ffffff"
+											text="Vote 1"
 										/>
-									) : (
-										<div className='w-[160px] h-[135px] rounded-[22px] mb-3'>
-											<ImageFiller 
-												width={160} 
-												height={135}
-												background="#123456"
-												color="#ffffff"
-												text="Vote 1"
-											/>
-										</div>
-									)}
-									{link2 ? (
-										<img
-											src={link2}
-											alt='image vote two'
-											className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
+									</div>
+								)}
+								{link2 ? (
+									<img
+										src={link2}
+										alt='image vote two'
+										className='w-[160px] h-[135px] rounded-[22px] mb-3 object-cover pt-0 pl-0 ml-1.5 mt-2'
+									/>
+								) : (
+									<div className='w-[160px] h-[135px] rounded-[22px] mt-3'>
+										<ImageFiller 
+											width={160} 
+											height={135}
+											background="#123456"
+											color="#ffffff"
+											text="Vote 2"
 										/>
-									) : (
-										<div className='w-[160px] h-[135px] rounded-[22px] mt-3'>
-											<ImageFiller 
-												width={160} 
-												height={135}
-												background="#123456"
-												color="#ffffff"
-												text="Vote 2"
-											/>
-										</div>
-									)}
-								</div>
-							</figure>
-							<div className='card-body'>
-								<h2 className='card-title text-2xl text-left'>{title}</h2>
-								<p className='text-base text-left'>{description}</p>
-								<p className='text-base text-left'>Début le: {formatDate(Number(startsAt))}</p>
-								<p className='text-base text-left'>Fin le: {formatDate(Number(endsAt))}</p>
-								<div className='card-actions justify-end'>
-									{admin === checkedAdminCurrent ? (
-										<>
-											{checkTimeNotEnded(Number(endsAt)) ? (
+									</div>
+								)}
+							</div>
+						</figure>
+						<div className='card-body'>
+							<h2 className='card-title text-2xl text-left'>{title}</h2>
+							<p className='text-base text-left'>{description}</p>
+							<p className='text-base text-left'>Début le: {formatDate(Number(startsAt))}</p>
+							<p className='text-base text-left'>Fin le: {formatDate(Number(endsAt))}</p>
+							<div className='card-actions justify-end'>
+								{admin === checkedAdminCurrent ? (
+									<>
+										{checkTimeNotEnded(Number(endsAt)) ? (
+											<button
+												onClick={() => openDetails(Number(id))}
+												className='btn btn-primary'
+												disabled={verifyAddressVoterForOwner(Number(id))}
+											>
+												{verifyAddressVoterForOwner(Number(id)) ? 'Vote en cours' : 'Modifier le vote'}
+											</button> 
+										) : (
+											<h4 className='font-bold text-red-500 text-lg text-right'>
+												{
+													choiceOne > choiceTwo ? 'Vote 1 gagnant'
+													: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
+												}
+											</h4>
+										)}
+									</>
+								) : (
+									<>
+										{checkTimeNotEnded(Number(endsAt)) ? (
+											<>
 												<button
-													onClick={() => openDetails(Number(id))}
+													onClick={() => voting(Number(id), 1, checkedAdminCurrent)}
 													className='btn btn-primary'
-													disabled={verifyAddressVoterForOwner(Number(id))}
+													disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
 												>
-													{verifyAddressVoterForOwner(Number(id)) ? 'Vote en cours' : 'Modifier le vote'}
-												</button> 
-											) : (
-												<h4 className='font-bold text-red-500 text-lg text-right'>
-													{
+													Votez pour 1
+												</button>
+												<button 
+													onClick={() => voting(Number(id), 2, checkedAdminCurrent)}
+													className='btn btn-primary'
+													disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
+												>
+													Votez pour 2
+												</button>
+											</>
+										) : (
+											<h4 className='font-bold text-red-500 text-lg text-left'>
+												{`Résultat du vote : 
+													${
 														choiceOne > choiceTwo ? 'Vote 1 gagnant'
 														: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
-													}
-												</h4>
-											)}
-										</>
-									) : (
-										<>
-											{checkTimeNotEnded(Number(endsAt)) ? (
-												<>
-													<button
-														onClick={() => voting(Number(id), 1, checkedAdminCurrent)}
-														className='btn btn-primary'
-														disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
-													>
-														Votez pour 1
-													</button>
-													<button 
-														onClick={() => voting(Number(id), 2, checkedAdminCurrent)}
-														className='btn btn-primary'
-														disabled={verifyAddressVoter(Number(id), checkedAdminCurrent)}
-													>
-														Votez pour 2
-													</button>
-												</>
-											) : (
-												<h4 className='font-bold text-red-500 text-lg text-left'>
-													{`Résultat du vote : 
-														${
-															choiceOne > choiceTwo ? 'Vote 1 gagnant'
-															: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
-														}`
-													}
-												</h4>
-											)}
-										</>
-									)}
-								</div>
+													}`
+												}
+											</h4>
+										)}
+									</>
+								)}
 							</div>
 						</div>
-					)
-				})}
+					</div>
+				))}
 			</>
 		)
 	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, verifyAddressVoter, openDetails, voting])
