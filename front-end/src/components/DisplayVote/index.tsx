@@ -73,6 +73,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 										) : (
 											<h4 className='font-bold text-red-500 text-lg text-right'>
 												{
+													choiceOne !== undefined && choiceTwo !== undefined &&
 													choiceOne > choiceTwo ? 'Vote 1 gagnant'
 													: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
 												}
@@ -102,6 +103,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 											<h4 className='font-bold text-red-500 text-lg text-left'>
 												{`Résultat du vote : 
 													${
+														choiceOne !== undefined && choiceTwo !== undefined &&
 														choiceOne > choiceTwo ? 'Vote 1 gagnant'
 														: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
 													}`
