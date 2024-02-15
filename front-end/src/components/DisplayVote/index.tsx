@@ -9,7 +9,6 @@ const DisplayVote = forwardRef((_props, ref) => {
 	const { voting, checkTimeNotEnded, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
-	
 
 	const renderVotes = useMemo(() => {
 		return (
