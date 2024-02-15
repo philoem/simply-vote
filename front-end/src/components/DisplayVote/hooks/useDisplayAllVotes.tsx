@@ -5,7 +5,7 @@ import { formStateArray } from "../../../store/form"
 import toast from "react-hot-toast"
 
 const useDisplayAllVotes = () => {
-  const [fetchVotes, setFetchVotes] = useRecoilState(formStateArray)
+  const [fetchVotes, setFetchVotes] = useRecoilState(formStateArray)	
 
   const allVotes = useCallback(async () => {
 		(async () => {
@@ -25,6 +25,14 @@ const useDisplayAllVotes = () => {
     allVotes()
   }, [allVotes])  
 
+	useEffect(() => {	
+		const interval = setInterval(() => {
+			allVotes()
+		}, 60000)
+	
+		return () => clearInterval(interval)
+	}, [allVotes, fetchVotes])
+	
   return {
     allVotes,
 		fetchVotes,
