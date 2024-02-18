@@ -13,7 +13,7 @@
 ### checkIfVoted
 
 ```solidity
-function checkIfVoted(uint256 _idVote, address _addressVoter) external view returns (bool)
+function checkIfVoted(uint256 idVote, address addressVoter) external view returns (bool)
 ```
 
 Checks if the voter has voted on the proposal
@@ -24,8 +24,8 @@ Checks if the voter has voted on the proposal
 
 | Name | Type | Description |
 |---|---|---|
-| _idVote | uint256 | The ID of the proposal to check for the voter&#39;s vote |
-| _addressVoter | address | The address of the voter |
+| idVote | uint256 | The ID of the proposal to check for the voter&#39;s vote |
+| addressVoter | address | The address of the voter |
 
 #### Returns
 
@@ -57,7 +57,7 @@ function createVote(string title, string description, uint256 startsAt, uint256 
 ### getDetailsVote
 
 ```solidity
-function getDetailsVote(uint256 _id) external view returns (struct Voting.VoteStruct)
+function getDetailsVote(uint256 id) external view returns (struct Voting.VoteStruct)
 ```
 
 
@@ -68,7 +68,7 @@ function getDetailsVote(uint256 _id) external view returns (struct Voting.VoteSt
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | undefined |
+| id | uint256 | undefined |
 
 #### Returns
 
@@ -96,7 +96,7 @@ function getVotes() external view returns (struct Voting.VoteStruct[])
 ### updateVote
 
 ```solidity
-function updateVote(uint256 _id, string _title, string _description, uint256 _startsAt, uint256 _endsAt, string _link1, string _link2) external nonpayable
+function updateVote(uint256 id, string title, string description, uint256 startsAt, uint256 endsAt, string link1, string link2) external nonpayable
 ```
 
 
@@ -107,18 +107,18 @@ function updateVote(uint256 _id, string _title, string _description, uint256 _st
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | undefined |
-| _title | string | undefined |
-| _description | string | undefined |
-| _startsAt | uint256 | undefined |
-| _endsAt | uint256 | undefined |
-| _link1 | string | undefined |
-| _link2 | string | undefined |
+| id | uint256 | undefined |
+| title | string | undefined |
+| description | string | undefined |
+| startsAt | uint256 | undefined |
+| endsAt | uint256 | undefined |
+| link1 | string | undefined |
+| link2 | string | undefined |
 
 ### vote
 
 ```solidity
-function vote(uint256 _idVote, uint8 _id, address _addressVoter) external nonpayable
+function vote(uint256 idVote, uint8 id, address addressVoter) external nonpayable
 ```
 
 
@@ -129,9 +129,9 @@ function vote(uint256 _idVote, uint8 _id, address _addressVoter) external nonpay
 
 | Name | Type | Description |
 |---|---|---|
-| _idVote | uint256 | undefined |
-| _id | uint8 | undefined |
-| _addressVoter | address | undefined |
+| idVote | uint256 | undefined |
+| id | uint8 | undefined |
+| addressVoter | address | undefined |
 
 ### voteExist
 
@@ -245,7 +245,7 @@ function voted(uint256, address) external view returns (bool)
 ### winningProposal
 
 ```solidity
-function winningProposal(uint256 _id) external view returns (struct Voting.VoteStruct)
+function winningProposal(uint256 id) external view returns (struct Voting.VoteStruct)
 ```
 
 Returns the winning proposal 
@@ -256,7 +256,7 @@ Returns the winning proposal
 
 | Name | Type | Description |
 |---|---|---|
-| _id | uint256 | The ID of the vote |
+| id | uint256 | The ID of the vote |
 
 #### Returns
 

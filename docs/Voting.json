@@ -2,13 +2,13 @@
     "methods": {
         "checkIfVoted(uint256,address)": {
             "stateMutability": "view",
-            "code": "function checkIfVoted(uint256 _idVote, address _addressVoter) external view returns (bool)",
+            "code": "function checkIfVoted(uint256 idVote, address addressVoter) external view returns (bool)",
             "inputs": {
-                "_idVote": {
+                "idVote": {
                     "type": "uint256",
                     "description": "The ID of the proposal to check for the voter's vote"
                 },
-                "_addressVoter": {
+                "addressVoter": {
                     "type": "address",
                     "description": "The address of the voter"
                 }
@@ -54,9 +54,9 @@
         },
         "getDetailsVote(uint256)": {
             "stateMutability": "view",
-            "code": "function getDetailsVote(uint256 _id) external view returns (struct Voting.VoteStruct)",
+            "code": "function getDetailsVote(uint256 id) external view returns (struct Voting.VoteStruct)",
             "inputs": {
-                "_id": {
+                "id": {
                     "type": "uint256"
                 }
             },
@@ -78,27 +78,27 @@
         },
         "updateVote(uint256,string,string,uint256,uint256,string,string)": {
             "stateMutability": "nonpayable",
-            "code": "function updateVote(uint256 _id, string _title, string _description, uint256 _startsAt, uint256 _endsAt, string _link1, string _link2) external nonpayable",
+            "code": "function updateVote(uint256 id, string title, string description, uint256 startsAt, uint256 endsAt, string link1, string link2) external nonpayable",
             "inputs": {
-                "_id": {
+                "id": {
                     "type": "uint256"
                 },
-                "_title": {
+                "title": {
                     "type": "string"
                 },
-                "_description": {
+                "description": {
                     "type": "string"
                 },
-                "_startsAt": {
+                "startsAt": {
                     "type": "uint256"
                 },
-                "_endsAt": {
+                "endsAt": {
                     "type": "uint256"
                 },
-                "_link1": {
+                "link1": {
                     "type": "string"
                 },
-                "_link2": {
+                "link2": {
                     "type": "string"
                 }
             },
@@ -106,15 +106,15 @@
         },
         "vote(uint256,uint8,address)": {
             "stateMutability": "nonpayable",
-            "code": "function vote(uint256 _idVote, uint8 _id, address _addressVoter) external nonpayable",
+            "code": "function vote(uint256 idVote, uint8 id, address addressVoter) external nonpayable",
             "inputs": {
-                "_idVote": {
+                "idVote": {
                     "type": "uint256"
                 },
-                "_id": {
+                "id": {
                     "type": "uint8"
                 },
-                "_addressVoter": {
+                "addressVoter": {
                     "type": "address"
                 }
             },
@@ -241,9 +241,9 @@
         },
         "winningProposal(uint256)": {
             "stateMutability": "view",
-            "code": "function winningProposal(uint256 _id) external view returns (struct Voting.VoteStruct)",
+            "code": "function winningProposal(uint256 id) external view returns (struct Voting.VoteStruct)",
             "inputs": {
-                "_id": {
+                "id": {
                     "type": "uint256",
                     "description": "The ID of the vote"
                 }
