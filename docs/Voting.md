@@ -332,26 +332,6 @@ event VoterHasVoted(uint256 indexed idVote, address indexed voter, uint256 choic
 | voter `indexed` | address | undefined |
 | choice  | uint256 | undefined |
 
-### WinnerIs
-
-```solidity
-event WinnerIs(address indexed owner, uint256 id, string title, uint256 choice1, uint256 choice2)
-```
-
-
-
-
-
-#### Parameters
-
-| Name | Type | Description |
-|---|---|---|
-| owner `indexed` | address | undefined |
-| id  | uint256 | undefined |
-| title  | string | undefined |
-| choice1  | uint256 | undefined |
-| choice2  | uint256 | undefined |
-
 
 
 ## Errors
