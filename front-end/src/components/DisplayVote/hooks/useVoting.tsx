@@ -53,6 +53,16 @@ const useVoting = () => {
 		checkTimeNotEnded
 	}, [checkTimeNotEnded])	
 
+	const displayWinner = (choiceOne: number, choiceTwo: number) => {
+		if(choiceOne > choiceTwo) {
+			return 'Vote 1 gagnant'
+		} else if(choiceOne < choiceTwo) {
+			return 'Vote 2 gagnant'
+		} else {
+			return 'Egalité entre les 2 votes'
+		}
+	}
+
     /**
    * A function for conducting a voting process asynchronously.
    *
@@ -86,7 +96,8 @@ const useVoting = () => {
     voting,
 		checkTimeNotEnded,
 		verifyAddressVoter,
-		verifyAddressVoterForOwner
+		verifyAddressVoterForOwner,
+		displayWinner
   }
 }
 

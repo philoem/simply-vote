@@ -6,7 +6,7 @@ import useDisplayAllVotes from './hooks/useDisplayAllVotes'
 import useVoting from './hooks/useVoting'
 
 const DisplayVote = forwardRef((_props, ref) => {
-	const { voting, checkTimeNotEnded, verifyAddressVoter, verifyAddressVoterForOwner } = useVoting()
+	const { voting, checkTimeNotEnded, verifyAddressVoter, verifyAddressVoterForOwner, displayWinner } = useVoting()
 	const { openDetails, checkedAdminCurrent } = useGetDetailsVote(ref)
 	const { fetchVotes } = useDisplayAllVotes()
 
@@ -71,10 +71,8 @@ const DisplayVote = forwardRef((_props, ref) => {
 											</button> 
 										) : (
 											<h4 className='font-bold text-red-500 text-lg text-right'>
-												{
-													choiceOne !== undefined && choiceTwo !== undefined &&
-													choiceOne > choiceTwo ? 'Vote 1 gagnant'
-													: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
+												{choiceOne !== undefined && choiceTwo !== undefined &&
+													displayWinner(choiceOne, choiceTwo)
 												}
 											</h4>
 										)}
@@ -100,12 +98,8 @@ const DisplayVote = forwardRef((_props, ref) => {
 											</>
 										) : (
 											<h4 className='font-bold text-red-500 text-lg text-left'>
-												{`Résultat du vote : 
-													${
-														choiceOne !== undefined && choiceTwo !== undefined &&
-														choiceOne > choiceTwo ? 'Vote 1 gagnant'
-														: 'Vote 2 gagnant' ?? 'Egalité entre les 2 votes'
-													}`
+												{choiceOne !== undefined && choiceTwo !== undefined &&
+													'Résultat du vote : ' + displayWinner(choiceOne, choiceTwo)
 												}
 											</h4>
 										)}
@@ -117,7 +111,7 @@ const DisplayVote = forwardRef((_props, ref) => {
 				))}
 			</>
 		)
-	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, verifyAddressVoter, openDetails, voting])
+	}, [fetchVotes, checkedAdminCurrent, checkTimeNotEnded, verifyAddressVoterForOwner, verifyAddressVoter, displayWinner, openDetails, voting])
 
 	return (
 		<div className='container mx-auto h-[370px] mt-8'>
