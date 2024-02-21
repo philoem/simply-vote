@@ -9,7 +9,7 @@ import { useRef } from 'react'
 
 function App() {
 	const { isConnected, voter } = useConnectWallet()
-	const myDialog = useRef<HTMLDialogElement>(null)
+	const myDialog = useRef<HTMLButtonElement>(null)
 
 	return (
 		<div className='backdrop-blur-sm'>
