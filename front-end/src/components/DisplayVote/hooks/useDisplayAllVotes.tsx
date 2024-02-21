@@ -28,7 +28,7 @@ const useDisplayAllVotes = () => {
 	useEffect(() => {	
 		const interval = setInterval(() => {
 			allVotes()
-		}, 60000)
+		}, 5000)
 	
 		return () => clearInterval(interval)
 	}, [allVotes, fetchVotes])
